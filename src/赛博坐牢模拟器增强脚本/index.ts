@@ -23,9 +23,9 @@ console.info('[看守所模拟器] 脚本文件已加载，开始执行...');
 
 // 按顺序导入所有模块（必须在顶层）
 import './core';
-import './status_panel';
 import './event_system';
 import './npc_system';
+import './status_panel';
 import './worldbook_loader';
 
 // #region agent log
