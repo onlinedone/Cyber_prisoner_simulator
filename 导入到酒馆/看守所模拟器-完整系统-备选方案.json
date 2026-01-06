@@ -1,0 +1,7 @@
+{
+  "id": "detention-system-complete-alt",
+  "name": "看守所模拟器-完整系统（GitHub Raw）",
+  "content": "import 'https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/main/dist/赛博坐牢模拟器增强脚本/index.js'",
+  "info": "完整系统：核心系统、状态栏、事件系统、NPC系统、知识库加载器\n\n功能说明：\n- 核心系统：提供基础功能和模块管理\n- 状态栏系统：状态追踪、HTML注释解析、缓慢变化机制\n- 事件系统：按日推进、法律流程、随机事件\n- NPC系统：NPC生成和管理\n- 知识库加载器：动态加载知识库\n\n注意：此版本使用 GitHub Raw 链接，如果 jsdelivr 无法访问，请使用此文件",
+  "buttons": []
+}

@@ -365,10 +365,15 @@ function stopCacheCleanup() {
   }
 }
 
+// 立即创建核心系统，让其他模块可以立即访问
+if (!window.detentionSystem) {
+  window.detentionSystem = bootstrapDetentionSystem();
+  console.info('[核心系统] 核心系统对象已创建');
+}
+
 $(() => {
   console.info('[核心系统] 酒馆页面已加载');
-  const system = window.detentionSystem ?? bootstrapDetentionSystem();
-  window.detentionSystem = system;
+  const system = window.detentionSystem!;
 
   ensureCacheCleanup(system);
 

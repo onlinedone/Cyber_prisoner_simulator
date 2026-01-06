@@ -3,12 +3,14 @@
 ## 📋 前置准备
 
 ### 1. 确认仓库地址
+
 - 仓库地址：`https://github.com/onlinedone/Cyber_prisoner_simulator`
 - 用户名：`onlinedone`
 - 仓库名：`Cyber_prisoner_simulator`
 
 ### 2. 确认已安装 Git
-如果未安装，请访问：https://git-scm.com/download/win
+
+如果未安装，请访问：<https://git-scm.com/download/win>
 
 ---
 
@@ -66,7 +68,7 @@ git push -u origin main
 
 ### 方式 1：使用 Personal Access Token（推荐）
 
-1. 访问：https://github.com/settings/tokens
+1. 访问：<https://github.com/settings/tokens>
 2. 点击 "Generate new token (classic)"
 3. 设置权限：勾选 `repo` 权限
 4. 生成后复制 token
@@ -74,7 +76,7 @@ git push -u origin main
 
 ### 方式 2：使用 GitHub Desktop（图形界面）
 
-1. 下载：https://desktop.github.com/
+1. 下载：<https://desktop.github.com/>
 2. 登录 GitHub 账号
 3. 添加仓库
 4. 点击 "Publish repository"
@@ -124,6 +126,7 @@ git push origin v1.0.0
 ```
 
 **后续更新时**：
+
 ```powershell
 # 创建新版本标签
 git tag -a v1.0.1 -m "版本 1.0.1：修复xxx"
@@ -243,6 +246,7 @@ import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.1/d
 
 - jsdelivr 有缓存机制，更新后可能需要等待几分钟
 - 可以在 URL 后添加 `?v=时间戳` 强制刷新：
+
   ```javascript
   import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛博坐牢模拟器增强脚本/index.js?v=' + Date.now();
   ```
@@ -288,9 +292,10 @@ git push origin v1.0.1
 
 ### 1. 检查 GitHub 仓库
 
-访问：https://github.com/onlinedone/Cyber_prisoner_simulator
+访问：<https://github.com/onlinedone/Cyber_prisoner_simulator>
 
 确认以下文件存在：
+
 - ✅ `dist/赛博坐牢模拟器增强脚本/index.js`
 - ✅ `dist/赛博坐牢模拟器增强脚本/index.js.map`
 - ✅ `src/赛博坐牢模拟器增强脚本/` 目录下的所有 `.ts` 文件
@@ -298,6 +303,7 @@ git push origin v1.0.1
 ### 2. 测试 jsdelivr 链接
 
 在浏览器中访问：
+
 ```
 https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛博坐牢模拟器增强脚本/index.js
 ```
@@ -322,23 +328,27 @@ https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛�
 ### Q1: 推送时提示 "Authentication failed"
 
 **解决方案**：
+
 - 使用 Personal Access Token 代替密码
 - 或使用 GitHub Desktop 图形界面
 
 ### Q2: 推送时提示 "remote: Support for password authentication was removed"
 
 **解决方案**：
+
 - GitHub 已禁用密码认证
 - 必须使用 Personal Access Token
 
 ### Q3: jsdelivr 链接 404
 
 **可能原因**：
+
 - 版本标签不存在
 - 文件路径错误
 - 仓库未公开
 
 **解决方案**：
+
 - 确认标签已推送：`git push origin v1.0.0`
 - 检查文件路径是否正确
 - 确认仓库是公开的（Public）
@@ -346,6 +356,7 @@ https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛�
 ### Q4: 中文路径问题
 
 **解决方案**：
+
 - jsdelivr 支持中文路径
 - 如果遇到问题，可以 URL 编码路径
 
@@ -353,10 +364,10 @@ https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛�
 
 ## 📚 参考资源
 
-- Git 官方文档：https://git-scm.com/doc
-- GitHub 文档：https://docs.github.com
-- jsdelivr 文档：https://www.jsdelivr.com/documentation
-- Personal Access Token：https://github.com/settings/tokens
+- Git 官方文档：<https://git-scm.com/doc>
+- GitHub 文档：<https://docs.github.com>
+- jsdelivr 文档：<https://www.jsdelivr.com/documentation>
+- Personal Access Token：<https://github.com/settings/tokens>
 
 ---
 
