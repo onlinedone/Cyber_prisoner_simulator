@@ -1,4 +1,4 @@
-export { };
+export {};
 
 type JQueryStaticLike = typeof globalThis extends { $: infer T } ? T : (selector: any) => any;
 declare const $: JQueryStaticLike;
@@ -158,7 +158,7 @@ function createCacheManager(): CacheManager {
           cacheStore.delete(key);
         }
       }
-    }
+    },
   };
 }
 
@@ -181,13 +181,13 @@ function bootstrapDetentionSystem(): DetentionSystem {
       compressionQuality: 0.8,
       cacheExpiry: 600000,
       healthCheckInterval: 500,
-      healthCheckTimeout: 3000
+      healthCheckTimeout: 3000,
     },
     state: {
       mode: 'detecting',
       tokenUsed: 0,
       lastHealthCheck: 0,
-      errors: []
+      errors: [],
     },
     events,
     CacheManager,
@@ -199,21 +199,18 @@ function bootstrapDetentionSystem(): DetentionSystem {
     },
 
     checkTokenBudget() {
-      const total = system.state.mode === 'external'
-        ? system.config.tokenBudget
-        : system.config.fallbackBudget;
+      const total = system.state.mode === 'external' ? system.config.tokenBudget : system.config.fallbackBudget;
       const used = system.state.tokenUsed;
       const percentage = (used / total) * 100;
 
-      const status: BudgetStatus =
-        percentage > 95 ? 'critical' : percentage > 85 ? 'warning' : 'normal';
+      const status: BudgetStatus = percentage > 95 ? 'critical' : percentage > 85 ? 'warning' : 'normal';
 
       return {
         used,
         total,
         percentage: percentage.toFixed(2),
         remaining: total - used,
-        status
+        status,
       };
     },
 
@@ -242,11 +239,7 @@ function bootstrapDetentionSystem(): DetentionSystem {
         .trim();
 
       if (actualQuality < 0.9) {
-        compressed = compressed
-          .replace(/，/g, ',')
-          .replace(/。/g, '.')
-          .replace(/；/g, ';')
-          .replace(/：/g, ':');
+        compressed = compressed.replace(/，/g, ',').replace(/。/g, '.').replace(/；/g, ';').replace(/：/g, ':');
       }
 
       const originalSize = text.length;
@@ -277,7 +270,7 @@ function bootstrapDetentionSystem(): DetentionSystem {
         message: normalized.message,
         context,
         timestamp: Date.now(),
-        stack: normalized.stack
+        stack: normalized.stack,
       };
 
       system.state.errors.push(errorInfo);
@@ -295,7 +288,7 @@ function bootstrapDetentionSystem(): DetentionSystem {
         version: null,
         hasHelper: false,
         helperVersion: null,
-        hasDataTable: false
+        hasDataTable: false,
       };
 
       const isSillyTavernAvailable = typeof SillyTavern !== 'undefined';
@@ -346,7 +339,7 @@ function bootstrapDetentionSystem(): DetentionSystem {
       console.info(`[核心系统] Token预算: ${system.config.tokenBudget}`);
 
       system.events.emit('initialized', { env, state: system.state });
-    }
+    },
   };
 
   return system;
@@ -368,12 +361,27 @@ function stopCacheCleanup() {
 // 立即创建核心系统，让其他模块可以立即访问
 if (!window.detentionSystem) {
   window.detentionSystem = bootstrapDetentionSystem();
-  console.info('[核心系统] 核心系统对象已创建');
+  console.info('[核心系统] 核心系统对象已创建（脚本加载时）');
+  console.info('[核心系统] window.detentionSystem 类型:', typeof window.detentionSystem);
+  console.info('[核心系统] window.detentionSystem 值:', window.detentionSystem);
 }
 
 $(() => {
-  console.info('[核心系统] 酒馆页面已加载');
+  console.info('[核心系统] 酒馆页面已加载（jQuery ready）');
+
+  // 确保核心系统存在（双重保险）
+  if (!window.detentionSystem) {
+    console.warn('[核心系统] 警告：在 jQuery ready 时未找到核心系统，重新创建');
+    window.detentionSystem = bootstrapDetentionSystem();
+    console.info('[核心系统] 核心系统对象已创建（jQuery ready 时）');
+  }
+
   const system = window.detentionSystem!;
+  console.info('[核心系统] 当前核心系统状态:', {
+    exists: !!system,
+    version: system.version,
+    initialized: system.initialized,
+  });
 
   ensureCacheCleanup(system);
 
@@ -391,3 +399,13 @@ $(window).on('pagehide', () => {
 });
 
 console.info('[核心系统] 脚本加载完成');
+console.info('[核心系统] 检查 window.detentionSystem:', {
+  exists: typeof window.detentionSystem !== 'undefined',
+  type: typeof window.detentionSystem,
+  value: window.detentionSystem ? 'object' : 'undefined',
+});
+console.info('[核心系统] 检查 window.detentionSystem:', {
+  exists: typeof window.detentionSystem !== 'undefined',
+  type: typeof window.detentionSystem,
+  value: window.detentionSystem ? 'object' : 'undefined',
+});
