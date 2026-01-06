@@ -3,6 +3,25 @@ export {};
 type JQueryStaticLike = typeof globalThis extends { $: infer T } ? T : (selector: any) => any;
 declare const $: JQueryStaticLike;
 
+// #region agent log
+fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    location: 'core.ts:9',
+    message: 'core.ts 开始执行',
+    data: {
+      timestamp: Date.now(),
+      windowDetentionSystem: typeof window !== 'undefined' && typeof (window as any).detentionSystem !== 'undefined',
+    },
+    timestamp: Date.now(),
+    sessionId: 'debug-session',
+    runId: 'run1',
+    hypothesisId: 'A',
+  }),
+}).catch(() => {});
+// #endregion
+
 console.info('[核心系统] 开始加载...');
 
 type BudgetStatus = 'critical' | 'warning' | 'normal';
