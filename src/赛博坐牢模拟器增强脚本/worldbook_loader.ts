@@ -302,62 +302,18 @@ interface WorldbookLoaderImpl {
 
 console.info('[知识库加载器] v5.1.0 启动...');
 
-// #region agent log
-fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    location: 'worldbook_loader.ts:190',
-    message: '知识库加载器开始加载',
-    data: { hasDetentionSystem: !!window.detentionSystem, detentionSystemType: typeof window.detentionSystem },
-    timestamp: Date.now(),
-    sessionId: 'debug-session',
-    runId: 'run1',
-    hypothesisId: 'A',
-  }),
-}).catch(() => {});
-// #endregion
+// 在 jQuery ready 时初始化，确保核心系统已创建
+$(() => {
+  const DS_RAW = window.detentionSystem as DetentionSystem | undefined;
+  if (!DS_RAW) {
+    console.error('[知识库加载器] 核心系统未加载');
+    console.error('[知识库加载器] 请确保 core.ts 已正确加载');
+    return;
+  }
 
-const DS = window.detentionSystem as DetentionSystem | undefined;
+  // 类型断言：DS 一定存在
+  const DS = DS_RAW as DetentionSystem;
 
-if (!DS) {
-  console.error('[知识库加载器] 核心系统未加载');
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      location: 'worldbook_loader.ts:195',
-      message: '核心系统未加载错误',
-      data: { windowKeys: Object.keys(window).filter(k => k.includes('detention') || k.includes('Detention')) },
-      timestamp: Date.now(),
-      sessionId: 'debug-session',
-      runId: 'run1',
-      hypothesisId: 'A',
-    }),
-  }).catch(() => {});
-  // #endregion
-} else {
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      location: 'worldbook_loader.ts:199',
-      message: '核心系统已找到',
-      data: {
-        version: DS.version,
-        initialized: DS.initialized,
-        hasEvents: !!DS.events,
-        moduleCount: Object.keys(DS.modules || {}).length,
-      },
-      timestamp: Date.now(),
-      sessionId: 'debug-session',
-      runId: 'run1',
-      hypothesisId: 'A',
-    }),
-  }).catch(() => {});
-  // #endregion
   // 设置角色标识
   (DS as DetentionSystem & { characterId?: string }).characterId = 'detention_center';
   console.info('[知识库加载器] ✓ 已设置角色标识');
@@ -438,45 +394,10 @@ if (!DS) {
     async _loadWorldbookInternal(bookName: string, config: WorldbookConfig): Promise<LoadedWorldbook> {
       console.info(`[知识库加载器] 开始加载: ${config.displayName} (${bookName})`);
 
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'worldbook_loader.ts:274',
-          message: '开始加载世界书',
-          data: { bookName, displayName: config.displayName, priority: config.priority },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'run1',
-          hypothesisId: 'C',
-        }),
-      }).catch(() => {});
-      // #endregion
 
       try {
         // 获取所有世界书名称
         const allWorldbookNames = getWorldbookNames();
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'worldbook_loader.ts:279',
-            message: '获取世界书名称列表',
-            data: {
-              count: allWorldbookNames.length,
-              names: allWorldbookNames.slice(0, 10),
-              targetDisplayName: config.displayName,
-              targetName: config.name,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'run1',
-            hypothesisId: 'C',
-          }),
-        }).catch(() => {});
-        // #endregion
 
         // 优化匹配策略：优先匹配中文名称（displayName），因为实际知识库使用中文名称
         let targetWorldbookName: string | null = null;
@@ -507,47 +428,12 @@ if (!DS) {
 
         if (!targetWorldbookName) {
           const availableBooks = allWorldbookNames.join(', ');
-          // #region agent log
-          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'worldbook_loader.ts:309',
-              message: '世界书匹配失败',
-              data: {
-                bookName,
-                displayName: config.displayName,
-                availableCount: allWorldbookNames.length,
-                availableNames: allWorldbookNames,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'run1',
-              hypothesisId: 'C',
-            }),
-          }).catch(() => {});
-          // #endregion
           throw new Error(
             `未找到世界书: ${config.displayName} (${bookName})\n` +
               `可用的世界书: ${availableBooks}\n` +
               `提示: 请确保知识库名称与配置中的 displayName 或 name 匹配`,
           );
         }
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'worldbook_loader.ts:318',
-            message: '世界书匹配成功',
-            data: { bookName, targetWorldbookName, displayName: config.displayName },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'run1',
-            hypothesisId: 'C',
-          }),
-        }).catch(() => {});
-        // #endregion
 
         // 获取世界书内容
         const entries = await getWorldbook(targetWorldbookName);
@@ -970,21 +856,6 @@ if (!DS) {
      * 初始化
      */
     async initialize(): Promise<void> {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'worldbook_loader.ts:738',
-          message: '开始初始化',
-          data: { alreadyInitialized: this.initialized, fallbackMode: this.fallbackMode },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'run1',
-          hypothesisId: 'D',
-        }),
-      }).catch(() => {});
-      // #endregion
       if (this.initialized) {
         console.info('[知识库加载器] 已初始化，跳过');
         return;
@@ -1052,26 +923,6 @@ if (!DS) {
       const status = this.getStatus();
       console.info('[知识库加载器] ✓ 初始化完成');
       console.table(status.loaded);
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'worldbook_loader.ts:801',
-          message: '初始化完成',
-          data: {
-            loadedCount: status.loaded.length,
-            loadingCount: status.loading.length,
-            availableCount: status.available.length,
-            fallbackMode: this.fallbackMode,
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'run1',
-          hypothesisId: 'D',
-        }),
-      }).catch(() => {});
-      // #endregion
 
       // 检查是否进入降级模式
       if (this.fallbackMode) {
@@ -1105,15 +956,13 @@ if (!DS) {
       this.loading.clear();
 
       // 从核心系统注销
-      if (DS) {
-        delete (DS as DetentionSystem & { loadWorldbook?: unknown }).loadWorldbook;
-        delete (DS as DetentionSystem & { unloadWorldbook?: unknown }).unloadWorldbook;
-        delete (DS as DetentionSystem & { reloadWorldbook?: unknown }).reloadWorldbook;
-        delete (DS as DetentionSystem & { predictiveCache?: unknown }).predictiveCache;
-        delete (DS as DetentionSystem & { getRelevantEntries?: unknown }).getRelevantEntries;
-        delete (DS as DetentionSystem & { getWorldbookStatus?: unknown }).getWorldbookStatus;
-        delete (DS as DetentionSystem & { dynamicLoad?: unknown }).dynamicLoad;
-      }
+      delete (DS as DetentionSystem & { loadWorldbook?: unknown }).loadWorldbook;
+      delete (DS as DetentionSystem & { unloadWorldbook?: unknown }).unloadWorldbook;
+      delete (DS as DetentionSystem & { reloadWorldbook?: unknown }).reloadWorldbook;
+      delete (DS as DetentionSystem & { predictiveCache?: unknown }).predictiveCache;
+      delete (DS as DetentionSystem & { getRelevantEntries?: unknown }).getRelevantEntries;
+      delete (DS as DetentionSystem & { getWorldbookStatus?: unknown }).getWorldbookStatus;
+      delete (DS as DetentionSystem & { dynamicLoad?: unknown }).dynamicLoad;
 
       this.initialized = false;
       this.fallbackMode = false;
@@ -1169,62 +1018,9 @@ if (!DS) {
 
   // ========== 监听用户输入（通过核心系统事件） ==========
   DS.events.on('user_input', (data?: unknown) => {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'worldbook_loader.ts:899',
-        message: '收到用户输入事件',
-        data: {
-          hasData: !!data,
-          dataType: typeof data,
-          textLength:
-            typeof (data as { text?: unknown } | undefined)?.text === 'string'
-              ? (data as { text?: string }).text?.length
-              : 0,
-          initialized: WorldbookLoader.initialized,
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'run1',
-        hypothesisId: 'E',
-      }),
-    }).catch(() => {});
-    // #endregion
     const input = data as { text?: string } | undefined;
     if (input?.text && input.text.length > 5) {
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'worldbook_loader.ts:905',
-          message: '触发动态加载',
-          data: { textLength: input.text.length, textPreview: input.text.substring(0, 50) },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'run1',
-          hypothesisId: 'E',
-        }),
-      }).catch(() => {});
-      // #endregion
       WorldbookLoader.dynamicLoad(input.text).catch(err => {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'worldbook_loader.ts:908',
-            message: '动态加载失败',
-            data: { error: err instanceof Error ? err.message : String(err) },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'run1',
-            hypothesisId: 'E',
-          }),
-        }).catch(() => {});
-        // #endregion
         console.warn('[知识库加载器] 动态加载失败:', err);
       });
     }
@@ -1270,4 +1066,4 @@ if (!DS) {
 
   console.info('[知识库加载器] ✓ 脚本加载完成');
   console.info('[知识库加载器] 💡 如需手动初始化，请执行: window.initWorldbookLoader()');
-}
+});

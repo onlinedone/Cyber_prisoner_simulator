@@ -152,53 +152,20 @@ interface EventSystemImpl {
 
 console.info('[事件系统] 开始加载...');
 
-// #region agent log
-fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    location: 'event_system.ts:151',
-    message: '事件系统开始加载',
-    data: { hasDetentionSystem: !!window.detentionSystem, detentionSystemType: typeof window.detentionSystem },
-    timestamp: Date.now(),
-    sessionId: 'debug-session',
-    runId: 'run1',
-    hypothesisId: 'A',
-  }),
-}).catch(() => {});
-// #endregion
+// 在 jQuery ready 时初始化，确保核心系统已创建
+$(() => {
+  const DS_RAW = window.detentionSystem as (DetentionSystem & EventSystemExports) | undefined;
+  if (!DS_RAW) {
+    console.error('[事件系统] 核心系统未加载');
+    console.error('[事件系统] 请确保 core.ts 已正确加载');
+    return;
+  }
 
-const DS_RAW = window.detentionSystem as (DetentionSystem & EventSystemExports) | undefined;
-if (!DS_RAW) {
-  console.error('[事件系统] 核心系统未加载');
-  throw new Error('[事件系统] 核心系统未加载，无法继续');
-}
+  // 类型断言：DS 一定存在
+  const DS = DS_RAW as DetentionSystem & EventSystemExports;
 
-// 类型断言：DS 一定存在
-const DS = DS_RAW as DetentionSystem & EventSystemExports;
-
-// #region agent log
-fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    location: 'event_system.ts:160',
-    message: '核心系统已找到',
-    data: {
-      version: DS.version,
-      initialized: DS.initialized,
-      hasEvents: !!DS.events,
-      moduleCount: Object.keys(DS.modules || {}).length,
-    },
-    timestamp: Date.now(),
-    sessionId: 'debug-session',
-    runId: 'run1',
-    hypothesisId: 'A',
-  }),
-}).catch(() => {});
-// #endregion
-// ---------------- 核心事件系统 ----------------
-const EventSystem: EventSystemImpl = {
+  // ---------------- 核心事件系统 ----------------
+  const EventSystem: EventSystemImpl = {
   currentDay: 0,
   lastEventDay: 0,
   eventHistory: [] as EventRecord[],
@@ -1261,125 +1228,41 @@ const EventSystem: EventSystemImpl = {
       console.error('[事件系统] 时间线导入失败:', error);
       return false;
     }
-  },
-};
+    },
+  };
 
-// 向核心暴露接口
-DS.generateRandomEvent = (_context?: unknown) => EventSystem.generateRandomEvent();
-DS.advanceDay = (days?: number) => EventSystem.advanceDay(days);
-DS.getCurrentStage = () => EventSystem.getCurrentStageInfo();
-DS.checkCellTransfer = () => EventSystem.checkCellTransfer();
-DS.setCaseComplexity = (complexity: 'simple' | 'normal' | 'complex' | 'very_complex') =>
-  EventSystem.setCaseComplexity(complexity);
-DS.rollbackToStage = (stage: Stage, reason?: string) => EventSystem.rollbackToStage(stage, reason);
-DS.setDeathPenalty = (isDeathPenalty: boolean) => EventSystem.setDeathPenalty(isDeathPenalty);
-DS.getEventStatistics = () => EventSystem.getEventStatistics();
-DS.exportTimeline = () => EventSystem.exportTimeline();
-DS.importTimeline = (data: unknown) => EventSystem.importTimeline(data);
+  // 向核心暴露接口
+  DS.generateRandomEvent = (_context?: unknown) => EventSystem.generateRandomEvent();
+  DS.advanceDay = (days?: number) => EventSystem.advanceDay(days);
+  DS.getCurrentStage = () => EventSystem.getCurrentStageInfo();
+  DS.checkCellTransfer = () => EventSystem.checkCellTransfer();
+  DS.setCaseComplexity = (complexity: 'simple' | 'normal' | 'complex' | 'very_complex') =>
+    EventSystem.setCaseComplexity(complexity);
+  DS.rollbackToStage = (stage: Stage, reason?: string) => EventSystem.rollbackToStage(stage, reason);
+  DS.setDeathPenalty = (isDeathPenalty: boolean) => EventSystem.setDeathPenalty(isDeathPenalty);
+  DS.getEventStatistics = () => EventSystem.getEventStatistics();
+  DS.exportTimeline = () => EventSystem.exportTimeline();
+  DS.importTimeline = (data: unknown) => EventSystem.importTimeline(data);
 
-DS.registerModule('eventSystem', EventSystem);
+  DS.registerModule('eventSystem', EventSystem);
 
-// 监听用户输入，支持回退触发
-DS.events.on('user_input', (data?: unknown) => {
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      location: 'event_system.ts:1236',
-      message: '收到用户输入事件',
-      data: {
-        hasData: !!data,
-        dataType: typeof data,
-        textLength:
-          typeof (data as { text?: unknown } | undefined)?.text === 'string'
-            ? (data as { text?: string }).text?.length
-            : 0,
-      },
-      timestamp: Date.now(),
-      sessionId: 'debug-session',
-      runId: 'run1',
-      hypothesisId: 'E',
-    }),
-  }).catch(() => {});
-  // #endregion
-  const text =
-    typeof (data as { text?: unknown } | undefined)?.text === 'string' ? (data as { text?: string }).text : undefined;
-  if (text) {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'event_system.ts:1242',
-        message: '处理用户回退',
-        data: { text: text.substring(0, 50) },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'run1',
-        hypothesisId: 'E',
-      }),
-    }).catch(() => {});
-    // #endregion
-    EventSystem.handleUserRollback(text);
-  }
+  // 监听用户输入，支持回退触发
+  DS.events.on('user_input', (data?: unknown) => {
+    const text =
+      typeof (data as { text?: unknown } | undefined)?.text === 'string' ? (data as { text?: string }).text : undefined;
+    if (text) {
+      EventSystem.handleUserRollback(text);
+    }
+  });
+
+  // 核心初始化完成后，初始化事件系统
+  DS.events.on('initialized', () => {
+    try {
+      EventSystem.initialize(0);
+    } catch (error) {
+      console.error('[事件系统] 初始化失败:', error);
+    }
+  });
+
+  console.info('[事件系统] 脚本加载完成 v3.4.0');
 });
-
-// 核心初始化完成后，初始化事件系统
-DS.events.on('initialized', () => {
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      location: 'event_system.ts:1246',
-      message: '收到核心系统初始化事件',
-      data: { currentDay: EventSystem.currentDay, currentStage: EventSystem.currentStage },
-      timestamp: Date.now(),
-      sessionId: 'debug-session',
-      runId: 'run1',
-      hypothesisId: 'B',
-    }),
-  }).catch(() => {});
-  // #endregion
-  try {
-    EventSystem.initialize(0);
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'event_system.ts:1250',
-        message: '事件系统初始化成功',
-        data: { currentDay: EventSystem.currentDay, currentStage: EventSystem.currentStage },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'run1',
-        hypothesisId: 'B',
-      }),
-    }).catch(() => {});
-    // #endregion
-  } catch (error) {
-    // #region agent log
-    fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'event_system.ts:1254',
-        message: '事件系统初始化失败',
-        data: {
-          error: error instanceof Error ? error.message : String(error),
-          stack: error instanceof Error ? error.stack : undefined,
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'run1',
-        hypothesisId: 'B',
-      }),
-    }).catch(() => {});
-    // #endregion
-    console.error('[事件系统] 初始化失败:', error);
-  }
-});
-
-console.info('[事件系统] 脚本加载完成 v3.4.0');
