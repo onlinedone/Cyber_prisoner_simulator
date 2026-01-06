@@ -16,11 +16,7 @@ console.log('[DEBUG-HYP-A] index.ts:13 - 脚本文件开始加载', {
   windowExists: typeof window !== 'undefined',
   windowDetentionSystem: typeof window.detentionSystem,
   location: 'index.ts:13',
-<<<<<<< HEAD
-  hypothesisId: 'A'
-=======
   hypothesisId: 'A',
->>>>>>> f8fa98b7f552596324dfb5e3cd130c5c7b7706a2
 });
 // #endregion
 console.info('[看守所模拟器] 脚本文件已加载，开始执行...');
@@ -39,11 +35,7 @@ console.log('[DEBUG-HYP-A] index.ts:22 - 所有模块导入完成', {
   windowDetentionSystemType: typeof window.detentionSystem,
   windowDetentionSystemValue: window.detentionSystem ? 'object' : 'undefined',
   location: 'index.ts:22',
-<<<<<<< HEAD
-  hypothesisId: 'A'
-=======
   hypothesisId: 'A',
->>>>>>> f8fa98b7f552596324dfb5e3cd130c5c7b7706a2
 });
 // #endregion
 console.info('[看守所模拟器] 所有模块已加载完成');
