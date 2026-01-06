@@ -1,4 +1,4 @@
-export { };
+export {};
 
 /**
  * NPC 系统：按需生成女性看守所 NPC（囚犯/警察/律师/医生/家属等）。
@@ -138,72 +138,249 @@ if (!DS) {
     surnames: {
       tier1: {
         names: ['王', '李', '张', '刘', '陈', '杨', '黄', '赵', '吴', '周'],
-        weight: 35
+        weight: 35,
       },
       tier2: {
-        names: ['徐', '孙', '马', '朱', '胡', '郭', '何', '林', '高', '罗', '郑', '梁', '谢', '宋', '唐', '许', '韩', '冯', '邓', '曹'],
-        weight: 30
+        names: [
+          '徐',
+          '孙',
+          '马',
+          '朱',
+          '胡',
+          '郭',
+          '何',
+          '林',
+          '高',
+          '罗',
+          '郑',
+          '梁',
+          '谢',
+          '宋',
+          '唐',
+          '许',
+          '韩',
+          '冯',
+          '邓',
+          '曹',
+        ],
+        weight: 30,
       },
       tier3: {
-        names: ['彭', '曾', '肖', '田', '董', '袁', '潘', '于', '蒋', '蔡', '余', '杜', '叶', '程', '苏', '魏', '吕', '丁', '任', '沈', '姚', '卢', '姜', '崔', '钟', '谭', '陆', '汪', '范', '金'],
-        weight: 20
+        names: [
+          '彭',
+          '曾',
+          '肖',
+          '田',
+          '董',
+          '袁',
+          '潘',
+          '于',
+          '蒋',
+          '蔡',
+          '余',
+          '杜',
+          '叶',
+          '程',
+          '苏',
+          '魏',
+          '吕',
+          '丁',
+          '任',
+          '沈',
+          '姚',
+          '卢',
+          '姜',
+          '崔',
+          '钟',
+          '谭',
+          '陆',
+          '汪',
+          '范',
+          '金',
+        ],
+        weight: 20,
       },
       tier4: {
-        names: ['石', '廖', '贾', '夏', '韦', '付', '方', '白', '邹', '孟', '熊', '秦', '邱', '江', '尹', '薛', '闫', '段', '雷', '侯', '龙', '史', '陶', '黎', '贺', '顾', '毛', '郝', '龚', '邵'],
-        weight: 10
+        names: [
+          '石',
+          '廖',
+          '贾',
+          '夏',
+          '韦',
+          '付',
+          '方',
+          '白',
+          '邹',
+          '孟',
+          '熊',
+          '秦',
+          '邱',
+          '江',
+          '尹',
+          '薛',
+          '闫',
+          '段',
+          '雷',
+          '侯',
+          '龙',
+          '史',
+          '陶',
+          '黎',
+          '贺',
+          '顾',
+          '毛',
+          '郝',
+          '龚',
+          '邵',
+        ],
+        weight: 10,
       },
       tier5: {
         names: ['万', '覃', '武', '乔', '严', '赖', '文', '洪', '季', '莫', '欧阳', '司马', '上官', '诸葛', '东方'],
-        weight: 5
-      }
+        weight: 5,
+      },
     },
     givenNames: {
       vintage: {
         single: ['芳', '丽', '娟', '英', '华', '玉', '秀', '珍', '红', '梅', '兰', '霞', '燕', '萍', '静'],
         double: [
-          ['秀', '英'], ['秀', '兰'], ['秀', '珍'], ['秀', '芳'],
-          ['丽', '华'], ['丽', '娟'], ['丽', '萍'], ['丽', '芳'],
-          ['玉', '兰'], ['玉', '梅'], ['玉', '华'], ['玉', '珍'],
-          ['春', '梅'], ['春', '兰'], ['春', '华'], ['春', '燕'],
-          ['小', '红'], ['小', '芳'], ['小', '丽'], ['小', '燕']
+          ['秀', '英'],
+          ['秀', '兰'],
+          ['秀', '珍'],
+          ['秀', '芳'],
+          ['丽', '华'],
+          ['丽', '娟'],
+          ['丽', '萍'],
+          ['丽', '芳'],
+          ['玉', '兰'],
+          ['玉', '梅'],
+          ['玉', '华'],
+          ['玉', '珍'],
+          ['春', '梅'],
+          ['春', '兰'],
+          ['春', '华'],
+          ['春', '燕'],
+          ['小', '红'],
+          ['小', '芳'],
+          ['小', '丽'],
+          ['小', '燕'],
         ],
-        weight: 25
+        weight: 25,
       },
       classic: {
         single: ['婷', '洁', '莉', '敏', '艳', '娜', '倩', '雪', '琳', '颖', '晶', '欣', '慧', '佳', '薇'],
         double: [
-          ['雅', '婷'], ['雅', '洁'], ['雅', '琳'], ['雅', '欣'],
-          ['晓', '燕'], ['晓', '丽'], ['晓', '红'], ['晓', '霞'],
-          ['文', '静'], ['文', '慧'], ['文', '娟'], ['文', '婷'],
-          ['志', '红'], ['志', '华'], ['志', '英'], ['志', '芳'],
-          ['海', '燕'], ['海', '霞'], ['海', '英'], ['海', '丽']
+          ['雅', '婷'],
+          ['雅', '洁'],
+          ['雅', '琳'],
+          ['雅', '欣'],
+          ['晓', '燕'],
+          ['晓', '丽'],
+          ['晓', '红'],
+          ['晓', '霞'],
+          ['文', '静'],
+          ['文', '慧'],
+          ['文', '娟'],
+          ['文', '婷'],
+          ['志', '红'],
+          ['志', '华'],
+          ['志', '英'],
+          ['志', '芳'],
+          ['海', '燕'],
+          ['海', '霞'],
+          ['海', '英'],
+          ['海', '丽'],
         ],
-        weight: 35
+        weight: 35,
       },
       modern: {
-        single: ['婷', '洁', '莉', '敏', '艳', '娜', '倩', '雪', '琳', '颖', '晶', '欣', '慧', '佳', '薇', '涵', '萱', '琪', '瑶', '诗'],
-        double: [
-          ['雨', '婷'], ['雨', '欣'], ['雨', '涵'], ['雨', '萱'],
-          ['思', '琪'], ['思', '涵'], ['思', '雨'], ['思', '颖'],
-          ['梦', '琪'], ['梦', '瑶'], ['梦', '涵'], ['梦', '萱'],
-          ['诗', '涵'], ['诗', '琪'], ['诗', '雨'], ['诗', '婷'],
-          ['欣', '怡'], ['欣', '悦'], ['欣', '然'], ['欣', '妍']
+        single: [
+          '婷',
+          '洁',
+          '莉',
+          '敏',
+          '艳',
+          '娜',
+          '倩',
+          '雪',
+          '琳',
+          '颖',
+          '晶',
+          '欣',
+          '慧',
+          '佳',
+          '薇',
+          '涵',
+          '萱',
+          '琪',
+          '瑶',
+          '诗',
         ],
-        weight: 30
+        double: [
+          ['雨', '婷'],
+          ['雨', '欣'],
+          ['雨', '涵'],
+          ['雨', '萱'],
+          ['思', '琪'],
+          ['思', '涵'],
+          ['思', '雨'],
+          ['思', '颖'],
+          ['梦', '琪'],
+          ['梦', '瑶'],
+          ['梦', '涵'],
+          ['梦', '萱'],
+          ['诗', '涵'],
+          ['诗', '琪'],
+          ['诗', '雨'],
+          ['诗', '婷'],
+          ['欣', '怡'],
+          ['欣', '悦'],
+          ['欣', '然'],
+          ['欣', '妍'],
+        ],
+        weight: 30,
       },
       contemporary: {
         single: ['涵', '萱', '琪', '瑶', '诗', '语', '馨', '妍', '彤', '悦', '然', '怡', '可', '依', '梓'],
         double: [
-          ['梓', '涵'], ['梓', '萱'], ['梓', '琪'], ['梓', '瑶'],
-          ['子', '涵'], ['子', '萱'], ['子', '琪'], ['子', '瑶'],
-          ['雨', '桐'], ['雨', '彤'], ['雨', '馨'], ['雨', '诺'],
-          ['诗', '语'], ['诗', '涵'], ['诗', '雨'], ['诗', '琪'],
-          ['可', '欣'], ['可', '馨'], ['可', '心'], ['可', '儿']
+          ['梓', '涵'],
+          ['梓', '萱'],
+          ['梓', '琪'],
+          ['梓', '瑶'],
+          ['子', '涵'],
+          ['子', '萱'],
+          ['子', '琪'],
+          ['子', '瑶'],
+          ['雨', '桐'],
+          ['雨', '彤'],
+          ['雨', '馨'],
+          ['雨', '诺'],
+          ['诗', '语'],
+          ['诗', '涵'],
+          ['诗', '雨'],
+          ['诗', '琪'],
+          ['可', '欣'],
+          ['可', '馨'],
+          ['可', '心'],
+          ['可', '儿'],
         ],
-        weight: 10
-      }
+        weight: 10,
+      },
     },
-    badNames: ['史珍香', '范统', '杜子腾', '范剑', '朱逸群', '秦寿生', '杜琦燕', '魏生津', '费彦', '殷静', '范婉', '胡丽晶'],
+    badNames: [
+      '史珍香',
+      '范统',
+      '杜子腾',
+      '范剑',
+      '朱逸群',
+      '秦寿生',
+      '杜琦燕',
+      '魏生津',
+      '费彦',
+      '殷静',
+      '范婉',
+      '胡丽晶',
+    ],
     badChars: ['屎', '尿', '粪', '死', '丧', '病', '残', '废', '贱', '奴', '妓', '娼'],
 
     generate(birthYear: number): string {
@@ -235,10 +412,7 @@ if (!DS) {
     selectGivenName(birthYear: number): string {
       const currentYear = new Date().getFullYear();
       const age = currentYear - birthYear;
-      const style =
-        age >= 50 ? 'vintage' :
-        age >= 35 ? 'classic' :
-        age >= 20 ? 'modern' : 'contemporary';
+      const style = age >= 50 ? 'vintage' : age >= 35 ? 'classic' : age >= 20 ? 'modern' : 'contemporary';
       const styleData = this.givenNames[style as keyof typeof this.givenNames];
       const useDouble = Math.random() < 0.6;
       if (useDouble && styleData.double.length > 0) {
@@ -251,49 +425,92 @@ if (!DS) {
     isValidName(name: string): boolean {
       if (this.badNames.includes(name)) return false;
       return !this.badChars.some(char => name.includes(char));
-    }
+    },
   };
 
   // ========== 罪名生成器 ==========
   const CrimeGenerator = {
     characterBookCrimes: [
-      '危险驾驶罪', '盗窃罪', '诈骗罪', '故意伤害罪', '走私毒品罪', '贩卖毒品罪',
-      '运输毒品罪', '制造毒品罪', '交通肇事罪', '寻衅滋事罪', '抢劫罪',
-      '故意杀人罪', '开设赌场罪', '敲诈勒索罪', '贪污罪', '受贿罪',
-      '聚众斗殴罪', '非法拘禁罪', '容留他人吸毒罪', '掩饰隐瞒犯罪所得罪',
-      '帮助信息网络犯罪活动罪', '职务侵占罪'
+      '危险驾驶罪',
+      '盗窃罪',
+      '诈骗罪',
+      '故意伤害罪',
+      '走私毒品罪',
+      '贩卖毒品罪',
+      '运输毒品罪',
+      '制造毒品罪',
+      '交通肇事罪',
+      '寻衅滋事罪',
+      '抢劫罪',
+      '故意杀人罪',
+      '开设赌场罪',
+      '敲诈勒索罪',
+      '贪污罪',
+      '受贿罪',
+      '聚众斗殴罪',
+      '非法拘禁罪',
+      '容留他人吸毒罪',
+      '掩饰隐瞒犯罪所得罪',
+      '帮助信息网络犯罪活动罪',
+      '职务侵占罪',
     ],
     crimes: {
       violent: {
         names: ['故意杀人罪', '故意伤害罪', '抢劫罪', '绑架罪', '非法拘禁罪', '聚众斗殴罪'],
         weight: 12,
-        sentenceRange: [3, 20] as [number, number]
+        sentenceRange: [3, 20] as [number, number],
       },
       property: {
-        names: ['盗窃罪', '诈骗罪', '抢夺罪', '敲诈勒索罪', '职务侵占罪', '挪用资金罪', '贪污罪', '受贿罪', '掩饰隐瞒犯罪所得罪'],
+        names: [
+          '盗窃罪',
+          '诈骗罪',
+          '抢夺罪',
+          '敲诈勒索罪',
+          '职务侵占罪',
+          '挪用资金罪',
+          '贪污罪',
+          '受贿罪',
+          '掩饰隐瞒犯罪所得罪',
+        ],
         weight: 35,
-        sentenceRange: [1, 15] as [number, number]
+        sentenceRange: [1, 15] as [number, number],
       },
       drug: {
-        names: ['贩卖毒品罪', '运输毒品罪', '制造毒品罪', '走私毒品罪', '非法持有毒品罪', '容留他人吸毒罪', '引诱他人吸毒罪'],
+        names: [
+          '贩卖毒品罪',
+          '运输毒品罪',
+          '制造毒品罪',
+          '走私毒品罪',
+          '非法持有毒品罪',
+          '容留他人吸毒罪',
+          '引诱他人吸毒罪',
+        ],
         weight: 20,
-        sentenceRange: [3, 15] as [number, number]
+        sentenceRange: [3, 15] as [number, number],
       },
       economic: {
         names: ['非法吸收公众存款罪', '集资诈骗罪', '合同诈骗罪', '信用卡诈骗罪', '洗钱罪', '虚开发票罪', '逃税罪'],
         weight: 15,
-        sentenceRange: [2, 10] as [number, number]
+        sentenceRange: [2, 10] as [number, number],
       },
       social: {
-        names: ['寻衅滋事罪', '聚众斗殴罪', '开设赌场罪', '组织卖淫罪', '传播淫秽物品罪', '妨害公务罪', '帮助信息网络犯罪活动罪'],
+        names: [
+          '寻衅滋事罪',
+          '聚众斗殴罪',
+          '开设赌场罪',
+          '组织卖淫罪',
+          '传播淫秽物品罪',
+          '妨害公务罪',
+          '帮助信息网络犯罪活动罪',
+        ],
         weight: 13,
-        sentenceRange: [1, 7] as [number, number]
+        sentenceRange: [1, 7] as [number, number],
       },
       other: {
         names: ['交通肇事罪', '危险驾驶罪', '生产销售伪劣产品罪', '非法经营罪', '污染环境罪', '走私罪'],
         weight: 5,
-        sentenceRange: [1, 5] as [number, number]
-      }
+        sentenceRange: [1, 5] as [number, number],
+      },
     },
 
     generate(): { crime: string; sentence: number; category: { sentenceRange: [number, number] } } {
@@ -330,7 +547,7 @@ if (!DS) {
     generateSentence(range: [number, number]): number {
       const [min, max] = range;
       return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    },
   };
 
   // ========== NPC生成器 ==========
@@ -361,7 +578,8 @@ if (!DS) {
       const background = this.generateBackground(age, crimeData);
       const relationship = this.generateRelationship();
 
-      const cellType = typeof stageInfo?.cellType === 'string' ? stageInfo.cellType : (context.cellType as string) || 'transition';
+      const cellType =
+        typeof stageInfo?.cellType === 'string' ? stageInfo.cellType : (context.cellType as string) || 'transition';
       this.adjustByCellType(personality, relationship, cellType);
 
       const npc: NPC = {
@@ -378,7 +596,7 @@ if (!DS) {
         cellType,
         daysInCustody: Math.floor(Math.random() * 365) + 30,
         status: 'active',
-        createdAt: Date.now()
+        createdAt: Date.now(),
       };
       return npc;
     },
@@ -398,9 +616,10 @@ if (!DS) {
       const weights = [45, 50, 55, 60, 65, 70, 75];
       const height = heights[Math.floor(Math.random() * heights.length)];
       const weight = weights[Math.floor(Math.random() * weights.length)];
-      const hairStyles = age > 50
-        ? ['短发', '花白短发', '灰白短发', '稀疏短发']
-        : ['长发', '短发', '马尾', '齐肩发', '波浪卷', '直发', '卷发'];
+      const hairStyles =
+        age > 50
+          ? ['短发', '花白短发', '灰白短发', '稀疏短发']
+          : ['长发', '短发', '马尾', '齐肩发', '波浪卷', '直发', '卷发'];
       const skinTones = ['白皙', '偏白', '自然', '偏黑', '黝黑'];
       const features = ['清秀', '普通', '憔悴', '精致', '沧桑', '姣好', '端庄'];
       return {
@@ -409,7 +628,7 @@ if (!DS) {
         hair: hairStyles[Math.floor(Math.random() * hairStyles.length)],
         eyes: '黑色',
         skin: skinTones[Math.floor(Math.random() * skinTones.length)],
-        features: features[Math.floor(Math.random() * features.length)]
+        features: features[Math.floor(Math.random() * features.length)],
       };
     },
 
@@ -420,7 +639,7 @@ if (!DS) {
         intelligence: Math.floor(Math.random() * 100),
         emotional: Math.floor(Math.random() * 100),
         dominance: Math.floor(Math.random() * 100),
-        kindness: Math.floor(Math.random() * 100)
+        kindness: Math.floor(Math.random() * 100),
       };
       const tags: string[] = [];
       if (traits.aggression > 70) tags.push('暴力倾向');
@@ -436,7 +655,10 @@ if (!DS) {
       return { traits, tags };
     },
 
-    generateBackground(age: number, _crimeData: { crime: string; sentence: number; category: { sentenceRange: [number, number] } }): NPCBackground {
+    generateBackground(
+      age: number,
+      _crimeData: { crime: string; sentence: number; category: { sentenceRange: [number, number] } },
+    ): NPCBackground {
       const educations = ['小学', '初中', '高中', '中专', '大专', '本科', '研究生'];
       const educationWeights = [10, 25, 30, 15, 10, 8, 2];
       const educationIndex = this.weightedRandom(educations.length, educationWeights);
@@ -451,14 +673,32 @@ if (!DS) {
         hasChildren,
         childrenCount,
         hometown: this.generateHometown(),
-        priorConvictions: Math.random() < 0.3 ? Math.floor(Math.random() * 3) + 1 : 0
+        priorConvictions: Math.random() < 0.3 ? Math.floor(Math.random() * 3) + 1 : 0,
       };
     },
 
     generateHometown(): string {
       const provinces = [
-        '河南', '山东', '四川', '广东', '江苏', '河北', '湖南', '安徽', '湖北', '浙江',
-        '广西', '云南', '江西', '辽宁', '黑龙江', '陕西', '福建', '山西', '贵州', '重庆'
+        '河南',
+        '山东',
+        '四川',
+        '广东',
+        '江苏',
+        '河北',
+        '湖南',
+        '安徽',
+        '湖北',
+        '浙江',
+        '广西',
+        '云南',
+        '江西',
+        '辽宁',
+        '黑龙江',
+        '陕西',
+        '福建',
+        '山西',
+        '贵州',
+        '重庆',
       ];
       return provinces[Math.floor(Math.random() * provinces.length)];
     },
@@ -469,7 +709,7 @@ if (!DS) {
         faction: null,
         allies: [],
         enemies: [],
-        influence: Math.floor(Math.random() * 100)
+        influence: Math.floor(Math.random() * 100),
       };
     },
 
@@ -537,9 +777,9 @@ if (!DS) {
             intelligence: Math.floor(Math.random() * 30) + 50,
             emotional: Math.floor(Math.random() * 40) + 20,
             dominance: Math.floor(Math.random() * 30) + 60,
-            kindness: Math.floor(Math.random() * 60) + 20
+            kindness: Math.floor(Math.random() * 60) + 20,
           },
-          tags: ['严肃', '专业']
+          tags: ['严肃', '专业'],
         },
         attitude: Math.floor(Math.random() * 40) + 30,
         crime: '——',
@@ -549,7 +789,7 @@ if (!DS) {
         cellType: 'staff',
         daysInCustody: 0,
         status: 'active',
-        createdAt: Date.now()
+        createdAt: Date.now(),
       };
       return npc;
     },
@@ -577,9 +817,9 @@ if (!DS) {
             intelligence: Math.floor(Math.random() * 20) + 70,
             emotional: Math.floor(Math.random() * 40) + 30,
             dominance: Math.floor(Math.random() * 40) + 40,
-            kindness: Math.floor(Math.random() * 40) + 40
+            kindness: Math.floor(Math.random() * 40) + 40,
           },
-          tags: ['专业', '理性']
+          tags: ['专业', '理性'],
         },
         experience: Math.floor(Math.random() * 20) + 5,
         successRate: Math.floor(Math.random() * 40) + 40,
@@ -590,7 +830,7 @@ if (!DS) {
         cellType: 'external',
         daysInCustody: 0,
         status: 'active',
-        createdAt: Date.now()
+        createdAt: Date.now(),
       };
       return npc;
     },
@@ -641,9 +881,9 @@ if (!DS) {
             intelligence: Math.floor(Math.random() * 60) + 30,
             emotional: Math.floor(Math.random() * 50) + 40,
             dominance: Math.floor(Math.random() * 50) + 20,
-            kindness: Math.floor(Math.random() * 30) + 60
+            kindness: Math.floor(Math.random() * 30) + 60,
           },
-          tags: ['关心', '担忧']
+          tags: ['关心', '担忧'],
         },
         supportLevel: Math.floor(Math.random() * 40) + 60,
         crime: '——',
@@ -653,7 +893,7 @@ if (!DS) {
         cellType: 'external',
         daysInCustody: 0,
         status: 'active',
-        createdAt: Date.now()
+        createdAt: Date.now(),
       };
       return npc;
     },
@@ -679,9 +919,9 @@ if (!DS) {
             intelligence: Math.floor(Math.random() * 20) + 70,
             emotional: Math.floor(Math.random() * 40) + 30,
             dominance: Math.floor(Math.random() * 40) + 40,
-            kindness: Math.floor(Math.random() * 30) + 60
+            kindness: Math.floor(Math.random() * 30) + 60,
           },
-          tags: ['专业', '冷静']
+          tags: ['专业', '冷静'],
         },
         experience: Math.floor(Math.random() * 25) + 5,
         crime: '——',
@@ -691,7 +931,7 @@ if (!DS) {
         cellType: 'external',
         daysInCustody: 0,
         status: 'active',
-        createdAt: Date.now()
+        createdAt: Date.now(),
       };
       return npc;
     },
@@ -732,7 +972,7 @@ if (!DS) {
           npcId,
           npcName: npc.name,
           value: npc.relationship.toProtagonist,
-          delta
+          delta,
         });
       }
     },
@@ -740,7 +980,7 @@ if (!DS) {
     exportData() {
       return {
         database: this.npcDatabase,
-        currentCell: this.currentCellNPCs
+        currentCell: this.currentCellNPCs,
       };
     },
 
@@ -761,7 +1001,7 @@ if (!DS) {
       this.npcDatabase = [];
       this.currentCellNPCs = [];
       console.info('[NPC系统] 数据已清空');
-    }
+    },
   };
 
   // ========== 注册到核心系统 ==========
@@ -780,9 +1020,10 @@ if (!DS) {
 
   // ========== 监听事件系统 ==========
   DS.events.on('event_triggered', (event?: unknown) => {
-    const eventId = typeof (event as EventTriggeredPayload | undefined)?.id === 'string'
-      ? (event as EventTriggeredPayload).id
-      : undefined;
+    const eventId =
+      typeof (event as EventTriggeredPayload | undefined)?.id === 'string'
+        ? (event as EventTriggeredPayload).id
+        : undefined;
     if (!eventId) return;
     if (['interrogation', 'lawyer_visit', 'family_visit', 'medical_visit', 'scene_identification'].includes(eventId)) {
       const npc = NPCGenerator.generateForEvent(eventId);

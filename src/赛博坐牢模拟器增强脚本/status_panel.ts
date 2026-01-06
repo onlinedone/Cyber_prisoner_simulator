@@ -1549,14 +1549,16 @@ function getDiagnostics(): {
 }
 
 // 扩展 StatusPanel 对象
-(StatusPanel as StatusPanelImpl & {
-  debug?: {
-    scanAllComments: () => unknown[];
-    getDiagnostics: () => ReturnType<typeof getDiagnostics>;
-    parseCommentNode: (node: Node) => void;
-    checkForStatusUpdate: (element: Element) => void;
-  };
-}).debug = {
+(
+  StatusPanel as StatusPanelImpl & {
+    debug?: {
+      scanAllComments: () => unknown[];
+      getDiagnostics: () => ReturnType<typeof getDiagnostics>;
+      parseCommentNode: (node: Node) => void;
+      checkForStatusUpdate: (element: Element) => void;
+    };
+  }
+).debug = {
   scanAllComments,
   getDiagnostics,
   parseCommentNode,
@@ -1575,13 +1577,15 @@ $(() => {
   }
 
   // 向核心系统暴露接口
-  (DS as DetentionSystem & {
-    getState?: () => ProtagonistState;
-    modifyValue?: (key: string, delta: number, reason?: string) => void;
-    getTrendAnalysis?: () => TrendAnalysis;
-    getCurrentStage?: () => { days: number; stage: string; cellType: string };
-    parseStatusUpdate?: (jsonStr: string) => boolean;
-  }).getState = () => StatusPanel.getState();
+  (
+    DS as DetentionSystem & {
+      getState?: () => ProtagonistState;
+      modifyValue?: (key: string, delta: number, reason?: string) => void;
+      getTrendAnalysis?: () => TrendAnalysis;
+      getCurrentStage?: () => { days: number; stage: string; cellType: string };
+      parseStatusUpdate?: (jsonStr: string) => boolean;
+    }
+  ).getState = () => StatusPanel.getState();
   (DS as DetentionSystem & { modifyValue?: (key: string, delta: number, reason?: string) => void }).modifyValue = (
     key: string,
     delta: number,
@@ -1589,11 +1593,14 @@ $(() => {
   ) => StatusPanel.modifyValue(key, delta, reason);
   (DS as DetentionSystem & { getTrendAnalysis?: () => TrendAnalysis }).getTrendAnalysis = () =>
     StatusPanel.getTrendAnalysis();
-  (DS as DetentionSystem & {
-    getCurrentStage?: () => { days: number; stage: string; cellType: string };
-  }).getCurrentStage = () => StatusPanel.getCurrentStage();
-  (DS as DetentionSystem & { parseStatusUpdate?: (jsonStr: string) => boolean }).parseStatusUpdate = (jsonStr: string) =>
-    StatusPanel.parseStatusUpdate(jsonStr);
+  (
+    DS as DetentionSystem & {
+      getCurrentStage?: () => { days: number; stage: string; cellType: string };
+    }
+  ).getCurrentStage = () => StatusPanel.getCurrentStage();
+  (DS as DetentionSystem & { parseStatusUpdate?: (jsonStr: string) => boolean }).parseStatusUpdate = (
+    jsonStr: string,
+  ) => StatusPanel.parseStatusUpdate(jsonStr);
 
   // 注册模块
   DS.registerModule('statusPanel', StatusPanel);
