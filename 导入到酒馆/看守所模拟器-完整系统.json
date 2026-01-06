@@ -1,7 +1,7 @@
 {
   "id": "detention-system-complete",
   "name": "看守所模拟器-完整系统",
-  "content": "import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@d687361541d7470e3a0fd56786ab5986cb8b827d/dist/赛博坐牢模拟器增强脚本/index.js'",
+  "content": "import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@7086fd38bad14fdc74d18db3bc31f298e0d83b4e/dist/赛博坐牢模拟器增强脚本/index.js'",
   "info": "完整系统：核心系统、状态栏、事件系统、NPC系统、知识库加载器\n\n功能说明：\n- 核心系统：提供基础功能和模块管理\n- 状态栏系统：状态追踪、HTML注释解析、缓慢变化机制\n- 事件系统：按日推进、法律流程、随机事件\n- NPC系统：NPC生成和管理\n- 知识库加载器：动态加载知识库\n\n版本：v1.0.0\n\n备选链接（如果版本标签无法访问）：\n- 提交哈希：@e5c84654a91e1c7793ff221e3b21d92a0a60b317\n- GitHub Raw：https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/main/dist/赛博坐牢模拟器增强脚本/index.js",
   "buttons": []
 }
