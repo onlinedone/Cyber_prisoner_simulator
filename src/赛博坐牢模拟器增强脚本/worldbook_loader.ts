@@ -394,7 +394,6 @@ $(() => {
     async _loadWorldbookInternal(bookName: string, config: WorldbookConfig): Promise<LoadedWorldbook> {
       console.info(`[知识库加载器] 开始加载: ${config.displayName} (${bookName})`);
 
-
       try {
         // 获取所有世界书名称
         const allWorldbookNames = getWorldbookNames();

@@ -170,8 +170,26 @@ function normalizeError(error: unknown): Error {
 }
 
 function bootstrapDetentionSystem(): DetentionSystem {
+  // #region agent log
+  console.log('[DEBUG-HYP-D] core.ts:172 - bootstrapDetentionSystem 函数开始执行', {
+    timestamp: Date.now(),
+    location: 'core.ts:172',
+    hypothesisId: 'D',
+  });
+  // #endregion
+
   const events = new EventEmitter();
   const CacheManager = createCacheManager();
+
+  // #region agent log
+  console.log('[DEBUG-HYP-D] core.ts:175 - EventEmitter 和 CacheManager 已创建', {
+    timestamp: Date.now(),
+    eventsType: typeof events,
+    cacheManagerType: typeof CacheManager,
+    location: 'core.ts:175',
+    hypothesisId: 'D',
+  });
+  // #endregion
 
   const system: DetentionSystem = {
     version: '3.2.0',
@@ -344,6 +362,20 @@ function bootstrapDetentionSystem(): DetentionSystem {
     },
   };
 
+  // #region agent log
+  console.log('[DEBUG-HYP-D] core.ts:365 - bootstrapDetentionSystem 准备返回 system 对象', {
+    timestamp: Date.now(),
+    systemType: typeof system,
+    systemExists: !!system,
+    hasVersion: 'version' in system,
+    hasModules: 'modules' in system,
+    hasEvents: 'events' in system,
+    systemVersion: system.version,
+    location: 'core.ts:365',
+    hypothesisId: 'D',
+  });
+  // #endregion
+
   return system;
 }
 
@@ -360,22 +392,111 @@ function stopCacheCleanup() {
   }
 }
 
+// #region agent log
+console.log('[DEBUG-HYP-B] core.ts:363 - 准备创建核心系统', {
+  timestamp: Date.now(),
+  windowExists: typeof window !== 'undefined',
+  windowDetentionSystemExists: typeof window.detentionSystem !== 'undefined',
+  location: 'core.ts:363',
+  hypothesisId: 'B',
+});
+// #endregion
+
 // 立即创建核心系统，让其他模块可以立即访问
 if (!window.detentionSystem) {
-  window.detentionSystem = bootstrapDetentionSystem();
-  console.info('[核心系统] 核心系统对象已创建（脚本加载时）');
-  console.info('[核心系统] window.detentionSystem 类型:', typeof window.detentionSystem);
-  console.info('[核心系统] window.detentionSystem 值:', window.detentionSystem);
+  // #region agent log
+  console.log('[DEBUG-HYP-D] core.ts:365 - 开始调用 bootstrapDetentionSystem', {
+    timestamp: Date.now(),
+    location: 'core.ts:365',
+    hypothesisId: 'D',
+  });
+  // #endregion
+
+  try {
+    window.detentionSystem = bootstrapDetentionSystem();
+
+    // #region agent log
+    console.log('[DEBUG-HYP-D] core.ts:365 - bootstrapDetentionSystem 执行完成', {
+      timestamp: Date.now(),
+      resultType: typeof window.detentionSystem,
+      resultExists: !!window.detentionSystem,
+      hasVersion: !!(window.detentionSystem && 'version' in window.detentionSystem),
+      location: 'core.ts:365',
+      hypothesisId: 'D',
+    });
+    // #endregion
+
+    console.info('[核心系统] 核心系统对象已创建（脚本加载时）');
+    console.info('[核心系统] window.detentionSystem 类型:', typeof window.detentionSystem);
+    console.info('[核心系统] window.detentionSystem 值:', window.detentionSystem);
+  } catch (error) {
+    // #region agent log
+    console.error('[DEBUG-HYP-D] core.ts:365 - bootstrapDetentionSystem 执行失败', {
+      timestamp: Date.now(),
+      error: error instanceof Error ? error.message : String(error),
+      errorStack: error instanceof Error ? error.stack : undefined,
+      location: 'core.ts:365',
+      hypothesisId: 'D',
+    });
+    // #endregion
+    throw error;
+  }
+} else {
+  // #region agent log
+  console.log('[DEBUG-HYP-E] core.ts:364 - window.detentionSystem 已存在，跳过创建', {
+    timestamp: Date.now(),
+    existingType: typeof window.detentionSystem,
+    location: 'core.ts:364',
+    hypothesisId: 'E',
+  });
+  // #endregion
 }
 
+// #region agent log
+console.log('[DEBUG-HYP-F] core.ts:371 - 检查 jQuery 是否可用', {
+  timestamp: Date.now(),
+  jQueryExists: typeof $ !== 'undefined',
+  jQueryType: typeof $,
+  location: 'core.ts:371',
+  hypothesisId: 'F',
+});
+// #endregion
+
 $(() => {
+  // #region agent log
+  console.log('[DEBUG-HYP-F] core.ts:371 - jQuery ready 回调执行', {
+    timestamp: Date.now(),
+    windowDetentionSystemExists: typeof window.detentionSystem !== 'undefined',
+    location: 'core.ts:371',
+    hypothesisId: 'F',
+  });
+  // #endregion
+
   console.info('[核心系统] 酒馆页面已加载（jQuery ready）');
 
   // 确保核心系统存在（双重保险）
   if (!window.detentionSystem) {
+    // #region agent log
+    console.warn('[DEBUG-HYP-E] core.ts:375 - 在 jQuery ready 时未找到核心系统，重新创建', {
+      timestamp: Date.now(),
+      location: 'core.ts:375',
+      hypothesisId: 'E',
+    });
+    // #endregion
+
     console.warn('[核心系统] 警告：在 jQuery ready 时未找到核心系统，重新创建');
     window.detentionSystem = bootstrapDetentionSystem();
     console.info('[核心系统] 核心系统对象已创建（jQuery ready 时）');
+  } else {
+    // #region agent log
+    console.log('[DEBUG-HYP-E] core.ts:375 - jQuery ready 时核心系统已存在', {
+      timestamp: Date.now(),
+      systemType: typeof window.detentionSystem,
+      systemVersion: window.detentionSystem?.version,
+      location: 'core.ts:375',
+      hypothesisId: 'E',
+    });
+    // #endregion
   }
 
   const system = window.detentionSystem!;
