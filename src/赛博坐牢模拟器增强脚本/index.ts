@@ -68,7 +68,8 @@ fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
     data: {
       timestamp: Date.now(),
       windowDetentionSystem: typeof window !== 'undefined' && typeof (window as any).detentionSystem !== 'undefined',
-      windowDetentionSystemType: typeof window !== 'undefined' ? typeof (window as any).detentionSystem : 'window undefined',
+      windowDetentionSystemType:
+        typeof window !== 'undefined' ? typeof (window as any).detentionSystem : 'window undefined',
     },
     timestamp: Date.now(),
     sessionId: 'debug-session',
