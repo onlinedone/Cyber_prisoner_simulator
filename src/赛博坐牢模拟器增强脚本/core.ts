@@ -3,24 +3,7 @@ export {};
 type JQueryStaticLike = typeof globalThis extends { $: infer T } ? T : (selector: any) => any;
 declare const $: JQueryStaticLike;
 
-// #region agent log
-fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    location: 'core.ts:9',
-    message: 'core.ts 开始执行',
-    data: {
-      timestamp: Date.now(),
-      windowDetentionSystem: typeof window !== 'undefined' && typeof (window as any).detentionSystem !== 'undefined',
-    },
-    timestamp: Date.now(),
-    sessionId: 'debug-session',
-    runId: 'run1',
-    hypothesisId: 'A',
-  }),
-}).catch(() => {});
-// #endregion
+// 调试日志已移除（避免 CORS 错误）
 
 console.info('[核心系统] 开始加载...');
 
@@ -404,10 +387,14 @@ $(() => {
 
   ensureCacheCleanup(system);
 
+  console.info('[核心系统] 准备在 1 秒后初始化...');
   setTimeout(() => {
+    console.info('[核心系统] setTimeout 回调执行，开始初始化...');
     try {
       system.initialize();
+      console.info('[核心系统] initialize() 调用完成');
     } catch (error) {
+      console.error('[核心系统] initialize() 调用出错:', error);
       system.handleError(error, 'initialize');
     }
   }, 1000);

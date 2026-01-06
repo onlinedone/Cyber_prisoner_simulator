@@ -152,61 +152,9 @@ interface EventSystemImpl {
 
 console.info('[事件系统] 开始加载...');
 
-// #region agent log
-fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    location: 'event_system.ts:151',
-    message: '事件系统开始加载',
-    data: { hasDetentionSystem: !!window.detentionSystem, detentionSystemType: typeof window.detentionSystem },
-    timestamp: Date.now(),
-    sessionId: 'debug-session',
-    runId: 'run1',
-    hypothesisId: 'A',
-  }),
-}).catch(() => {});
-// #endregion
-
 const DS = window.detentionSystem as (DetentionSystem & EventSystemExports) | undefined;
 if (!DS) {
   console.error('[事件系统] 核心系统未加载');
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      location: 'event_system.ts:156',
-      message: '核心系统未加载错误',
-      data: { windowKeys: Object.keys(window).filter(k => k.includes('detention') || k.includes('Detention')) },
-      timestamp: Date.now(),
-      sessionId: 'debug-session',
-      runId: 'run1',
-      hypothesisId: 'A',
-    }),
-  }).catch(() => {});
-  // #endregion
-} else {
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      location: 'event_system.ts:160',
-      message: '核心系统已找到',
-      data: {
-        version: DS.version,
-        initialized: DS.initialized,
-        hasEvents: !!DS.events,
-        moduleCount: Object.keys(DS.modules || {}).length,
-      },
-      timestamp: Date.now(),
-      sessionId: 'debug-session',
-      runId: 'run1',
-      hypothesisId: 'A',
-    }),
-  }).catch(() => {});
-  // #endregion
   // ---------------- 核心事件系统 ----------------
   const EventSystem: EventSystemImpl = {
     currentDay: 0,
