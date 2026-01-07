@@ -203,9 +203,13 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
 
         return `${is_direct === true ? 'src' : 'webpack'}://${info.namespace}/${resource_path}${is_direct || is_vue_script ? '' : '?' + info.hash}`;
       },
+<<<<<<< HEAD
       filename: script_filepath.dir.includes('赛博坐牢模拟器增强脚本')
         ? 'detention-system.js'
         : `${script_filepath.name}.js`,
+=======
+      filename: `${script_filepath.name}.js`,
+>>>>>>> 124945a90966936241183bf0fa550c6a426a6f17
       path: path.join(
         import.meta.dirname,
         'dist',
