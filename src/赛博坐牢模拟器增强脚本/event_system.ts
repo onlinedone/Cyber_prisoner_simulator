@@ -38,6 +38,14 @@ interface EventSystemExports {
   getEventStatistics?: () => unknown;
   exportTimeline?: () => unknown;
   importTimeline?: (data: unknown) => boolean;
+  advanceRound?: () => {
+    currentRound: number;
+    currentDay: number;
+    daysAdvanced: number;
+    event?: EventRecord;
+    accumulatedEvents: EventRecord[];
+  };
+  setPaceMultiplier?: (multiplier: number) => void;
 }
 
 interface DetentionSystem extends EventSystemExports {
@@ -165,7 +173,7 @@ $(() => {
   const DS = DS_RAW as DetentionSystem & EventSystemExports;
 
   // ---------------- 核心事件系统 ----------------
-  const EventSystem: EventSystemImpl = {
+  const EventSystem: EventSystemImpl & { currentRound: number; paceMultiplier: number } = {
     currentDay: 0,
     lastEventDay: 0,
     eventHistory: [] as EventRecord[],
@@ -186,6 +194,10 @@ $(() => {
     // 案件复杂度
     caseComplexity: 'normal' as 'simple' | 'normal' | 'complex' | 'very_complex',
     complexityMultiplier: 1.0,
+
+    // 回合制系统
+    currentRound: 0,
+    paceMultiplier: 0.5, // 默认半天，即0.5天
 
     // 特殊事件计数器
     eventCounters: {
@@ -1231,6 +1243,43 @@ $(() => {
     },
   };
 
+  // 回合制功能
+  function advanceRound() {
+    EventSystem.currentRound++;
+    const daysToAdvance = EventSystem.paceMultiplier;
+    const result = EventSystem.advanceDay(daysToAdvance);
+    
+    DS.events.emit('roundAdvanced', {
+      round: EventSystem.currentRound,
+      daysAdvanced: daysToAdvance,
+      currentDay: EventSystem.currentDay,
+      result: result,
+    });
+    
+    return {
+      currentRound: EventSystem.currentRound,
+      currentDay: EventSystem.currentDay,
+      daysAdvanced: daysToAdvance,
+      event: result.event,
+      accumulatedEvents: result.accumulatedEvents,
+    };
+  }
+
+  function setPaceMultiplier(multiplier: number) {
+    // 限制在合理范围内
+    if (multiplier < 0.1) multiplier = 0.1;
+    if (multiplier > 10) multiplier = 10;
+    
+    EventSystem.paceMultiplier = multiplier;
+    
+    DS.events.emit('paceMultiplierChanged', {
+      paceMultiplier: EventSystem.paceMultiplier,
+      round: EventSystem.currentRound,
+    });
+    
+    console.info(`[事件系统] 叙事节奏已设置为: ${multiplier} 天/回合`);
+  }
+
   // 向核心暴露接口
   DS.generateRandomEvent = (_context?: unknown) => EventSystem.generateRandomEvent();
   DS.advanceDay = (days?: number) => EventSystem.advanceDay(days);
@@ -1243,6 +1292,10 @@ $(() => {
   DS.getEventStatistics = () => EventSystem.getEventStatistics();
   DS.exportTimeline = () => EventSystem.exportTimeline();
   DS.importTimeline = (data: unknown) => EventSystem.importTimeline(data);
+  
+  // 回合制接口
+  DS.advanceRound = () => advanceRound();
+  DS.setPaceMultiplier = (multiplier: number) => setPaceMultiplier(multiplier);
 
   DS.registerModule('eventSystem', EventSystem);
 
