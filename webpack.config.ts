@@ -130,6 +130,9 @@ function glob_script_files() {
         const newFileHasHtml = fs.existsSync(path.join(import.meta.dirname, file_dirname, 'index.html'));
         const oldFileHasHtml = fs.existsSync(path.join(import.meta.dirname, result_dirname, 'index.html'));
         
+        // Check if the new file is in a 脚本/ subdirectory (should be kept as separate entry)
+        const newFileIsScript = file_dirname.includes(path.sep + '脚本' + path.sep);
+        
         // #region agent log
         try {
           const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
@@ -138,16 +141,16 @@ function glob_script_files() {
             runId: 'webpack-glob',
             hypothesisId: 'B',
             location: 'webpack.config.ts:handle:html-check',
-            message: 'Checking HTML files',
-            data: { file, result, newFileHasHtml, oldFileHasHtml },
+            message: 'Checking HTML files and script directory',
+            data: { file, result, newFileHasHtml, oldFileHasHtml, newFileIsScript },
             timestamp: Date.now(),
           }) + '\n';
           fs.appendFileSync(logPath, logEntry, 'utf8');
         } catch {}
         // #endregion
 
-        // If new file is a frontend UI (has HTML), keep it; otherwise skip
-        if (newFileHasHtml && !oldFileHasHtml) {
+        // If new file is a frontend UI (has HTML) or is a script in 脚本/ subdirectory, keep it
+        if ((newFileHasHtml && !oldFileHasHtml) || newFileIsScript) {
           // #region agent log
           try {
             const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
@@ -155,15 +158,15 @@ function glob_script_files() {
               sessionId: 'debug-session',
               runId: 'webpack-glob',
               hypothesisId: 'B',
-              location: 'webpack.config.ts:handle:keep-frontend',
-              message: 'Keeping frontend UI file',
-              data: { file, result },
+              location: 'webpack.config.ts:handle:keep-file',
+              message: 'Keeping file (frontend UI or script)',
+              data: { file, result, reason: newFileHasHtml && !oldFileHasHtml ? 'frontend' : 'script' },
               timestamp: Date.now(),
             }) + '\n';
             fs.appendFileSync(logPath, logEntry, 'utf8');
           } catch {}
           // #endregion
-          // Keep the frontend UI file, but also keep the parent script
+          // Keep the file (frontend UI or script), but also keep the parent script
           results.push(file);
           return;
         }
