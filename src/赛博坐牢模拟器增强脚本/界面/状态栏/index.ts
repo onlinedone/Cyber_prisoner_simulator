@@ -109,5 +109,3 @@ $(async () => {
   // 定期同步状态（作为备用方案）
   setInterval(() => {
     syncStatusToStore();
-  }, 2000);
-});

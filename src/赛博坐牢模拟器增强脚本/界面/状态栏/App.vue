@@ -450,6 +450,3 @@ onMounted(() => {
   .info-grid,
   .attire-list {
     grid-template-columns: 1fr;
-  }
-}
-</style>

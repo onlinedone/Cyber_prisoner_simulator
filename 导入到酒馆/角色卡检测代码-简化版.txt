@@ -1,0 +1,83 @@
+// 检测外置脚本状态（支持 iframe 环境）- 简化版
+// 直接替换角色卡中的检测代码
+
+let scriptStatus = "降级模式";
+let statusPanelMode = "builtin";
+let DS = null;
+
+// 辅助函数：在 iframe 中查找脚本
+function findDetentionSystemInIframes() {
+  if (typeof document === 'undefined') return null;
+  
+  const iframes = document.querySelectorAll('iframe');
+  for (let i = 0; i < iframes.length; i++) {
+    const iframe = iframes[i];
+    const iframeName = iframe.name || '';
+    const iframeId = iframe.id || '';
+    
+    // 优先检查脚本相关的 iframe
+    if (
+      iframeName.includes('script') ||
+      iframeName.includes('TH-script') ||
+      iframeName.includes('detention') ||
+      iframeId.includes('script') ||
+      iframeId.includes('TH-script') ||
+      iframeId.includes('detention')
+    ) {
+      try {
+        const iframeWindow = iframe.contentWindow;
+        if (iframeWindow && iframeWindow.detentionSystem) {
+          if (iframeWindow.detentionSystem.ping && iframeWindow.detentionSystem.ping()) {
+            return iframeWindow.detentionSystem;
+          }
+        }
+      } catch (e) {
+        // 跨域，跳过
+      }
+    }
+  }
+  
+  // 如果没找到，遍历所有 iframe
+  for (let i = 0; i < iframes.length; i++) {
+    try {
+      const iframeWindow = iframes[i].contentWindow;
+      if (iframeWindow && iframeWindow.detentionSystem) {
+        if (iframeWindow.detentionSystem.ping && iframeWindow.detentionSystem.ping()) {
+          return iframeWindow.detentionSystem;
+        }
+      }
+    } catch (e) {
+      // 跨域，跳过
+    }
+  }
+  
+  return null;
+}
+
+// 检测逻辑
+if (typeof window !== 'undefined') {
+  // 首先检查主窗口
+  if (window.detentionSystem && window.detentionSystem.ping && window.detentionSystem.ping()) {
+    DS = window.detentionSystem;
+    scriptStatus = "外置脚本模式";
+    const statusPanel = window.detentionSystem.getModule("statusPanel");
+    if (statusPanel && typeof statusPanel.getState === "function") {
+      statusPanelMode = "external";
+    }
+  } else {
+    // 在主窗口未找到，尝试在 iframe 中查找
+    DS = findDetentionSystemInIframes();
+    if (DS) {
+      scriptStatus = "外置脚本模式";
+      const statusPanel = DS.getModule("statusPanel");
+      if (statusPanel && typeof statusPanel.getState === "function") {
+        statusPanelMode = "external";
+      }
+      // 将找到的 DS 保存到主窗口，方便后续使用
+      window._detentionSystem = DS;
+      if (!window.detentionSystem) {
+        window.detentionSystem = DS;
+      }
+    }
+  }
+}
