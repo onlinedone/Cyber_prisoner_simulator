@@ -4,7 +4,7 @@
 
 ### 提交哈希
 
-- **最新提交**：`de01d608f1832134a54ac81a16bc13513d07298e`
+- **最新提交**：`0a3b30f1000a5c31f95d3a729275d30969489387`
 
 ## 📦 已打包的文件
 
@@ -18,12 +18,12 @@
 
 **jsdelivr CDN（推荐）**：
 ```javascript
-import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@de01d60/dist/赛博坐牢模拟器增强脚本/detention-system.js'
+import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@0a3b30f/dist/赛博坐牢模拟器增强脚本/detention-system.js'
 ```
 
 **GitHub Raw（备选）**：
 ```javascript
-import 'https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/de01d60/dist/赛博坐牢模拟器增强脚本/detention-system.js'
+import 'https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/0a3b30f/dist/赛博坐牢模拟器增强脚本/detention-system.js'
 ```
 
 ### 2. 状态栏界面（前端界面）
@@ -35,7 +35,7 @@ https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@de01d60/dist/赛
 
 **GitHub Raw（备选）**：
 ```
-https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/de01d60/dist/赛博坐牢模拟器增强脚本/界面/状态栏/index.html
+https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/0a3b30f/dist/赛博坐牢模拟器增强脚本/界面/状态栏/index.html
 ```
 
 ### 3. MVU 变量结构注册脚本
@@ -47,7 +47,7 @@ import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@de01d60/
 
 **GitHub Raw（备选）**：
 ```javascript
-import 'https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/de01d60/dist/赛博坐牢模拟器增强脚本/脚本/变量结构/index.js'
+import 'https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/0a3b30f/dist/赛博坐牢模拟器增强脚本/脚本/变量结构/index.js'
 ```
 
 ## 📋 角色卡 MVU 配置示例
@@ -61,14 +61,14 @@ import 'https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/de
       {
         "id": "detention-system-schema",
         "name": "状态栏变量结构",
-        "content": "import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@de01d60/dist/赛博坐牢模拟器增强脚本/脚本/变量结构/index.js'"
+        "content": "import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@0a3b30f/dist/赛博坐牢模拟器增强脚本/脚本/变量结构/index.js'"
       }
     ],
     "frontends": [
       {
         "id": "detention-system-status-bar",
         "name": "状态栏",
-        "content": "https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@de01d60/dist/赛博坐牢模拟器增强脚本/界面/状态栏/index.html"
+        "content": "https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@0a3b30f/dist/赛博坐牢模拟器增强脚本/界面/状态栏/index.html"
       }
     ]
   }
@@ -78,7 +78,7 @@ import 'https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/de
 ## ⚠️ 注意事项
 
 1. **CDN 缓存**：jsdelivr CDN 可能需要几分钟时间同步 GitHub 上的新文件
-2. **提交哈希**：使用提交哈希（如 `de01d60`）比使用分支名更可靠
+2. **提交哈希**：使用提交哈希（如 `0a3b30f`）比使用分支名更可靠
 3. **变量结构脚本**：已成功打包，文件名为 `index.js`（位于 `脚本/变量结构/` 目录下）
 4. **文件位置**：所有文件都在 `dist/赛博坐牢模拟器增强脚本/` 目录下
 
