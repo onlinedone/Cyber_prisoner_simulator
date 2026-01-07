@@ -377,9 +377,16 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
 
         return `${is_direct === true ? 'src' : 'webpack'}://${info.namespace}/${resource_path}${is_direct || is_vue_script ? '' : '?' + info.hash}`;
       },
-      filename: script_filepath.dir.includes('赛博坐牢模拟器增强脚本')
-        ? 'detention-system.js'
-        : `${script_filepath.name}.js`,
+      filename: (() => {
+        if (script_filepath.dir.includes('赛博坐牢模拟器增强脚本')) {
+          // 如果是脚本子目录，使用 index.js；否则使用 detention-system.js
+          if (script_filepath.dir.includes(path.sep + '脚本' + path.sep)) {
+            return 'index.js';
+          }
+          return 'detention-system.js';
+        }
+        return `${script_filepath.name}.js`;
+      })(),
       path: path.join(
         import.meta.dirname,
         'dist',
