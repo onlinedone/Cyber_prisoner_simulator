@@ -55,6 +55,7 @@ function glob_script_files() {
       file => process.env.CI !== 'true' || !fs.readFileSync(path.join(import.meta.dirname, file)).includes('@no-ci'),
     );
 
+<<<<<<< HEAD
   // #region agent log
   try {
     const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
@@ -188,10 +189,23 @@ function glob_script_files() {
           fs.appendFileSync(logPath, logEntry, 'utf8');
         } catch {}
         // #endregion
+=======
+  const results: string[] = [];
+  const handle = (file: string) => {
+    const file_dirname = path.dirname(file);
+    for (const [index, result] of results.entries()) {
+      const result_dirname = path.dirname(result);
+      const common = common_path(result_dirname, file_dirname);
+      if (common === result_dirname) {
+        return;
+      }
+      if (common === file_dirname) {
+>>>>>>> a17361edcd8bc72f363b2accf0cd15361ec3f8de
         results.splice(index, 1, file);
         return;
       }
     }
+<<<<<<< HEAD
     // #region agent log
     try {
       const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
@@ -227,11 +241,17 @@ function glob_script_files() {
   } catch {}
   // #endregion
 
+=======
+    results.push(file);
+  };
+  files.forEach(handle);
+>>>>>>> a17361edcd8bc72f363b2accf0cd15361ec3f8de
   return results;
 }
 
 const config: Config = {
   port: 6621,
+<<<<<<< HEAD
   entries: (() => {
     const files = glob_script_files();
     const entries = files.map(parse_entry);
@@ -252,6 +272,9 @@ const config: Config = {
     // #endregion
     return entries;
   })(),
+=======
+  entries: glob_script_files().map(parse_entry),
+>>>>>>> a17361edcd8bc72f363b2accf0cd15361ec3f8de
 };
 
 let io: Server;
@@ -377,6 +400,7 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
 
         return `${is_direct === true ? 'src' : 'webpack'}://${info.namespace}/${resource_path}${is_direct || is_vue_script ? '' : '?' + info.hash}`;
       },
+<<<<<<< HEAD
       filename: (() => {
         if (script_filepath.dir.includes('赛博坐牢模拟器增强脚本')) {
           // 如果是脚本子目录，使用 index.js；否则使用 detention-system.js
@@ -387,6 +411,9 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         }
         return `${script_filepath.name}.js`;
       })(),
+=======
+      filename: `${script_filepath.name}.js`,
+>>>>>>> a17361edcd8bc72f363b2accf0cd15361ec3f8de
       path: path.join(
         import.meta.dirname,
         'dist',
