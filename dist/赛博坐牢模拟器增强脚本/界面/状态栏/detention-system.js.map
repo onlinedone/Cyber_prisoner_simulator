@@ -1,0 +1,1 @@
+{"version":3,"file":"detention-system.js","mappings":"AACAA,QAAQC,KAAK","sources":["src://tavern_helper_template/src/赛博坐牢模拟器增强脚本/界面/状态栏/index.ts"],"sourcesContent":["// MVU状态栏界面已禁用，改为使用记忆增强插件，由角色卡读取并显示状态栏\nconsole.info('[状态栏界面] MVU状态栏界面已禁用，使用记忆增强插件，由角色卡显示状态栏');\n\n// 直接返回，不加载MVU状态栏界面\nexport {};\n"],"names":["console","info"],"ignoreList":[],"sourceRoot":""}

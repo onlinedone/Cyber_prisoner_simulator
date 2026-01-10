@@ -1,0 +1,321 @@
+# 每轮回复后必须执行
+
+## 1. 脚本状态检查（支持 iframe 环境 + 模块级检测）
+
+```javascript
+// ⚠️ 重要：此代码仅作为AI参考说明，实际不会在浏览器中执行
+// 外置脚本会自动处理模块检测和状态管理
+
+// 检测外置脚本和记忆增强插件
+let DS = null;
+let 运行模式 = '降级模式(基础功能)';
+const 模块状态 = {
+  core: false,
+  eventSystem: false,
+  npcSystem: false,
+  worldbook: false,
+};
+const 缺失模块列表 = [];
+let 记忆增强插件状态 = false;
+
+if (typeof window !== 'undefined') {
+  // 检测记忆增强插件
+  try {
+    const memoryEnhancement = window.stMemoryEnhancement || window.MemoryEnhancement || window.memoryEnhancement;
+    if (memoryEnhancement && typeof memoryEnhancement.getState === 'function') {
+      记忆增强插件状态 = true;
+    }
+  } catch (error) {
+    // 忽略错误
+  }
+
+  // 检查主窗口
+  if (window.detentionSystem && window.detentionSystem.ping && window.detentionSystem.ping()) {
+    DS = window.detentionSystem;
+  } else if (typeof document !== 'undefined') {
+    // 在iframe中查找
+    const iframes = document.querySelectorAll('iframe');
+    for (let i = 0; i < iframes.length; i++) {
+      try {
+        const iframeWindow = iframes[i].contentWindow;
+        if (
+          iframeWindow &&
+          iframeWindow.detentionSystem &&
+          iframeWindow.detentionSystem.ping &&
+          iframeWindow.detentionSystem.ping()
+        ) {
+          DS = iframeWindow.detentionSystem;
+          if (!window.detentionSystem) {
+            window.detentionSystem = DS;
+          }
+          break;
+        }
+      } catch (e) {
+        // 跨域限制，忽略
+      }
+    }
+  }
+
+  // 检测各个模块
+  if (DS) {
+    模块状态.core = true;
+
+    // 等待模块注册完成（脚本可能是异步加载的）
+    let waitCount = 0;
+    const maxWait = 50; // 最多等待50次，即500ms
+    while (waitCount < maxWait) {
+      const modulesCount = DS && DS.modules ? Object.keys(DS.modules).length : 0;
+      if (modulesCount >= 3) {
+        break;
+      }
+      const start = Date.now();
+      while (Date.now() - start < 10) {
+        // busy-wait 10ms
+      }
+      waitCount++;
+    }
+
+    // 检测事件系统
+    const eventSystem = DS.getModule('eventSystem');
+    if (eventSystem && typeof DS.advanceDay === 'function') {
+      模块状态.eventSystem = true;
+    } else {
+      缺失模块列表.push('事件系统(eventSystem)');
+    }
+
+    // 检测NPC系统
+    const npcSystem = DS.getModule('npcSystem');
+    // ⚠️ 重要：检查 generateProtagonist 或 generateNPC，任一存在即认为NPC系统可用
+    if (npcSystem && (typeof DS.generateProtagonist === 'function' || typeof DS.generateNPC === 'function')) {
+      模块状态.npcSystem = true;
+    } else {
+      缺失模块列表.push('NPC系统(npcSystem)');
+    }
+
+    // 检测知识库加载器
+    const worldbook = DS.getModule('worldbook');
+    if (worldbook && typeof DS.loadWorldbook === 'function') {
+      模块状态.worldbook = true;
+    } else {
+      缺失模块列表.push('知识库加载器(worldbook)');
+    }
+
+    // 判断运行模式
+    const 已加载模块数 = Object.values(模块状态).filter(v => v === true).length;
+    if (已加载模块数 >= 2) {
+      运行模式 = '外置脚本(完整功能)';
+    } else if (已加载模块数 === 1) {
+      运行模式 = '外置脚本(部分功能) - 仅核心系统';
+    } else {
+      运行模式 = '降级模式(基础功能)';
+    }
+  }
+}
+
+// 后续代码使用 DS 变量和模块状态
+// 如果 DS 为 null 或运行模式为降级模式，则使用内置简化功能
+```
+
+## 2. 状态同步（根据模块状态）
+
+```javascript
+// 根据模块状态使用相应功能（简化示例，实际由外置脚本处理）
+if (DS && 运行模式 !== '降级模式(基础功能)') {
+  // 优先从记忆增强插件获取状态
+  let state = null;
+  let 状态来源 = '默认值';
+
+  if (记忆增强插件状态) {
+    try {
+      const memoryEnhancement = window.stMemoryEnhancement || window.MemoryEnhancement || window.memoryEnhancement;
+      const memoryState = memoryEnhancement.getState();
+      if (memoryState && (memoryState.health !== undefined || memoryState.mental !== undefined)) {
+        state = memoryState;
+        状态来源 = '记忆增强插件';
+      }
+    } catch (error) {
+      // 忽略错误
+    }
+  }
+
+  // 如果记忆增强插件不可用，使用默认值
+  if (!state) {
+    state = {
+      health: 70,
+      mental: 65,
+      strength: 50,
+      intelligence: 55,
+    };
+    状态来源 = '默认值';
+  }
+
+  const stageInfo = DS.getCurrentStage?.() || null;
+
+  // 事件系统模块可用时
+  if (模块状态.eventSystem) {
+    const currentDay = DS.getCurrentDay?.() || 0;
+    const eventResult = DS.advanceDay?.(0) || null;
+  }
+
+  // NPC系统模块可用时
+  if (模块状态.npcSystem) {
+    // ⚠️ 重要：正确方式：第一个参数是数量，第二个参数是上下文对象（可选，只能包含 cellType）
+    // ❌ 错误：不支持 { gender: 'female', ageRange: [22, 35], role: 'guard' } 等参数
+    // ✅ 正确：只能使用 { cellType: 'transition' } 或 { cellType: 'pretrial' } 等
+    try {
+      const eventSystemModule = DS.getModule('eventSystem');
+      const cellType = (eventSystemModule && typeof eventSystemModule.getCurrentStageInfo === 'function' && eventSystemModule.getCurrentStageInfo?.()?.cellType) || 'transition';
+      const npcs = DS.generateNPC?.(1, { cellType: cellType }) || [];
+      // 注意：返回的是数组，每个NPC包含 name、age、crime、appearance 等属性
+      if (Array.isArray(npcs) && npcs.length > 0 && npcs[0]) {
+        const npcName = npcs[0].name;
+        const npcAge = npcs[0].age;
+        const npcCrime = npcs[0].crime;
+        const npcAppearance = npcs[0].appearance;
+      }
+    } catch (error) {
+      // 忽略错误，使用降级模式
+    }
+  }
+
+  // 知识库加载器模块可用时
+  if (模块状态.worldbook) {
+    // 示例：加载知识库（实际使用中根据需要调用）
+    // const worldbook = DS.loadWorldbook?.('detention_rules.json') || null;
+  }
+}
+```
+
+## 3. 状态更新输出（完全隐藏）
+
+如有状态变化，必须输出：
+```html
+<!--STATUS_UPDATE:{JSON数据，单行}-->
+```
+
+**注意**：状态更新会通过HTML注释格式输出，记忆增强插件会自动读取，角色卡会读取插件状态并显示。
+
+## 4. DataTable更新（完全隐藏）
+
+- 检查是否满足触发条件
+- 输出格式：
+```html
+<!--TABLE_EDIT:操作1;操作2;操作3-->
+```
+
+## 5. Token监控
+
+```javascript
+if (DS && 模块状态.core) {
+  const budget = DS.checkTokenBudget();
+  显示: `Token使用: ${budget.used}/${budget.total} (${budget.percentage}%)`;
+} else {
+  显示: `Token使用: 未知/40000 (降级模式)`;
+}
+```
+
+## 6. 状态显示（仅在系统提示中）
+
+```
+模块加载状态:
+  核心系统: [✅/❌]
+  事件系统: [✅/❌]
+  NPC系统: [✅/❌]
+  知识库加载器: [✅/❌]
+  记忆增强插件: [✅/❌]
+
+运行模式: [外置脚本(完整功能)/外置脚本(部分功能)/降级模式(基础功能)]
+缺失模块: [如有缺失，列出模块名称，如：事件系统(eventSystem)、NPC系统(npcSystem)]
+状态来源: [记忆增强插件/默认值]
+
+日期信息:
+  当前天数: 第X天
+  在押天数: X天
+  当前阶段: XXX
+  监室类型: XXX
+
+核心状态:
+  健康: X/100
+  精神: X/100
+  力量: X/100
+  智力: X/100
+
+总体情况:
+  [描述主角的精神状态和身体状况、是否有受伤和脏污等。例如："精神状态略显疲惫，眼神中带着不安。身体状况尚可，但手腕因长时间戴手铐而有些红肿。衣服上有些许污渍，头发略显凌乱。"]
+
+衣着和戒具:
+  上衣: [详细描述，如"灰色囚服上衣，材质粗糙，尺码偏大"]
+  下装: [详细描述，如"灰色囚服裤子，腰部是松紧带，没有口袋"]
+  内衣: [详细描述，如"白色棉质内衣，无钢圈"]
+  内裤: [详细描述，如"白色棉质内裤"]
+  袜子: [详细描述，如"白色短袜，有些磨损"]
+  鞋子: [详细描述，如"黑色布鞋，鞋底很薄"]
+  戒具: [详细描述，如"无"或"手铐，金属材质，紧贴手腕"]
+  洁净程度: [描述，如"整洁"、"略有污渍"、"明显脏污"等]
+
+心理状态:
+  当前的想法: [主角当前的内心想法]
+  最大的担忧: [主角最大的担忧]
+
+关键人员好感度:
+  [关键人员姓名]([角色类型]): X/100 ([正面/负面/中立])
+  [关键人员姓名]([角色类型]): X/100 ([正面/负面/中立])
+  ...
+  平均好感度: X.X/100
+
+Token使用: XXXX/100000 (X.X%)
+叙事模式: 详细描写已启用，节奏缓慢
+```
+
+**重要**：
+- 必须显示模块加载状态
+- 如果有缺失模块，必须在"缺失模块"中列出
+- 运行模式必须准确反映当前状态
+- 只有在所有模块均未加载时才显示"降级模式"
+- 必须详细描述衣着和戒具信息，包括上衣、下装、内衣裤、鞋袜和洁净程度
+- 必须包含总体情况描述，说明精神状态、身体状况、是否有受伤和脏污等
+- 必须显示"当前的想法"和"最大的担忧"
+- 必须显示关键人员好感度（只显示6类关键人员：公安刑警、检察官、法官、管教、监区长、律师）
+- 不显示本轮回复中获得的重要信息
+- 不显示事件系统提示接下来发生的事件
+- 不显示其他人员的社交关系变化（只显示关键人员好感度）
+
+## 7. 关键人员好感度更新
+
+### 检查是否需要更新好感度
+在以下事件中，需要根据主角表现更新关键人员好感度：
+
+1. **提审事件**：更新公安刑警好感度
+2. **律师会见**：更新律师好感度
+3. **庭审事件**：更新法官和检察官好感度
+4. **管教管理**：更新管教和监区长好感度
+
+### 更新方式
+1. **AI灵活决定变化幅度**：
+   - 小幅变化（±1~±5）：日常互动、轻微表现
+   - 中幅变化（±6~±10）：重要事件、明显表现
+   - 大幅变化（±11~±20）：关键决策、极端表现
+
+2. **通过TABLE_EDIT更新**：
+   ```html
+   <!--TABLE_EDIT:updateRow(2,行索引,{3:新好感度数值})-->
+   ```
+   其中：
+   - 表格索引2 = "角色与User社交表格"
+   - 列索引3 = "对User好感"列（第4列）
+   - 行索引 = 通过角色名和角色类型查找
+
+3. **隐晦体现变化**：在叙事中通过角色的反应、语气、态度等细节体现好感度变化，不要直接说明数值
+
+## 8. 叙事质量检查
+
+- [ ] 本次回复是否≥300字？
+- [ ] 是否包含详细的环境描写？
+- [ ] 是否包含充分的心理活动？
+- [ ] 叙事节奏是否足够慢？是否详细描写了场景和细节？
+- [ ] 时间推进是否自然合理？（不强制推进固定天数）
+- [ ] 是否避免了简略描写？
+- [ ] 是否显示了模块加载状态？
+- [ ] 是否列出了缺失模块（如有）？
+- [ ] 是否在相关事件中更新了关键人员好感度？
+- [ ] 是否在系统提示中显示了关键人员好感度？

@@ -36,3 +36,11 @@ declare namespace z {
 declare module 'https://testingcf.jsdelivr.net/gh/StageDog/tavern_resource/dist/util/mvu_zod.js' {
   export function registerMvuSchema(schema: z.ZodObject | (() => z.ZodObject)): void;
 }
+
+// 适配酒馆助手 log.js 中的类型问题
+// 确保 console[level] 可以被正确类型推断为函数类型
+declare global {
+  interface Console {
+    [key: string]: ((...args: any[]) => void) | any;
+  }
+}

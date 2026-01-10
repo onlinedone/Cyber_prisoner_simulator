@@ -145,25 +145,30 @@ https://cdn.jsdelivr.net/gh/用户名/仓库名@版本号/文件路径
 
 ### 你的脚本访问地址
 
+**重要**：打包后的文件名为 `detention-system.js`，不是 `index.js`！
+
 #### 方式 1：使用版本标签（推荐）
 
 ```javascript
-// 完整系统（合并版）
-import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛博坐牢模拟器增强脚本/index.js';
+// 主脚本文件
+import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js';
+
+// 状态栏界面（前端界面）
+$('body').load('https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛博坐牢模拟器增强脚本/界面/状态栏/index.html');
 ```
 
 #### 方式 2：使用分支（开发版）
 
 ```javascript
 // 使用 main 分支（最新代码）
-import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@main/dist/赛博坐牢模拟器增强脚本/index.js';
+import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@main/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js';
 ```
 
 #### 方式 3：使用 commit hash（精确版本）
 
 ```javascript
 // 使用具体的 commit hash
-import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@abc123def456/dist/赛博坐牢模拟器增强脚本/index.js';
+import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@abc123def456/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js';
 ```
 
 ---
@@ -180,7 +185,7 @@ import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@abc123de
 {
   "id": "detention-system",
   "name": "看守所模拟器-完整系统",
-  "content": "import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛博坐牢模拟器增强脚本/index.js'",
+  "content": "import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js'",
   "info": "完整系统：核心系统、状态栏、事件系统、NPC系统、知识库加载器",
   "buttons": []
 }
@@ -191,8 +196,10 @@ import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@abc123de
 如果 jsdelivr 不可用，可以使用 GitHub Raw：
 
 ```javascript
-import 'https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/v1.0.0/dist/赛博坐牢模拟器增强脚本/index.js';
+import 'https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/v1.0.0/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js';
 ```
+
+**注意**：GitHub Raw 可能有 MIME 类型问题，不推荐使用。
 
 ---
 
@@ -230,7 +237,7 @@ git push origin v1.0.1
 
 ```javascript
 // 从 v1.0.0 更新到 v1.0.1
-import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.1/dist/赛博坐牢模拟器增强脚本/index.js';
+import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.1/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js';
 ```
 
 ---
@@ -247,9 +254,9 @@ import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.1/d
 - jsdelivr 有缓存机制，更新后可能需要等待几分钟
 - 可以在 URL 后添加 `?v=时间戳` 强制刷新：
 
-  ```javascript
-  import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛博坐牢模拟器增强脚本/index.js?v=' + Date.now();
-  ```
+   ```javascript
+   import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js?v=' + Date.now();
+   ```
 
 ### 3. 版本管理
 
@@ -296,16 +303,17 @@ git push origin v1.0.1
 
 确认以下文件存在：
 
-- ✅ `dist/赛博坐牢模拟器增强脚本/index.js`
-- ✅ `dist/赛博坐牢模拟器增强脚本/index.js.map`
-- ✅ `src/赛博坐牢模拟器增强脚本/` 目录下的所有 `.ts` 文件
+- ✅ `dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js`
+- ✅ `dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js.map`
+- ✅ `dist/赛博坐牢模拟器增强脚本/界面/状态栏/index.html`
+- ✅ `src/赛博坐牢模拟器增强脚本/` 目录下的所有源文件
 
 ### 2. 测试 jsdelivr 链接
 
 在浏览器中访问：
 
 ```
-https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛博坐牢模拟器增强脚本/index.js
+https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js
 ```
 
 应该能看到 JavaScript 代码（可能是压缩后的单行代码）。
@@ -350,10 +358,14 @@ https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@v1.0.0/dist/赛�
 **解决方案**：
 
 - 确认标签已推送：`git push origin v1.0.0`
-- 检查文件路径是否正确
+- 检查文件路径是否正确（注意是 `detention-system.js` 而不是 `index.js`）
 - 确认仓库是公开的（Public）
 
-### Q4: 中文路径问题
+### Q4: 文件名是 detention-system.js 而不是 index.js
+
+这是正常的！根据 webpack 配置，对于"赛博坐牢模拟器增强脚本"项目，输出文件名是 `detention-system.js`。
+
+### Q5: 中文路径问题
 
 **解决方案**：
 

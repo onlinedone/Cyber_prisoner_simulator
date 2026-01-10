@@ -1,0 +1,49 @@
+{
+    "character_book": {
+        "name": "看守所系统v3.5.6-降级模块",
+        "description": "SillyTavern 1.15.0降级模块，外置脚本失效时启用",
+        "scan_depth": 50,
+        "token_budget": 40000,
+        "recursive_scanning": false,
+        "extensions": {
+            "version_info": {
+                "sillytavern": "1.15.0",
+                "release_hash": "ce71ca509",
+                "helper": "4.3.16",
+                "card_version": "3.5.6"
+            }
+        },
+        "entries": [
+            {
+                "keys": [
+                    "系统状态",
+                    "脚本检测",
+                    "运行模式"
+                ],
+                "content": "【系统状态监控 v3.5.6】\n\n## 外置脚本架构\n\n### 五大核心脚本\n1. core.js - 核心系统",
+                "enabled": true,
+                "insertion_order": 100,
+                "case_sensitive": false,
+                "name": "系统状态",
+                "priority": 100,
+                "constant": true,
+                "position": "after_char"
+            },
+            {
+                "keys": [
+                    "状态系统",
+                    "状态追踪",
+                    "健康精神"
+                ],
+                "content": "【状态系统说明 v3.5.6】\n\n## 核心状态值\n\n### 健康值 (0-100)",
+                "enabled": true,
+                "insertion_order": 95,
+                "case_sensitive": false,
+                "name": "状态系统",
+                "priority": 95,
+                "constant": false,
+                "position": "after_char"
+            }
+        ]
+    }
+}

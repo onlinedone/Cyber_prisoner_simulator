@@ -1,12 +1,12 @@
 /**
  * 看守所模拟器增强脚本 - 测试脚本
  * 在浏览器 F12 控制台中运行此脚本来测试系统是否正常工作
- * 
+ *
  * 使用方法：
  * 1. 打开浏览器 F12 开发者工具
  * 2. 切换到 Console（控制台）标签
  * 3. 复制下面的代码并粘贴到控制台，按回车执行
- * 
+ *
  * 或者：
  * 1. 在控制台中输入：testDetentionSystem()
  * 2. 如果脚本已加载，会自动运行测试
@@ -16,12 +16,12 @@
   console.log('═══════════════════════════════════════════════════');
   console.log('🔍 开始测试看守所模拟器增强脚本');
   console.log('═══════════════════════════════════════════════════');
-  
+
   const results = {
     passed: 0,
     failed: 0,
     warnings: 0,
-    tests: []
+    tests: [],
   };
 
   function addTest(name, passed, message, isWarning = false) {
@@ -38,39 +38,98 @@
     }
   }
 
+  // 查找 detentionSystem（可能在主窗口或 iframe 中）
+  let DS = null;
+  let DSLocation = null;
+
+  // 首先检查主窗口
+  if (typeof window.detentionSystem !== 'undefined') {
+    DS = window.detentionSystem;
+    DSLocation = '主窗口';
+  } else {
+    // 尝试在所有 iframe 中查找
+    console.log('   在主窗口未找到，正在搜索 iframe...');
+    const iframes = document.querySelectorAll('iframe');
+    console.log(`   找到 ${iframes.length} 个 iframe`);
+
+    // 首先尝试通过 name 属性查找脚本 iframe（脚本 iframe 的 name 通常包含 "script" 或 "TH-script"）
+    for (let i = 0; i < iframes.length; i++) {
+      const iframe = iframes[i];
+      const iframeName = iframe.name || '';
+      const iframeId = iframe.id || '';
+
+      // 检查是否是脚本 iframe
+      if (
+        iframeName.includes('script') ||
+        iframeName.includes('TH-script') ||
+        iframeId.includes('script') ||
+        iframeId.includes('TH-script')
+      ) {
+        try {
+          const iframeWindow = iframe.contentWindow;
+          if (iframeWindow && typeof iframeWindow.detentionSystem !== 'undefined') {
+            DS = iframeWindow.detentionSystem;
+            DSLocation = `脚本 iframe[${i}] (name: ${iframeName || '无name'}, id: ${iframeId || '无id'})`;
+            console.log(`   ✅ 在 ${DSLocation} 中找到核心系统`);
+            break;
+          }
+        } catch (e) {
+          console.log(`   ⚠️  脚本 iframe[${i}] 无法访问: ${e.message}`);
+        }
+      }
+    }
+
+    // 如果还没找到，遍历所有 iframe
+    if (!DS) {
+      for (let i = 0; i < iframes.length; i++) {
+        try {
+          const iframe = iframes[i];
+          const iframeWindow = iframe.contentWindow;
+          if (iframeWindow && typeof iframeWindow.detentionSystem !== 'undefined') {
+            DS = iframeWindow.detentionSystem;
+            DSLocation = `iframe[${i}] (id: ${iframe.id || '无id'}, name: ${iframe.name || '无name'})`;
+            console.log(`   ✅ 在 ${DSLocation} 中找到核心系统`);
+            break;
+          }
+        } catch (e) {
+          // 跨域 iframe 无法访问，跳过
+          console.log(`   ⚠️  iframe[${i}] 无法访问（可能是跨域）: ${e.message}`);
+        }
+      }
+    }
+  }
+
   // 测试 1: 检查 window.detentionSystem 是否存在
   console.log('\n📋 测试 1: 检查核心系统');
-  if (typeof window.detentionSystem !== 'undefined') {
-    addTest('核心系统存在', true, 'window.detentionSystem 已创建');
-    
-    const DS = window.detentionSystem;
-    
+  if (DS) {
+    addTest('核心系统存在', true, `window.detentionSystem 已创建 (位置: ${DSLocation})`);
+
     // 测试 2: 检查核心系统版本
     if (DS.version) {
       addTest('核心系统版本', true, `版本: ${DS.version}`);
     } else {
       addTest('核心系统版本', false, '版本信息缺失');
     }
-    
+
     // 测试 3: 检查初始化状态
     if (DS.initialized !== undefined) {
       addTest('初始化状态', true, `已初始化: ${DS.initialized}`);
     } else {
       addTest('初始化状态', false, '初始化状态缺失');
     }
-    
+
     // 测试 4: 检查事件系统
     if (DS.events) {
       addTest('事件系统', true, '事件系统已加载');
     } else {
       addTest('事件系统', false, '事件系统缺失');
     }
-    
+
     // 测试 5: 检查模块注册
     if (DS.modules && typeof DS.modules === 'object') {
       const moduleCount = Object.keys(DS.modules).length;
       addTest('模块注册', true, `已注册 ${moduleCount} 个模块`);
-      
+
       // 列出所有模块
       if (moduleCount > 0) {
         console.log('   已注册的模块:');
@@ -81,7 +140,7 @@
     } else {
       addTest('模块注册', false, '模块系统异常');
     }
-    
+
     // 测试 6: 检查核心方法
     console.log('\n📋 测试 2: 检查核心方法');
     const coreMethods = ['ping', 'registerModule', 'getModule', 'handleError'];
@@ -92,7 +151,7 @@
         addTest(`核心方法: ${method}`, false, '方法缺失');
       }
     });
-    
+
     // 测试 7: 测试 ping 方法
     try {
       const pingResult = DS.ping();
@@ -104,13 +163,13 @@
     } catch (error) {
       addTest('ping 方法', false, `ping 执行出错: ${error.message}`);
     }
-    
+
     // 测试 8: 检查事件系统模块
     console.log('\n📋 测试 3: 检查事件系统模块');
     const eventSystem = DS.getModule('eventSystem');
     if (eventSystem) {
       addTest('事件系统模块', true, '事件系统模块已注册');
-      
+
       // 检查事件系统方法
       const eventMethods = ['advanceDay', 'getCurrentStage', 'generateRandomEvent'];
       eventMethods.forEach(method => {
@@ -123,13 +182,13 @@
     } else {
       addTest('事件系统模块', false, '事件系统模块未注册', true);
     }
-    
+
     // 测试 9: 检查状态栏模块
     console.log('\n📋 测试 4: 检查状态栏模块');
     const statusPanel = DS.getModule('statusPanel');
     if (statusPanel) {
       addTest('状态栏模块', true, '状态栏模块已注册');
-      
+
       if (typeof DS.getState === 'function') {
         try {
           const state = DS.getState();
@@ -143,13 +202,13 @@
     } else {
       addTest('状态栏模块', false, '状态栏模块未注册', true);
     }
-    
+
     // 测试 10: 检查 NPC 系统模块
     console.log('\n📋 测试 5: 检查 NPC 系统模块');
     const npcSystem = DS.getModule('npcSystem');
     if (npcSystem) {
       addTest('NPC 系统模块', true, 'NPC 系统模块已注册');
-      
+
       if (typeof DS.generateNPC === 'function') {
         addTest('NPC 生成方法', true, 'generateNPC 方法存在');
       } else {
@@ -158,13 +217,13 @@
     } else {
       addTest('NPC 系统模块', false, 'NPC 系统模块未注册', true);
     }
-    
+
     // 测试 11: 检查知识库加载器模块
     console.log('\n📋 测试 6: 检查知识库加载器模块');
     const worldbook = DS.getModule('worldbook');
     if (worldbook) {
       addTest('知识库加载器模块', true, '知识库加载器模块已注册');
-      
+
       if (typeof DS.loadWorldbook === 'function') {
         addTest('知识库加载方法', true, 'loadWorldbook 方法存在');
       } else {
@@ -173,7 +232,7 @@
     } else {
       addTest('知识库加载器模块', false, '知识库加载器模块未注册', true);
     }
-    
+
     // 测试 12: 检查 Token 预算
     console.log('\n📋 测试 7: 检查 Token 预算系统');
     if (typeof DS.checkTokenBudget === 'function') {
@@ -190,7 +249,7 @@
     } else {
       addTest('Token 预算', false, 'checkTokenBudget 方法缺失', true);
     }
-    
+
     // 测试 13: 检查 DOM 元素（状态栏）
     console.log('\n📋 测试 8: 检查 UI 元素');
     const statusPanelElement = document.getElementById('detention-status-panel');
@@ -199,41 +258,61 @@
     } else {
       addTest('状态栏 UI', false, '状态栏 UI 元素未找到', true);
     }
-    
   } else {
     addTest('核心系统存在', false, 'window.detentionSystem 未定义');
     console.error('❌ 核心系统未加载！请确保：');
     console.error('   1. 脚本已正确导入到酒馆中');
-    console.error('   2. core.ts 模块已正确加载');
-    console.error('   3. 检查浏览器控制台是否有错误信息');
+    console.error('   2. 脚本已启用（在酒馆助手设置中）');
+    console.error('   3. core.ts 模块已正确加载');
+    console.error('   4. 检查浏览器控制台是否有错误信息');
+    console.error('   5. 尝试刷新页面或重新加载角色卡');
+    console.error('\n💡 诊断信息：');
+    console.error(`   - 主窗口 window.detentionSystem: ${typeof window.detentionSystem}`);
+    const allIframes = document.querySelectorAll('iframe');
+    console.error(`   - 找到的 iframe 数量: ${allIframes.length}`);
+    if (allIframes.length > 0) {
+      console.error('   - iframe 列表:');
+      allIframes.forEach((iframe, i) => {
+        const name = iframe.name || '无name';
+        const id = iframe.id || '无id';
+        let accessible = '未知';
+        try {
+          const iframeWindow = iframe.contentWindow;
+          accessible = iframeWindow ? '可访问' : '不可访问';
+        } catch (e) {
+          accessible = `不可访问 (${e.message})`;
+        }
+        console.error(`     [${i}] name: "${name}", id: "${id}", 状态: ${accessible}`);
+      });
+    }
+    console.error('   - 提示：脚本在 iframe 中运行，如果无法访问 iframe，可能是跨域问题');
+    console.error('   - 建议：检查脚本是否已启用，并尝试刷新页面');
   }
-  
+
   // 测试 14: 检查控制台错误
   console.log('\n📋 测试 9: 检查常见错误');
   const consoleErrors = [];
   const originalError = console.error;
-  console.error = function(...args) {
+  console.error = function (...args) {
     consoleErrors.push(args.join(' '));
     originalError.apply(console, args);
   };
-  
+
   // 检查是否有 CORS 错误
   setTimeout(() => {
-    const hasCorsError = consoleErrors.some(msg => 
-      msg.includes('CORS') || 
-      msg.includes('127.0.0.1:7242') ||
-      msg.includes('fetch')
+    const hasCorsError = consoleErrors.some(
+      msg => msg.includes('CORS') || msg.includes('127.0.0.1:7242') || msg.includes('fetch'),
     );
-    
+
     if (hasCorsError) {
       addTest('CORS 错误', false, '检测到 CORS 相关错误，请检查调试日志是否已移除');
     } else {
       addTest('CORS 错误', true, '未检测到 CORS 错误');
     }
-    
+
     // 恢复原始 console.error
     console.error = originalError;
-    
+
     // 输出测试总结
     console.log('\n═══════════════════════════════════════════════════');
     console.log('📊 测试总结');
@@ -242,7 +321,7 @@
     console.log(`❌ 失败: ${results.failed}`);
     console.log(`⚠️  警告: ${results.warnings}`);
     console.log(`📝 总计: ${results.tests.length} 项测试`);
-    
+
     if (results.failed === 0 && results.warnings === 0) {
       console.log('\n🎉 所有测试通过！系统运行正常。');
     } else if (results.failed === 0) {
@@ -250,35 +329,37 @@
     } else {
       console.log('\n⚠️  发现一些问题，请检查上述错误信息。');
     }
-    
+
     console.log('\n💡 提示：');
     console.log('   - 如果核心系统未加载，请检查脚本导入是否正确');
     console.log('   - 如果模块未注册，可能需要等待几秒让模块初始化完成');
     console.log('   - 可以多次运行此测试脚本以验证系统状态');
     console.log('═══════════════════════════════════════════════════');
-    
+
     // 返回测试结果对象，方便进一步检查
     return {
       summary: {
         passed: results.passed,
         failed: results.failed,
         warnings: results.warnings,
-        total: results.tests.length
+        total: results.tests.length,
       },
       tests: results.tests,
-      detentionSystem: window.detentionSystem
+      detentionSystem: DS || window.detentionSystem,
+      location: DSLocation || '未找到',
     };
   }, 1000);
-  
+
   // 立即返回测试结果（异步部分会在1秒后完成）
   return {
     summary: {
       passed: results.passed,
       failed: results.failed,
       warnings: results.warnings,
-      total: results.tests.length
+      total: results.tests.length,
     },
     tests: results.tests,
-    detentionSystem: window.detentionSystem
+    detentionSystem: DS || window.detentionSystem,
+    location: DSLocation || '未找到',
   };
 })();

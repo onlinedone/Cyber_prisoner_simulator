@@ -1,0 +1,131 @@
+/**
+ * 看守所模拟器 - 完整系统整合
+ * 整合核心系统、状态栏系统、事件系统、NPC系统、知识库加载器
+ *
+ * 加载顺序：
+ * 1. 核心系统 (core.ts) - 提供基础功能和模块管理
+ * 2. 状态栏系统 (status_panel.ts) - 状态追踪、HTML注释解析、缓慢变化机制（使用记忆增强插件，由角色卡显示状态栏）
+ * 3. 事件系统 (event_system.ts) - 按日推进、法律流程、随机事件
+ * 4. NPC系统 (npc_system.ts) - NPC生成和管理
+ * 5. 知识库加载器 (worldbook_loader.ts) - 动态加载知识库
+ */
+
+// #region agent log - HYP-A: 脚本文件是否被加载和执行
+try {
+  fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      location: 'index.ts:入口点',
+      message: '脚本文件开始执行',
+      data: {
+        windowExists: typeof window !== 'undefined',
+        windowDetentionSystemExists: typeof window.detentionSystem !== 'undefined',
+        windowDetentionSystemType: typeof window.detentionSystem,
+        userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A',
+        isIframe: typeof window !== 'undefined' && window.parent !== window,
+        currentUrl: typeof window !== 'undefined' && window.location ? window.location.href : 'N/A',
+      },
+      timestamp: Date.now(),
+      sessionId: 'debug-session',
+      runId: 'script-load-debug',
+      hypothesisId: 'A',
+    }),
+  }).catch(e => {
+    console.error('[看守所模拟器] 调试日志发送失败:', e);
+  });
+} catch (e) {
+  console.error('[看守所模拟器] 调试日志初始化失败:', e);
+}
+// #endregion
+
+// 非常明显的日志，确保能看到
+console.info('🔵 [看守所模拟器] 脚本文件开始执行！');
+// 创建全局标记，便于检测脚本是否加载
+(window as any).__DETENTION_SYSTEM_LOADED__ = true;
+(window as any).__DETENTION_SYSTEM_LOADED_TIMESTAMP__ = Date.now();
+console.log('[DEBUG-HYP-A] index.ts:13 - 脚本文件开始加载', {
+  timestamp: Date.now(),
+  windowExists: typeof window !== 'undefined',
+  windowDetentionSystem: typeof window.detentionSystem,
+  location: 'index.ts:13',
+  hypothesisId: 'A',
+});
+console.info('[看守所模拟器] 脚本文件已加载，开始执行...');
+console.info('[看守所模拟器] 如果看到这条消息，说明脚本正在执行！');
+
+// #region agent log - HYP-B: 模块导入是否成功
+try {
+  fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      location: 'index.ts:模块导入前',
+      message: '准备导入模块',
+      data: {
+        windowDetentionSystemExists: typeof window.detentionSystem !== 'undefined',
+      },
+      timestamp: Date.now(),
+      sessionId: 'debug-session',
+      runId: 'script-load-debug',
+      hypothesisId: 'B',
+    }),
+  }).catch(() => {});
+} catch (e) {
+  console.error('[看守所模拟器] 模块导入前日志失败:', e);
+}
+// #endregion
+
+// 按顺序导入所有模块（必须在顶层）
+import './core';
+import './event_system';
+import './npc_system';
+import './status_panel';
+import './worldbook_loader';
+
+// #region agent log - HYP-C: 模块导入后检查
+setTimeout(() => {
+  try {
+    fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        location: 'index.ts:模块导入后',
+        message: '所有模块导入完成，检查window.detentionSystem',
+        data: {
+          windowDetentionSystemExists: typeof window.detentionSystem !== 'undefined',
+          windowDetentionSystemType: typeof window.detentionSystem,
+          hasPing:
+            typeof window.detentionSystem !== 'undefined' && typeof (window.detentionSystem as any).ping === 'function',
+          pingResult:
+            typeof window.detentionSystem !== 'undefined' && typeof (window.detentionSystem as any).ping === 'function'
+              ? (window.detentionSystem as any).ping()
+              : 'N/A',
+          version:
+            typeof window.detentionSystem !== 'undefined' && (window.detentionSystem as any).version
+              ? (window.detentionSystem as any).version
+              : 'N/A',
+        },
+        timestamp: Date.now(),
+        sessionId: 'debug-session',
+        runId: 'script-load-debug',
+        hypothesisId: 'C',
+      }),
+    }).catch(() => {});
+  } catch (e) {
+    console.error('[看守所模拟器] 模块导入后日志失败:', e);
+  }
+}, 100);
+// #endregion
+
+console.log('[DEBUG-HYP-A] index.ts:22 - 所有模块导入完成', {
+  timestamp: Date.now(),
+  windowDetentionSystemExists: typeof window.detentionSystem !== 'undefined',
+  windowDetentionSystemType: typeof window.detentionSystem,
+  windowDetentionSystemValue: window.detentionSystem ? 'object' : 'undefined',
+  location: 'index.ts:22',
+  hypothesisId: 'A',
+});
+console.info('[看守所模拟器] 所有模块已加载完成');
+console.log('🔵 [看守所模拟器] 脚本执行完成！');
+console.log('🔵 window.detentionSystem:', typeof window.detentionSystem !== 'undefined' ? '✅ 存在' : '❌ 不存在');

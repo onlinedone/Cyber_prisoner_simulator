@@ -1,0 +1,18 @@
+:root {
+  --c-mint-cream: #f5fffa;
+  --c-granite: #3c493f;
+  --c-celadon: #7fb069;
+  --c-grey-olive: #6b7d7d;
+  --c-ash-grey: #b3b3b3;
+  --font-archive: 'Microsoft YaHei', 'SimHei', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-archive);
+}

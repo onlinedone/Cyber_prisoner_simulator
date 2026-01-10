@@ -1,0 +1,9 @@
+正确的脚本导入路径：
+
+import 'http://127.0.0.1:8080/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js'
+
+注意：
+- 文件名是 detention-system.js（不是 index.js）
+- 路径是 /dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js
+- 端口是 8080（HTTP 服务器端口）
+- 协议是 http://
