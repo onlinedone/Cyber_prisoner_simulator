@@ -634,15 +634,25 @@ $(() => {
                 worldbookDataType: typeof worldbookData,
                 worldbookDataIsArray: Array.isArray(worldbookData),
                 worldbookDataIsObject: worldbookData && typeof worldbookData === 'object',
-                worldbookDataKeys: worldbookData && typeof worldbookData === 'object' ? Object.keys(worldbookData as object) : null,
+                worldbookDataKeys:
+                  worldbookData && typeof worldbookData === 'object' ? Object.keys(worldbookData as object) : null,
                 worldbookDataHasEntriesProperty:
-                  worldbookData && typeof worldbookData === 'object' && !Array.isArray(worldbookData) && 'entries' in (worldbookData as object),
+                  worldbookData &&
+                  typeof worldbookData === 'object' &&
+                  !Array.isArray(worldbookData) &&
+                  'entries' in (worldbookData as object),
                 worldbookDataEntriesType:
-                  worldbookData && typeof worldbookData === 'object' && !Array.isArray(worldbookData) && 'entries' in (worldbookData as object)
+                  worldbookData &&
+                  typeof worldbookData === 'object' &&
+                  !Array.isArray(worldbookData) &&
+                  'entries' in (worldbookData as object)
                     ? typeof (worldbookData as { entries?: unknown }).entries
                     : null,
                 worldbookDataEntriesIsArray:
-                  worldbookData && typeof worldbookData === 'object' && !Array.isArray(worldbookData) && 'entries' in (worldbookData as object)
+                  worldbookData &&
+                  typeof worldbookData === 'object' &&
+                  !Array.isArray(worldbookData) &&
+                  'entries' in (worldbookData as object)
                     ? Array.isArray((worldbookData as { entries?: unknown }).entries)
                     : null,
                 targetWorldbookName,
@@ -688,7 +698,12 @@ $(() => {
                 entriesLength: entries?.length,
                 entriesIsUndefined: entries === undefined,
                 entriesIsNull: entries === null,
-                entriesValue: entries === undefined || entries === null ? null : (Array.isArray(entries) ? `Array(${entries.length})` : String(entries)),
+                entriesValue:
+                  entries === undefined || entries === null
+                    ? null
+                    : Array.isArray(entries)
+                      ? `Array(${entries.length})`
+                      : String(entries),
               },
               timestamp: Date.now(),
               sessionId: 'debug-session',
@@ -731,15 +746,16 @@ $(() => {
           );
 
           // 检查是否是 map 相关的错误，这是世界书数据格式问题的典型表现
-          const isDataFormatError = errorMessage.includes('map') || errorMessage.includes('undefined') || errorMessage.includes('Cannot read properties');
+          const isDataFormatError =
+            errorMessage.includes('map') ||
+            errorMessage.includes('undefined') ||
+            errorMessage.includes('Cannot read properties');
 
           if (isDataFormatError) {
             console.warn(
               `[知识库加载器] ⚠ 检测到数据格式错误，可能是世界书 "${targetWorldbookName}" 的数据损坏或不完整`,
             );
-            console.warn(
-              `[知识库加载器] ⚠ 错误详情: ${errorMessage}`,
-            );
+            console.warn(`[知识库加载器] ⚠ 错误详情: ${errorMessage}`);
             console.warn(
               `[知识库加载器] ⚠ 建议: 1) 检查世界书 "${targetWorldbookName}" 是否在酒馆中存在 2) 检查世界书数据格式是否正确 3) 尝试重新导入世界书`,
             );
@@ -832,7 +848,8 @@ $(() => {
                     : undefined,
                 entriesValue: entries,
                 worldbookDataType: typeof worldbookData,
-                worldbookDataKeys: worldbookData && typeof worldbookData === 'object' ? Object.keys(worldbookData as object) : null,
+                worldbookDataKeys:
+                  worldbookData && typeof worldbookData === 'object' ? Object.keys(worldbookData as object) : null,
                 targetWorldbookName,
                 bookName,
               },

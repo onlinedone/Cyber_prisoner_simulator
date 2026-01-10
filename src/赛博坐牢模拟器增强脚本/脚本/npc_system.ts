@@ -1261,7 +1261,13 @@ $(() => {
       // 7. 生成婚姻状况
       const maritalStatuses = age < 30 ? ['未婚', '已婚'] : age < 40 ? ['已婚', '离异', '未婚'] : ['已婚', '离异'];
       const maritalWeights =
-        age < 30 ? [40, 60] : age < 40 ? [60, 25, 15] : education === '博士' || education === '硕士' ? [70, 30] : [65, 35];
+        age < 30
+          ? [40, 60]
+          : age < 40
+            ? [60, 25, 15]
+            : education === '博士' || education === '硕士'
+              ? [70, 30]
+              : [65, 35];
       const maritalIndex = this.weightedRandom(maritalStatuses.length, maritalWeights);
       const maritalStatus = maritalStatuses[maritalIndex];
 
@@ -1550,8 +1556,10 @@ $(() => {
             data: {
               parentHasDetentionSystem: typeof (window.parent as any).detentionSystem !== 'undefined',
               parentHasGenerateNPC: typeof (window.parent as any).detentionSystem?.generateNPC === 'function',
-              parentHasGenerateProtagonist: typeof (window.parent as any).detentionSystem?.generateProtagonist === 'function',
-              parentHasGenerateNPCForEvent: typeof (window.parent as any).detentionSystem?.generateNPCForEvent === 'function',
+              parentHasGenerateProtagonist:
+                typeof (window.parent as any).detentionSystem?.generateProtagonist === 'function',
+              parentHasGenerateNPCForEvent:
+                typeof (window.parent as any).detentionSystem?.generateNPCForEvent === 'function',
               iframeHasGenerateProtagonist: typeof DS.generateProtagonist === 'function',
               parentModulesCount: (window.parent as any).detentionSystem?.modules
                 ? Object.keys((window.parent as any).detentionSystem.modules).length

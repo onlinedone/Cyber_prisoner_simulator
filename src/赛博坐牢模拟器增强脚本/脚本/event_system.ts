@@ -473,7 +473,7 @@ $(() => {
             const daysInCustody = system.currentDay - system.legalTimeline.arrestDay;
             const minDays = Math.floor(30 * system.complexityMultiplier);
             const maxDays = Math.floor(37 * system.complexityMultiplier);
-            
+
             // 在30-37天之间，100%触发
             if (daysInCustody >= minDays && daysInCustody <= maxDays) {
               return true;
@@ -923,7 +923,7 @@ $(() => {
               } else if (typeof savedPolice === 'string' && savedPolice) {
                 policeArray = [savedPolice];
               }
-              
+
               this.assignedOfficers = {
                 police: policeArray,
                 prosecutor: savedData.assignedOfficers.prosecutor ?? null,
@@ -2068,7 +2068,7 @@ $(() => {
         if (conditionEvent.id === 'interrogation' || conditionEvent.id === 'prosecutor_interrogation') {
           const policeNames = ['张警官', '李警官', '王警官', '刘警官', '陈警官', '赵警官', '孙警官', '周警官'];
           const prosecutorNames = ['张检察官', '李检察官', '王检察官', '刘检察官', '陈检察官', '赵检察官'];
-          
+
           // 如果是检察官提审（30-37天之间的特殊提审），确保有1名检察官+2名警官
           if (conditionEvent.id === 'prosecutor_interrogation') {
             // 如果还没有分配2名警官，生成2名固定的警官姓名
@@ -2083,16 +2083,16 @@ $(() => {
               }
               console.info(`[事件系统] 已分配固定警官: ${this.assignedOfficers.police.join('、')}`);
             }
-            
+
             // 如果还没有分配检察官，生成一个固定的检察官姓名
             if (!this.assignedOfficers.prosecutor) {
               this.assignedOfficers.prosecutor = prosecutorNames[Math.floor(Math.random() * prosecutorNames.length)];
               console.info(`[事件系统] 已分配固定检察官: ${this.assignedOfficers.prosecutor}`);
             }
-            
+
             // 更新事件描述：检察官+2名警官
             conditionEvent.description = `检察官提审讯问（${this.assignedOfficers.prosecutor}负责，${this.assignedOfficers.police.join('、')}协助）`;
-          } 
+          }
           // 如果是普通提审
           else if (conditionEvent.id === 'interrogation') {
             // 确保至少有2名警官
@@ -2107,12 +2107,14 @@ $(() => {
               }
               console.info(`[事件系统] 已分配固定警官: ${this.assignedOfficers.police.join('、')}`);
             }
-            
+
             // 羁押审查和起诉阶段，每次提审有50%概率有检察官参与
             const hasApproval = this.legalTimeline.approvalDay !== null;
-            const beforeFirstTrial = !this.legalTimeline.firstTrialDay || this.currentDay < this.legalTimeline.firstTrialDay;
-            const isInvestigationOrProsecution = this.currentStage === 'investigation' || this.currentStage === 'prosecution';
-            
+            const beforeFirstTrial =
+              !this.legalTimeline.firstTrialDay || this.currentDay < this.legalTimeline.firstTrialDay;
+            const isInvestigationOrProsecution =
+              this.currentStage === 'investigation' || this.currentStage === 'prosecution';
+
             if (hasApproval && beforeFirstTrial && isInvestigationOrProsecution && Math.random() < 0.5) {
               // 如果还没有分配检察官，生成一个固定的检察官姓名
               if (!this.assignedOfficers.prosecutor) {

@@ -903,18 +903,19 @@ $(() => {
       // 优先检查是否为系统事件消息（通过 data 标记或内容）
       const messageData = userMessage.data as { isSystemEventMessage?: boolean } | undefined;
       const isSystemEventMessage = messageData?.isSystemEventMessage === true;
-      const isSystemByContent = userInput.startsWith('[系统事件]') || (userInput.startsWith('[第') && userInput.includes(']'));
+      const isSystemByContent =
+        userInput.startsWith('[系统事件]') || (userInput.startsWith('[第') && userInput.includes(']'));
 
       if (isSystemEventMessage || isSystemByContent) {
         // 系统事件消息已在 event_triggered 中处理，不需要在这里做任何操作
         // 但是要阻止其他监听器（如 quick-reply 扩展）自动触发生成
         // 我们不需要隐藏消息，因为它已经在页面上了
-        // 
+        //
         // 重要：虽然我们无法阻止其他监听器执行，但我们可以：
         // 1. 确保我们的监听器优先执行（使用 eventMakeFirst）
         // 2. 在 GENERATION_STARTED 中检测并停止系统事件消息触发的生成
         // 3. 设置 waitingForEventResponse 标志，让其他监听器知道正在处理事件
-        
+
         // #region agent log
         fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
@@ -928,7 +929,8 @@ $(() => {
               isSystemByContent,
               userInput: userInput.substring(0, 50) + '...',
               waitingForEventResponse,
-              duringGenerating: typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
+              duringGenerating:
+                typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
             },
             timestamp: Date.now(),
             sessionId: 'debug-session',
@@ -937,7 +939,7 @@ $(() => {
           }),
         }).catch(() => {});
         // #endregion
-        
+
         // 如果正在等待事件响应，立即停止任何可能被触发的生成
         if (waitingForEventResponse) {
           // 立即停止所有生成，防止其他监听器（如 quick-reply）自动触发生成
@@ -953,7 +955,8 @@ $(() => {
                 data: {
                   message_id,
                   waitingForEventResponse,
-                  afterStopDuringGenerating: typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
+                  afterStopDuringGenerating:
+                    typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
                 },
                 timestamp: Date.now(),
                 sessionId: 'debug-session',
@@ -966,7 +969,7 @@ $(() => {
             console.warn('[核心系统] 在USER_MESSAGE_RENDERED中停止生成失败:', error);
           }
         }
-        
+
         return; // 直接返回，不进行任何处理
       }
 
@@ -1024,7 +1027,8 @@ $(() => {
         const messageData = lastUserMessage.data as { isSystemEventMessage?: boolean } | undefined;
         const isSystemEventMessage = messageData?.isSystemEventMessage === true;
         const userInput = lastUserMessage.message || '';
-        const isSystemByContent = userInput.startsWith('[系统事件]') || (userInput.startsWith('[第') && userInput.includes(']'));
+        const isSystemByContent =
+          userInput.startsWith('[系统事件]') || (userInput.startsWith('[第') && userInput.includes(']'));
 
         if (isSystemEventMessage || isSystemByContent) {
           // #region agent log
@@ -1060,13 +1064,27 @@ $(() => {
   // 追踪生成 ID，用于关联 triggerSlash 调用和生成事件
   let lastTriggerTime: number | null = null;
   let lastTriggerEventName: string | null = null;
-  const generationTracking: Array<{ generation_id: string | null; type: string; timestamp: number; triggerTime: number | null; eventName: string | null; source: 'iframe' | 'tavern' }> = [];
+  const generationTracking: Array<{
+    generation_id: string | null;
+    type: string;
+    timestamp: number;
+    triggerTime: number | null;
+    eventName: string | null;
+    source: 'iframe' | 'tavern';
+  }> = [];
 
   // 同时监听 iframe_events 和 tavern_events 的 GENERATION_STARTED，因为可能触发的是不同的类型
   eventOn(iframe_events.GENERATION_STARTED, (generation_id: string) => {
     // #region agent log - 追踪所有 GENERATION_STARTED 事件（iframe）
     const now = Date.now();
-    generationTracking.push({ generation_id: generation_id, type: 'iframe', timestamp: now, triggerTime: lastTriggerTime, eventName: lastTriggerEventName, source: 'iframe' });
+    generationTracking.push({
+      generation_id: generation_id,
+      type: 'iframe',
+      timestamp: now,
+      triggerTime: lastTriggerTime,
+      eventName: lastTriggerEventName,
+      source: 'iframe',
+    });
     fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1132,7 +1150,8 @@ $(() => {
         const messageData = lastUserMessage.data as { isSystemEventMessage?: boolean } | undefined;
         const isSystemEventMessage = messageData?.isSystemEventMessage === true;
         const userInput = lastUserMessage.message || '';
-        const isSystemByContent = userInput.startsWith('[系统事件]') || (userInput.startsWith('[第') && userInput.includes(']'));
+        const isSystemByContent =
+          userInput.startsWith('[系统事件]') || (userInput.startsWith('[第') && userInput.includes(']'));
 
         // 如果正在等待事件响应，且检测到系统事件消息，说明这是由其他监听器触发的自动生成，应该停止
         if (waitingForEventResponse && (isSystemEventMessage || isSystemByContent)) {
@@ -1181,7 +1200,14 @@ $(() => {
   eventOn(tavern_events.GENERATION_STARTED, (type: string, options: unknown, dry_run: boolean) => {
     // #region agent log - 追踪所有 GENERATION_STARTED 事件（tavern）
     const now = Date.now();
-    generationTracking.push({ generation_id: null, type, timestamp: now, triggerTime: lastTriggerTime, eventName: lastTriggerEventName, source: 'tavern' });
+    generationTracking.push({
+      generation_id: null,
+      type,
+      timestamp: now,
+      triggerTime: lastTriggerTime,
+      eventName: lastTriggerEventName,
+      source: 'tavern',
+    });
     fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -1210,8 +1236,15 @@ $(() => {
   });
 
   // 追踪收到的 AI 消息，检查是否有消息被分割
-  const aiMessageTracking: Array<{ message_id: number; timestamp: number; triggerTime: number | null; eventName: string | null; messageLength: number; messagePreview: string }> = [];
-  
+  const aiMessageTracking: Array<{
+    message_id: number;
+    timestamp: number;
+    triggerTime: number | null;
+    eventName: string | null;
+    messageLength: number;
+    messagePreview: string;
+  }> = [];
+
   // 监听 AI 消息渲染，追踪消息是否被分割
   // 使用 eventMakeFirst 确保我们的监听器优先执行，以便追踪所有消息
   eventMakeFirst(tavern_events.CHARACTER_MESSAGE_RENDERED, (message_id: number) => {
@@ -1221,14 +1254,14 @@ $(() => {
       if (aiMessage && aiMessage.message) {
         const now = Date.now();
         const messageText = aiMessage.message;
-        
+
         // 检查这条消息是否已经被追踪过（避免重复）
         const alreadyTracked = aiMessageTracking.some(m => m.message_id === message_id);
         if (alreadyTracked) {
           console.warn(`[核心系统] ⚠ CHARACTER_MESSAGE_RENDERED 事件重复触发，message_id: ${message_id}`);
           return;
         }
-        
+
         aiMessageTracking.push({
           message_id,
           timestamp: now,
@@ -1264,13 +1297,13 @@ $(() => {
               })),
               totalCharacters: aiMessageTracking.reduce((sum, m) => sum + m.messageLength, 0),
               // 检查最近是否有其他消息在短时间内创建（可能是分割）
-              recentMessages: aiMessageTracking.filter(m => 
-                Math.abs(m.timestamp - now) < 5000 && m.message_id !== message_id
-              ).map(m => ({
-                id: m.message_id,
-                length: m.messageLength,
-                timeDiff: Math.abs(m.timestamp - now),
-              })),
+              recentMessages: aiMessageTracking
+                .filter(m => Math.abs(m.timestamp - now) < 5000 && m.message_id !== message_id)
+                .map(m => ({
+                  id: m.message_id,
+                  length: m.messageLength,
+                  timeDiff: Math.abs(m.timestamp - now),
+                })),
             },
             timestamp: now,
             sessionId: 'debug-session',
@@ -1281,24 +1314,27 @@ $(() => {
         // #endregion
 
         // 检查是否有多个消息关联到同一个触发事件
-        const relatedMessages = aiMessageTracking.filter(m => 
-          m.triggerTime === lastTriggerTime && m.eventName === lastTriggerEventName
+        const relatedMessages = aiMessageTracking.filter(
+          m => m.triggerTime === lastTriggerTime && m.eventName === lastTriggerEventName,
         );
-        
+
         // 如果有关联消息，检查时间间隔（如果时间间隔很短，可能是分割）
         if (relatedMessages.length > 1) {
           const timeGaps = relatedMessages
             .sort((a, b) => a.timestamp - b.timestamp)
-            .map((m, i, arr) => i > 0 ? m.timestamp - arr[i - 1].timestamp : 0)
+            .map((m, i, arr) => (i > 0 ? m.timestamp - arr[i - 1].timestamp : 0))
             .filter(gap => gap > 0);
-          
-          console.warn(`[核心系统] ⚠ 检测到可能的消息分割：事件 "${lastTriggerEventName}" 触发的生成产生了 ${relatedMessages.length} 条消息`, {
-            messageIds: relatedMessages.map(m => m.message_id),
-            lengths: relatedMessages.map(m => m.messageLength),
-            timeGaps,
-            totalLength: relatedMessages.reduce((sum, m) => sum + m.messageLength, 0),
-          });
-          
+
+          console.warn(
+            `[核心系统] ⚠ 检测到可能的消息分割：事件 "${lastTriggerEventName}" 触发的生成产生了 ${relatedMessages.length} 条消息`,
+            {
+              messageIds: relatedMessages.map(m => m.message_id),
+              lengths: relatedMessages.map(m => m.messageLength),
+              timeGaps,
+              totalLength: relatedMessages.reduce((sum, m) => sum + m.messageLength, 0),
+            },
+          );
+
           // #region agent log
           fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
@@ -1333,13 +1369,16 @@ $(() => {
           }).catch(() => {});
           // #endregion
         }
-        
+
         // 检查是否有其他消息在很短时间内创建（即使 triggerTime 不匹配，也可能是相关的）
-        const recentMessages = aiMessageTracking.filter(m => 
-          m.message_id !== message_id && Math.abs(m.timestamp - now) < 3000
+        const recentMessages = aiMessageTracking.filter(
+          m => m.message_id !== message_id && Math.abs(m.timestamp - now) < 3000,
         );
         if (recentMessages.length > 0) {
-          console.info(`[核心系统] 检测到附近有 ${recentMessages.length} 条其他消息（3秒内）`, recentMessages.map(m => ({ id: m.message_id, timeDiff: Math.abs(m.timestamp - now) })));
+          console.info(
+            `[核心系统] 检测到附近有 ${recentMessages.length} 条其他消息（3秒内）`,
+            recentMessages.map(m => ({ id: m.message_id, timeDiff: Math.abs(m.timestamp - now) })),
+          );
         }
       }
     } catch (error) {
@@ -1394,18 +1433,19 @@ $(() => {
           }),
         }).catch(() => {});
         // #endregion
-        
+
         // 快速检查消息是否为系统事件消息
         const messages = getChatMessages(-1, { role: 'user' });
         const userMessage = messages.find(m => m.message_id === Number(message_id));
-        
+
         if (userMessage) {
           // 优先通过 data 标记检查
           const messageData = userMessage.data as { isSystemEventMessage?: boolean } | undefined;
           const isSystemEventMessage = messageData?.isSystemEventMessage === true;
           const userInput = userMessage.message || '';
-          const isSystemByContent = userInput.startsWith('[系统事件]') || (userInput.startsWith('[第') && userInput.includes(']'));
-          
+          const isSystemByContent =
+            userInput.startsWith('[系统事件]') || (userInput.startsWith('[第') && userInput.includes(']'));
+
           if (isSystemEventMessage || isSystemByContent) {
             // #region agent log
             fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
@@ -1429,7 +1469,7 @@ $(() => {
               }),
             }).catch(() => {});
             // #endregion
-            
+
             // 直接返回，不触发任何处理（包括 user_input 事件）
             return;
           }
@@ -1490,9 +1530,13 @@ $(() => {
         // 优先通过 data 标记检查是否为系统事件消息（更快、更可靠）
         const messageData = userMessage.data as { isSystemEventMessage?: boolean } | undefined;
         const isSystemEventMessage = messageData?.isSystemEventMessage === true;
-        
+
         // 跳过系统生成的消息（通过 data 标记或消息内容识别）
-        if (isSystemEventMessage || userInput.startsWith('[系统事件]') || (userInput.startsWith('[第') && userInput.includes(']'))) {
+        if (
+          isSystemEventMessage ||
+          userInput.startsWith('[系统事件]') ||
+          (userInput.startsWith('[第') && userInput.includes(']'))
+        ) {
           // 这是系统生成的事件消息，不是用户的跳过指令，直接跳过
           // #region agent log
           fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
@@ -1506,8 +1550,13 @@ $(() => {
                 message_id: Number(message_id),
                 isSystemEventMessage,
                 matchedByData: isSystemEventMessage,
-                matchedByContent: userInput.startsWith('[系统事件]') || (userInput.startsWith('[第') && userInput.includes(']')),
-                matchedPattern: isSystemEventMessage ? 'data标记' : (userInput.startsWith('[系统事件]') ? '[系统事件]' : '[第X天]'),
+                matchedByContent:
+                  userInput.startsWith('[系统事件]') || (userInput.startsWith('[第') && userInput.includes(']')),
+                matchedPattern: isSystemEventMessage
+                  ? 'data标记'
+                  : userInput.startsWith('[系统事件]')
+                    ? '[系统事件]'
+                    : '[第X天]',
               },
               timestamp: Date.now(),
               sessionId: 'debug-session',
@@ -1526,7 +1575,7 @@ $(() => {
           // if (DS_EMIT_SYSTEM && DS_EMIT_SYSTEM.events) {
           //   DS_EMIT_SYSTEM.events.emit('user_input', { text: userInput, message_id });
           // }
-          
+
           // #region agent log
           fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
@@ -1547,7 +1596,7 @@ $(() => {
             }),
           }).catch(() => {});
           // #endregion
-          
+
           return;
         }
 
@@ -2178,9 +2227,7 @@ $(() => {
                 if (result && result.interrupted && result.event) {
                   // 优先使用事件的实际发生天数，而不是currentDay（可能还没有更新）
                   const eventDay = result.event.day ?? result.tempCurrentDay ?? result.currentDay ?? 0;
-                  console.info(
-                    `[核心系统] 跳过 ${daysToSkip} 天后触发事件: ${result.event.name} (第${eventDay}天)`,
-                  );
+                  console.info(`[核心系统] 跳过 ${daysToSkip} 天后触发事件: ${result.event.name} (第${eventDay}天)`);
 
                   // #region agent log
                   fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
@@ -2373,7 +2420,7 @@ $(() => {
         // 设置等待事件响应标志，防止在响应期间继续推进
         // 在创建消息之前就设置标志，确保 MESSAGE_SENT 监听器能够识别这是系统消息
         waitingForEventResponse = true;
-        
+
         // #region agent log
         fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
@@ -2852,10 +2899,10 @@ $(() => {
           }),
         }).catch(() => {});
         // #endregion
-        
+
         // 在创建消息前再次停止所有生成，确保不会有自动触发
         await stopAllGeneration();
-        
+
         // #region agent log
         fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
@@ -2865,7 +2912,8 @@ $(() => {
             message: '创建消息前再次停止生成',
             data: {
               eventName: event.name,
-              duringGenerating: typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
+              duringGenerating:
+                typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
               beforeCreateChatMessages: true,
             },
             timestamp: Date.now(),
@@ -2875,7 +2923,7 @@ $(() => {
           }),
         }).catch(() => {});
         // #endregion
-        
+
         // 使用 refresh: 'affected' 创建消息，这样消息会显示并触发 MESSAGE_SENT 事件
         // MESSAGE_SENT 监听器会通过检查消息内容来跳过系统消息，避免重复处理
         // 注意：createChatMessages 是异步的，可能在内部立即触发 MESSAGE_SENT 事件
@@ -2895,7 +2943,7 @@ $(() => {
           ],
           { refresh: 'affected' }, // 使用 'affected' 让消息显示，但 MESSAGE_SENT 监听器会跳过它
         );
-        
+
         // #region agent log
         fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
@@ -2905,7 +2953,8 @@ $(() => {
             message: 'createChatMessages 调用后（等待完成前）',
             data: {
               eventName: event.name,
-              duringGenerating: typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
+              duringGenerating:
+                typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
               createPromisePending: true,
             },
             timestamp: Date.now(),
@@ -2915,15 +2964,15 @@ $(() => {
           }),
         }).catch(() => {});
         // #endregion
-        
+
         // 等待消息创建完成
         await createPromise;
-        
+
         // 创建消息后立即再次停止所有生成，防止消息创建触发自动生成
         // 给 MESSAGE_SENT 事件处理时间完成
         await new Promise(resolve => setTimeout(resolve, 150)); // 增加延迟，确保 MESSAGE_SENT 事件处理完成
         await stopAllGeneration();
-        
+
         // #region agent log
         fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
@@ -2933,7 +2982,8 @@ $(() => {
             message: '创建消息后再次停止生成（createChatMessages 完成 + 延迟后）',
             data: {
               eventName: event.name,
-              duringGenerating: typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
+              duringGenerating:
+                typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
               afterCreateChatMessages: true,
               afterDelay: true,
             },
@@ -2944,7 +2994,7 @@ $(() => {
           }),
         }).catch(() => {});
         // #endregion
-        
+
         // #region agent log
         fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
@@ -2969,7 +3019,7 @@ $(() => {
         // 等待一小段时间确保消息已创建并 MESSAGE_SENT 事件已处理
         await new Promise(resolve => setTimeout(resolve, 200));
         const eventMessageId = getLastMessageId();
-        
+
         // #region agent log
         fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
@@ -3053,35 +3103,38 @@ $(() => {
               };
 
               // 监听 GENERATION_STARTED 事件，如果检测到新生成则立即停止
-              generationStartedReturn = eventOn(tavern_events.GENERATION_STARTED, async (type: string, options: unknown, dry_run: boolean) => {
-                generationStartedCount++;
-                const now = Date.now();
-                // #region agent log
-                fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    location: 'core.ts:event_triggered监听:waitForGenerationToStop',
-                    message: '等待期间检测到新生成（tavern_events.GENERATION_STARTED），立即停止',
-                    data: {
-                      eventName: event.name,
-                      generationStartedCount,
-                      type,
-                      dry_run,
+              generationStartedReturn = eventOn(
+                tavern_events.GENERATION_STARTED,
+                async (type: string, options: unknown, dry_run: boolean) => {
+                  generationStartedCount++;
+                  const now = Date.now();
+                  // #region agent log
+                  fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                      location: 'core.ts:event_triggered监听:waitForGenerationToStop',
+                      message: '等待期间检测到新生成（tavern_events.GENERATION_STARTED），立即停止',
+                      data: {
+                        eventName: event.name,
+                        generationStartedCount,
+                        type,
+                        dry_run,
+                        timestamp: now,
+                        lastTriggerTime,
+                        lastTriggerEventName,
+                        timeSinceLastTrigger: lastTriggerTime ? now - lastTriggerTime : null,
+                      },
                       timestamp: now,
-                      lastTriggerTime,
-                      lastTriggerEventName,
-                      timeSinceLastTrigger: lastTriggerTime ? now - lastTriggerTime : null,
-                    },
-                    timestamp: now,
-                    sessionId: 'debug-session',
-                    runId: 'track-streaming-gen',
-                    hypothesisId: 'NEW_GENERATION_DETECTED_IN_WAIT',
-                  }),
-                }).catch(() => {});
-                // #endregion
-                await stopAllGeneration();
-              });
+                      sessionId: 'debug-session',
+                      runId: 'track-streaming-gen',
+                      hypothesisId: 'NEW_GENERATION_DETECTED_IN_WAIT',
+                    }),
+                  }).catch(() => {});
+                  // #endregion
+                  await stopAllGeneration();
+                },
+              );
 
               // 使用 eventOnce 只监听一次生成结束事件
               eventReturn = eventOnce(tavern_events.GENERATION_ENDED, () => {
@@ -3274,9 +3327,7 @@ $(() => {
             forceStopAttempts < 3
           ) {
             forceStopAttempts++;
-            console.warn(
-              `[核心系统] ⚠ 检测到仍在生成，再次强制停止 (第${forceStopAttempts}次)，事件: ${event.name}`,
-            );
+            console.warn(`[核心系统] ⚠ 检测到仍在生成，再次强制停止 (第${forceStopAttempts}次)，事件: ${event.name}`);
             await stopAllGeneration();
             // 等待500ms后再次检查
             await new Promise(resolve => setTimeout(resolve, 500));
@@ -3303,9 +3354,7 @@ $(() => {
               }),
             }).catch(() => {});
             // #endregion
-            console.warn(
-              `[核心系统] ⚠ 强制停止后仍在生成，但继续触发AI生成，事件: ${event.name}`,
-            );
+            console.warn(`[核心系统] ⚠ 强制停止后仍在生成，但继续触发AI生成，事件: ${event.name}`);
             // 不再返回，继续触发AI生成
           }
 
@@ -3341,7 +3390,7 @@ $(() => {
           lastTriggerTime = Date.now();
           lastTriggerEventName = event.name;
           generationTracking.length = 0; // 清空之前的追踪记录
-          
+
           // 记录 triggerSlash 调用前的消息列表，用于对比
           let messagesBeforeTrigger: Array<{ message_id: number; role: string; messageLength: number }> = [];
           let lastAssistantMessage: { message_id: number; message: string; messageLength: number } | null = null;
@@ -3352,7 +3401,7 @@ $(() => {
               role: m.role || 'unknown',
               messageLength: (m.message || '').length,
             }));
-            
+
             // 检查最后一个助手消息，看是否可能是未完成的（可能被流式生成更新）
             const assistantMessages = allMessages.filter(m => m.role === 'assistant');
             if (assistantMessages.length > 0) {
@@ -3366,18 +3415,18 @@ $(() => {
           } catch (error) {
             console.warn('[核心系统] 获取 triggerSlash 前的消息列表失败:', error);
           }
-          
+
           // 检查最后一个助手消息是否可能是未完成的（内容很短或包含特定标记）
           // 如果检测到，记录警告（但不删除，因为可能是正常的）
           const lastAssistantMessageId = lastAssistantMessage?.message_id || null;
           const lastAssistantMessageLength = lastAssistantMessage?.messageLength || 0;
           const lastAssistantMessagePreview = lastAssistantMessage?.message?.substring(0, 100) || '';
-          const potentiallyIncompleteMessage = lastAssistantMessageId !== null && (
-            lastAssistantMessageLength < 100 || // 内容很短，可能是未完成的
-            lastAssistantMessagePreview.includes('<thinking>') || // 包含思考标记，可能是未完成的
-            lastAssistantMessagePreview.includes('...') // 包含省略号，可能是未完成的
-          );
-          
+          const potentiallyIncompleteMessage =
+            lastAssistantMessageId !== null &&
+            (lastAssistantMessageLength < 100 || // 内容很短，可能是未完成的
+              lastAssistantMessagePreview.includes('<thinking>') || // 包含思考标记，可能是未完成的
+              lastAssistantMessagePreview.includes('...')); // 包含省略号，可能是未完成的
+
           // #region agent log
           fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
@@ -3399,7 +3448,9 @@ $(() => {
                 lastAssistantMessagePreview,
                 potentiallyIncompleteMessage,
                 // 如果检测到可能未完成的消息，记录警告
-                warning: potentiallyIncompleteMessage ? '检测到可能未完成的助手消息，流式生成可能会更新此消息而不是创建新消息' : null,
+                warning: potentiallyIncompleteMessage
+                  ? '检测到可能未完成的助手消息，流式生成可能会更新此消息而不是创建新消息'
+                  : null,
               },
               timestamp: lastTriggerTime,
               sessionId: 'debug-session',
@@ -3410,10 +3461,10 @@ $(() => {
           // #endregion
 
           await triggerSlash('/trigger');
-          
+
           // #region agent log
           const afterTriggerTime = Date.now();
-          
+
           // 记录 triggerSlash 调用后的消息列表，用于对比
           let messagesAfterTrigger: Array<{ message_id: number; role: string; messageLength: number }> = [];
           try {
@@ -3428,11 +3479,11 @@ $(() => {
           } catch (error) {
             console.warn('[核心系统] 获取 triggerSlash 后的消息列表失败:', error);
           }
-          
+
           const newMessages = messagesAfterTrigger.filter(
-            m => !messagesBeforeTrigger.some(b => b.message_id === m.message_id)
+            m => !messagesBeforeTrigger.some(b => b.message_id === m.message_id),
           );
-          
+
           fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -3455,10 +3506,11 @@ $(() => {
                 newMessageIds: newMessages.map(m => m.message_id),
                 newAssistantMessages: newMessages.filter(m => m.role === 'assistant'),
                 // 检查是否有新的助手消息被立即创建（可能是之前的生成）
-                immediatelyCreatedAssistantMessages: newMessages.filter(m => 
-                  m.role === 'assistant' && 
-                  messagesBeforeTrigger.length > 0 &&
-                  m.message_id > Math.max(...messagesBeforeTrigger.map(b => b.message_id))
+                immediatelyCreatedAssistantMessages: newMessages.filter(
+                  m =>
+                    m.role === 'assistant' &&
+                    messagesBeforeTrigger.length > 0 &&
+                    m.message_id > Math.max(...messagesBeforeTrigger.map(b => b.message_id)),
                 ),
               },
               timestamp: afterTriggerTime,
@@ -3468,7 +3520,7 @@ $(() => {
             }),
           }).catch(() => {});
           // #endregion
-          
+
           console.info(`[核心系统] ✓ 已触发AI生成，事件: ${event.name}`);
 
           // 监听AI生成完成，清除等待标志，并在回复结束时保存状态快照
@@ -3476,15 +3528,15 @@ $(() => {
             const endTime = Date.now();
             waitingForEventResponse = false;
             console.debug(`[核心系统] AI响应事件完成，清除等待标志: ${eventName}`);
-            
+
             // 检查是否有多个消息关联到这次生成
-            const relatedMessages = aiMessageTracking.filter(m => 
-              m.triggerTime === lastTriggerTime && m.eventName === lastTriggerEventName
+            const relatedMessages = aiMessageTracking.filter(
+              m => m.triggerTime === lastTriggerTime && m.eventName === lastTriggerEventName,
             );
-            
+
             // 检查是否有消息 ID 不匹配（可能的消息分割）
             const messageIdMatched = relatedMessages.some(m => m.message_id === message_id);
-            
+
             // 尝试获取 message_id 对应的消息（检查是否存在但未被 CHARACTER_MESSAGE_RENDERED 捕获）
             let messageEndContent: string | null = null;
             let messageEndLength = 0;
@@ -3497,7 +3549,7 @@ $(() => {
             } catch (error) {
               // 忽略错误
             }
-            
+
             // 检查 message_id 5 的内容（如果存在），看看是否与本次生成相关
             let message5Content: string | null = null;
             let message5Length = 0;
@@ -3512,15 +3564,19 @@ $(() => {
             } catch (error) {
               // 忽略错误
             }
-            
+
             // 检查是否 message_id 5 的内容包含本次生成的内容（说明内容被更新到了 message_id 5）
             // 使用事件名称来检查，更通用
             const message5ContainsEventContent = message5Content && eventName && message5Content.includes(eventName);
             // 检查是否包含系统事件标记（作为备用检测）
-            const message5ContainsSystemEvent = message5Content && (message5Content.includes('[系统事件]') || message5Content.includes('第') && message5Content.includes('天'));
+            const message5ContainsSystemEvent =
+              message5Content &&
+              (message5Content.includes('[系统事件]') ||
+                (message5Content.includes('第') && message5Content.includes('天')));
             // 如果 message_id 6 不存在但 message_id 5 包含本次生成的内容，说明内容被更新到了 message_id 5
-            const contentUpdatedToMessage5 = !messageEndContent && (message5ContainsEventContent || message5ContainsSystemEvent);
-            
+            const contentUpdatedToMessage5 =
+              !messageEndContent && (message5ContainsEventContent || message5ContainsSystemEvent);
+
             // 获取所有助手消息，检查是否有其他消息在时间窗口内
             let allAssistantMessages: Array<{ message_id: number; messageLength: number; timestamp?: number }> = [];
             try {
@@ -3537,7 +3593,7 @@ $(() => {
             } catch (error) {
               // 忽略错误
             }
-            
+
             // #region agent log - 追踪 GENERATION_ENDED 事件
             fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
               method: 'POST',
@@ -3573,8 +3629,8 @@ $(() => {
                   contentUpdatedToMessage5,
                   allAssistantMessagesCount: allAssistantMessages.length,
                   allAssistantMessageIds: allAssistantMessages.map(m => m.message_id),
-                  assistantMessagesAfterTriggerTime: allAssistantMessages.filter(m => 
-                    !m.timestamp || (lastTriggerTime && m.timestamp >= lastTriggerTime)
+                  assistantMessagesAfterTriggerTime: allAssistantMessages.filter(
+                    m => !m.timestamp || (lastTriggerTime && m.timestamp >= lastTriggerTime),
                   ),
                   // 如果消息 ID 不匹配，可能是消息分割
                   potentialMessageSplit: relatedMessages.length > 0 && !messageIdMatched,
@@ -3586,15 +3642,15 @@ $(() => {
                     timestamp: m.timestamp,
                   })),
                   // 检查是否有其他消息在时间窗口内（可能是分割的）
-                  nearbyMessages: aiMessageTracking.filter(m => 
-                    Math.abs(m.timestamp - endTime) < 5000
-                  ).map(m => ({
-                    id: m.message_id,
-                    length: m.messageLength,
-                    timeDiff: Math.abs(m.timestamp - endTime),
-                    triggerTime: m.triggerTime,
-                    eventName: m.eventName,
-                  })),
+                  nearbyMessages: aiMessageTracking
+                    .filter(m => Math.abs(m.timestamp - endTime) < 5000)
+                    .map(m => ({
+                      id: m.message_id,
+                      length: m.messageLength,
+                      timeDiff: Math.abs(m.timestamp - endTime),
+                      triggerTime: m.triggerTime,
+                      eventName: m.eventName,
+                    })),
                 },
                 timestamp: endTime,
                 sessionId: 'debug-session',
@@ -3603,31 +3659,35 @@ $(() => {
               }),
             }).catch(() => {});
             // #endregion
-            
+
             // 检查是否是内容被更新到了已存在的 message_id 5（无论是否有 relatedMessages）
             if (contentUpdatedToMessage5) {
               // 使用正确的 message_id（5）而不是期望的 message_id（6）
               const actualMessageId = 5;
-              
-              console.warn(`[核心系统] ⚠ 检测到流式生成将内容更新到了已存在的 message_id ${actualMessageId}，而不是创建新的 message_id ${message_id}。将使用实际的 message_id ${actualMessageId} 进行处理。`, {
-                expectedMessageId: message_id,
-                actualMessageId,
-                message5Length,
-                message5ContainsEventContent,
-                message5ContainsSystemEvent,
-                relatedMessagesCount: relatedMessages.length,
-              });
-              
+
+              console.warn(
+                `[核心系统] ⚠ 检测到流式生成将内容更新到了已存在的 message_id ${actualMessageId}，而不是创建新的 message_id ${message_id}。将使用实际的 message_id ${actualMessageId} 进行处理。`,
+                {
+                  expectedMessageId: message_id,
+                  actualMessageId,
+                  message5Length,
+                  message5ContainsEventContent,
+                  message5ContainsSystemEvent,
+                  relatedMessagesCount: relatedMessages.length,
+                },
+              );
+
               // #region agent log
               fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    location: 'core.ts:event_triggered监听:GENERATION_ENDED',
-                    message: '⚠ 检测到流式生成将内容更新到了已存在的 message_id 5（而不是创建新的 message_id 6），已自动使用正确的 message_id',
-                    data: {
-                      eventName: eventName,
-                      expectedMessageId: message_id,
+                  location: 'core.ts:event_triggered监听:GENERATION_ENDED',
+                  message:
+                    '⚠ 检测到流式生成将内容更新到了已存在的 message_id 5（而不是创建新的 message_id 6），已自动使用正确的 message_id',
+                  data: {
+                    eventName: eventName,
+                    expectedMessageId: message_id,
                     actualMessageId,
                     trackedMessageIds: relatedMessages.map(m => m.message_id),
                     message5Exists: message5Content !== null,
@@ -3647,7 +3707,8 @@ $(() => {
                     triggerTime: lastTriggerTime,
                     eventMessageId: eventMessageId,
                     // 这是问题的根本原因：内容被更新到了已存在的消息，而不是创建新消息
-                    rootCause: '流式生成将内容更新到了已存在的 message_id 5，导致 GENERATION_ENDED 期望的 message_id 6 不存在',
+                    rootCause:
+                      '流式生成将内容更新到了已存在的 message_id 5，导致 GENERATION_ENDED 期望的 message_id 6 不存在',
                     // 优化：使用实际的 message_id 而不是期望的 message_id
                     optimization: '已自动使用实际的 message_id 5 进行处理，避免消息 ID 不匹配的问题',
                   },
@@ -3658,58 +3719,69 @@ $(() => {
                 }),
               }).catch(() => {});
               // #endregion
-              
+
               // 优化：使用实际的 message_id 进行后续处理（如果需要）
               // 注意：这里不修改 message_id 变量，因为 GENERATION_ENDED 事件已经传递了期望的 message_id
               // 但我们可以记录实际的 message_id 用于日志和调试
             } else if (relatedMessages.length > 0 && !messageIdMatched) {
               // 如果检测到消息 ID 不匹配或多条消息，记录警告（但不是 contentUpdatedToMessage5 的情况）
-                console.warn(`[核心系统] ⚠ 检测到消息 ID 不匹配：GENERATION_ENDED 的 message_id (${message_id}) 与 CHARACTER_MESSAGE_RENDERED 追踪的消息 ID 不一致`, {
+              console.warn(
+                `[核心系统] ⚠ 检测到消息 ID 不匹配：GENERATION_ENDED 的 message_id (${message_id}) 与 CHARACTER_MESSAGE_RENDERED 追踪的消息 ID 不一致`,
+                {
                   generationEndMessageId: message_id,
                   trackedMessageIds: relatedMessages.map(m => m.message_id),
-                  allTrackedMessages: aiMessageTracking.map(m => ({ id: m.message_id, triggerTime: m.triggerTime, eventName: m.eventName, length: m.messageLength })),
-                });
-                
-                // #region agent log
-                fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    location: 'core.ts:event_triggered监听:GENERATION_ENDED',
-                    message: '⚠ 检测到消息 ID 不匹配（可能的消息分割）',
-                    data: {
-                      eventName: eventName,
-                      generationEndMessageId: message_id,
-                      trackedMessageIds: relatedMessages.map(m => m.message_id),
-                      allTrackedMessages: aiMessageTracking.map(m => ({
-                        id: m.message_id,
-                        triggerTime: m.triggerTime,
-                        eventName: m.eventName,
-                        length: m.messageLength,
-                        preview: m.messagePreview.substring(0, 100),
-                        timestamp: m.timestamp,
-                      })),
-                      triggerTime: lastTriggerTime,
-                      eventMessageId: eventMessageId,
-                    },
-                    timestamp: Date.now(),
-                    sessionId: 'debug-session',
-                    runId: 'track-streaming-gen',
-                    hypothesisId: 'MESSAGE_ID_MISMATCH',
-                  }),
-                }).catch(() => {});
-                // #endregion
+                  allTrackedMessages: aiMessageTracking.map(m => ({
+                    id: m.message_id,
+                    triggerTime: m.triggerTime,
+                    eventName: m.eventName,
+                    length: m.messageLength,
+                  })),
+                },
+              );
+
+              // #region agent log
+              fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  location: 'core.ts:event_triggered监听:GENERATION_ENDED',
+                  message: '⚠ 检测到消息 ID 不匹配（可能的消息分割）',
+                  data: {
+                    eventName: eventName,
+                    generationEndMessageId: message_id,
+                    trackedMessageIds: relatedMessages.map(m => m.message_id),
+                    allTrackedMessages: aiMessageTracking.map(m => ({
+                      id: m.message_id,
+                      triggerTime: m.triggerTime,
+                      eventName: m.eventName,
+                      length: m.messageLength,
+                      preview: m.messagePreview.substring(0, 100),
+                      timestamp: m.timestamp,
+                    })),
+                    triggerTime: lastTriggerTime,
+                    eventMessageId: eventMessageId,
+                  },
+                  timestamp: Date.now(),
+                  sessionId: 'debug-session',
+                  runId: 'track-streaming-gen',
+                  hypothesisId: 'MESSAGE_ID_MISMATCH',
+                }),
+              }).catch(() => {});
+              // #endregion
             } else if (!contentUpdatedToMessage5 && relatedMessages.length > 1) {
               // 检查是否有多条消息关联到同一个触发事件（可能是消息分割）
               // 检测到多条消息关联到同一个触发事件（可能是消息分割）
-              console.warn(`[核心系统] ⚠ 检测到可能的消息分割：事件 "${lastTriggerEventName}" 触发的生成产生了 ${relatedMessages.length} 条消息`, {
-                eventName: lastTriggerEventName,
-                triggerTime: lastTriggerTime,
-                generationEndMessageId: message_id,
-                relatedMessageIds: relatedMessages.map(m => m.message_id),
-                totalLength: relatedMessages.reduce((sum, m) => sum + m.messageLength, 0),
-              });
-              
+              console.warn(
+                `[核心系统] ⚠ 检测到可能的消息分割：事件 "${lastTriggerEventName}" 触发的生成产生了 ${relatedMessages.length} 条消息`,
+                {
+                  eventName: lastTriggerEventName,
+                  triggerTime: lastTriggerTime,
+                  generationEndMessageId: message_id,
+                  relatedMessageIds: relatedMessages.map(m => m.message_id),
+                  totalLength: relatedMessages.reduce((sum, m) => sum + m.messageLength, 0),
+                },
+              );
+
               // #region agent log
               fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
                 method: 'POST',

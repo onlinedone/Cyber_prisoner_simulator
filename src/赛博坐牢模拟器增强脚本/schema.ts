@@ -3,10 +3,22 @@ export const Schema = z.object({
     姓名: z.string().default('未设定'),
     年龄: z.number().default(0),
     罪名: z.string().default('未设定'),
-    健康: z.coerce.number().transform(v => Math.max(0, Math.min(100, v))).default(75),
-    精神: z.coerce.number().transform(v => Math.max(0, Math.min(100, v))).default(70),
-    力量: z.coerce.number().transform(v => Math.max(0, Math.min(100, v))).default(65),
-    智力: z.coerce.number().transform(v => Math.max(0, Math.min(100, v))).default(70),
+    健康: z.coerce
+      .number()
+      .transform(v => Math.max(0, Math.min(100, v)))
+      .default(75),
+    精神: z.coerce
+      .number()
+      .transform(v => Math.max(0, Math.min(100, v)))
+      .default(70),
+    力量: z.coerce
+      .number()
+      .transform(v => Math.max(0, Math.min(100, v)))
+      .default(65),
+    智力: z.coerce
+      .number()
+      .transform(v => Math.max(0, Math.min(100, v)))
+      .default(70),
     在押天数: z.number().default(0),
     当前阶段: z.string().default('刑事拘留'),
     监室类型: z.string().default('过渡监室'),
