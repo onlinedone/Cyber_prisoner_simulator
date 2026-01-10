@@ -1,0 +1,54 @@
+=== 可用的 CDN 链接 ===
+
+【推荐】方案 1：使用提交哈希（最可靠，立即生效）
+脚本文件：
+import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@c373efc0172df719a49695e11b9340b28a48a98a/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js';
+
+状态栏界面：
+$('body').load('https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@c373efc0172df719a49695e11b9340b28a48a98a/dist/赛博坐牢模拟器增强脚本/界面/状态栏/index.html');
+
+【备选】方案 2：使用 main 分支
+脚本文件：
+import 'https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@main/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js';
+
+状态栏界面：
+$('body').load('https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@main/dist/赛博坐牢模拟器增强脚本/界面/状态栏/index.html');
+
+【备选】方案 3：使用 GitHub Raw（最直接，不依赖 CDN）
+脚本文件：
+import 'https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/main/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js';
+
+状态栏界面：
+$('body').load('https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/main/dist/赛博坐牢模拟器增强脚本/界面/状态栏/index.html');
+
+【备选】方案 4：使用 Fastly 镜像（国内推荐）
+脚本文件：
+import 'https://fastly.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@main/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js';
+
+状态栏界面：
+$('body').load('https://fastly.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@main/dist/赛博坐牢模拟器增强脚本/界面/状态栏/index.html');
+
+【备选】方案 5：使用 Gcore 镜像
+脚本文件：
+import 'https://gcore.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@main/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js';
+
+状态栏界面：
+$('body').load('https://gcore.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@main/dist/赛博坐牢模拟器增强脚本/界面/状态栏/index.html');
+
+=== 测试链接 ===
+在浏览器中直接访问以下链接，如果能看到 JavaScript 代码，说明链接可用：
+
+1. 提交哈希（推荐）：
+https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@c373efc0172df719a49695e11b9340b28a48a98a/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js
+
+2. main 分支：
+https://cdn.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@main/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js
+
+3. GitHub Raw：
+https://raw.githubusercontent.com/onlinedone/Cyber_prisoner_simulator/main/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js
+
+4. Fastly 镜像：
+https://fastly.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@main/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js
+
+5. Gcore 镜像：
+https://gcore.jsdelivr.net/gh/onlinedone/Cyber_prisoner_simulator@main/dist/赛博坐牢模拟器增强脚本/脚本/detention-system.js

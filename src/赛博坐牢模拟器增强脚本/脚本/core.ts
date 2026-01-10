@@ -497,40 +497,8 @@ console.log('[DEBUG-HYP-B] core.ts:363 - 准备创建核心系统', {
 // 立即创建核心系统，让其他模块可以立即访问
 if (!window.detentionSystem) {
   // #region agent log
-  // 调试日志：只在本地开发环境中发送，避免在生产环境中触发 CORS 错误
-  try {
-    const isLocalDev =
-      typeof window !== 'undefined' &&
-      window.location &&
-      (window.location.hostname === 'localhost' ||
-        window.location.hostname === '127.0.0.1' ||
-        window.location.hostname.startsWith('192.168.') ||
-        window.location.hostname.startsWith('10.') ||
-        window.location.hostname.startsWith('172.'));
-    
-    // 调试日志已禁用以避免 CORS 错误
-    /* if (isLocalDev) {
-      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'core.ts:创建核心系统',
-          message: '开始调用 bootstrapDetentionSystem',
-          data: {
-            windowType: typeof window,
-            isIframe: window.parent !== window,
-            parentExists: !!window.parent,
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'fix-init-failure',
-          hypothesisId: 'A',
-        }),
-      }).catch(() => {});
-    } */
-  } catch (e) {
-    // 静默失败，不输出错误
-  }
+  // 调试日志已禁用以避免 CORS 错误
+  // 所有调试日志代码已注释掉
   // #endregion
 
   try {
