@@ -312,24 +312,7 @@ function syncStateToMemoryEnhancement(stateData: ProtagonistState): void {
     const currentChatId =
       typeof SillyTavern !== 'undefined' && SillyTavern.getCurrentChatId ? SillyTavern.getCurrentChatId() : null;
     if (!currentChatId) {
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'status_panel.ts:syncStateToMemoryEnhancement',
-          message: '聊天文件不存在，跳过同步到记忆增强插件',
-          data: {
-            hasChatId: false,
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'fix-save-chat-error',
-          hypothesisId: 'NO_CHAT_SKIP_SYNC',
-        }),
-      }).catch(() => {}); */
-      // #endregion
       console.debug('[状态栏] 聊天文件不存在，跳过同步状态到记忆增强插件');
       return;
     }
@@ -338,70 +321,17 @@ function syncStateToMemoryEnhancement(stateData: ProtagonistState): void {
     try {
       const testChatVars = getVariables({ type: 'chat' });
       if (!testChatVars || typeof testChatVars !== 'object') {
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'status_panel.ts:syncStateToMemoryEnhancement',
-            message: '无法获取聊天变量，跳过同步到记忆增强插件',
-            data: {
-              hasChatId: !!currentChatId,
-              hasChatVars: !!testChatVars,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-save-chat-error',
-            hypothesisId: 'NO_CHAT_VARS_SKIP_SYNC',
-          }),
-        }).catch(() => {}); */
-        // #endregion
         console.debug('[状态栏] 无法获取聊天变量，跳过同步状态到记忆增强插件');
         return;
       }
     } catch (testError) {
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'status_panel.ts:syncStateToMemoryEnhancement',
-          message: '测试获取聊天变量失败，跳过同步到记忆增强插件',
-          data: {
-            hasChatId: !!currentChatId,
-            error: testError instanceof Error ? testError.message : String(testError),
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'fix-save-chat-error',
-          hypothesisId: 'TEST_CHAT_VARS_ERROR_SKIP_SYNC',
-        }),
-      }).catch(() => {}); */
-      // #endregion
       console.debug('[状态栏] 测试获取聊天变量失败，跳过同步状态到记忆增强插件:', testError);
       return;
     }
   } catch (checkError) {
-    // #region agent log
     // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'status_panel.ts:syncStateToMemoryEnhancement',
-        message: '检查聊天文件状态失败，跳过同步到记忆增强插件',
-        data: {
-          error: checkError instanceof Error ? checkError.message : String(checkError),
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'fix-save-chat-error',
-        hypothesisId: 'CHECK_CHAT_ERROR_SKIP_SYNC',
-      }),
-    }).catch(() => {}); */
-    // #endregion
     console.debug('[状态栏] 检查聊天文件状态失败，跳过同步状态到记忆增强插件:', checkError);
     return;
   }
@@ -423,25 +353,7 @@ function syncStateToMemoryEnhancement(stateData: ProtagonistState): void {
     // 否则，插件应该能够自动从HTML注释中读取状态更新
   } catch (error) {
     console.warn('[状态栏] 同步状态到记忆增强插件时出错:', error);
-    // #region agent log
     // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'status_panel.ts:syncStateToMemoryEnhancement',
-        message: '同步状态到记忆增强插件失败',
-        data: {
-          error: error instanceof Error ? error.message : String(error),
-          errorType: error instanceof Error ? error.constructor.name : typeof error,
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'fix-save-chat-error',
-        hypothesisId: 'SYNC_TO_PLUGIN_ERROR',
-      }),
-    }).catch(() => {}); */
-    // #endregion
   }
 }
 
@@ -546,27 +458,7 @@ function updateState(data: Partial<ProtagonistState>): void {
     }
 
     if (data.clothing) {
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'status_panel.ts:407',
-          message: 'updateState接收clothing数据',
-          data: {
-            top: data.clothing.top || 'null',
-            bottom: data.clothing.bottom || 'null',
-            topLength: data.clothing.top?.length || 0,
-            bottomLength: data.clothing.bottom?.length || 0,
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'run1',
-          hypothesisId: 'A',
-        }),
-      }).catch(() => {}); */
-      // #endregion
       if (data.clothing.top !== undefined) state.clothing.top = data.clothing.top;
       if (data.clothing.bottom !== undefined) state.clothing.bottom = data.clothing.bottom;
       if (data.clothing.underwear !== undefined) state.clothing.underwear = data.clothing.underwear;
@@ -575,27 +467,7 @@ function updateState(data: Partial<ProtagonistState>): void {
       if (data.clothing.shoes !== undefined) state.clothing.shoes = data.clothing.shoes;
       if (data.clothing.restraints !== undefined) state.clothing.restraints = data.clothing.restraints;
       if (data.clothing.cleanliness !== undefined) state.clothing.cleanliness = data.clothing.cleanliness;
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'status_panel.ts:416',
-          message: 'updateState更新clothing后',
-          data: {
-            top: state.clothing.top || 'null',
-            bottom: state.clothing.bottom || 'null',
-            topLength: state.clothing.top?.length || 0,
-            bottomLength: state.clothing.bottom?.length || 0,
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'run1',
-          hypothesisId: 'E',
-        }),
-      }).catch(() => {}); */
-      // #endregion
     }
 
     if (data.currentTask !== undefined) state.currentTask = data.currentTask;
@@ -1167,32 +1039,7 @@ function detectMemoryEnhancementPlugin(): {
   ext_exportAllTablesAsJson?: () => { [uid: string]: { uid: string; name: string; content: Array<Array<string>> } };
   VERSION?: string;
 } | null {
-  // #region agent log - HYP-E: 检测记忆增强插件
   // 调试日志已禁用以避免 CORS 错误
-  /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      location: 'status_panel.ts:1225',
-      message: '开始检测记忆增强插件',
-      data: {
-        hasWindow: typeof window !== 'undefined',
-        hasStMemoryEnhancement: !!(window as any).stMemoryEnhancement,
-        hasMemoryEnhancement: !!(window as any).MemoryEnhancement,
-        hasMemoryEnhancementLower: !!(window as any).memoryEnhancement,
-        hasMemoryEnhancementPlugin: !!(window as any).MemoryEnhancementPlugin,
-        hasMemoryEnhancementPluginLower: !!(window as any).memoryEnhancementPlugin,
-        stMemoryEnhancementType: typeof (window as any).stMemoryEnhancement,
-        memoryEnhancementType: typeof (window as any).MemoryEnhancement,
-        memoryEnhancementLowerType: typeof (window as any).memoryEnhancement,
-      },
-      timestamp: Date.now(),
-      sessionId: 'debug-status-panel',
-      runId: 'run1',
-      hypothesisId: 'E',
-    }),
-  }).catch(() => {}); */
-  // #endregion
 
   try {
     // 尝试多种可能的命名方式（包括 stMemoryEnhancement）
@@ -1203,26 +1050,7 @@ function detectMemoryEnhancementPlugin(): {
       (window as any).MemoryEnhancementPlugin ||
       (window as any).memoryEnhancementPlugin;
 
-    // #region agent log - HYP-E: 检查插件对象
     // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'status_panel.ts:1234',
-        message: '检查插件对象',
-        data: {
-          hasPlugin: !!memoryEnhancement,
-          pluginType: typeof memoryEnhancement,
-          pluginKeys: memoryEnhancement ? Object.keys(memoryEnhancement).slice(0, 10) : [],
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-status-panel',
-        runId: 'run1',
-        hypothesisId: 'E',
-      }),
-    }).catch(() => {}); */
-    // #endregion
 
     // 检查插件是否可用（支持 ext_getAllTables 或 ext_exportAllTablesAsJson）
     if (
@@ -1230,73 +1058,15 @@ function detectMemoryEnhancementPlugin(): {
       (typeof memoryEnhancement.ext_getAllTables === 'function' ||
         typeof memoryEnhancement.ext_exportAllTablesAsJson === 'function')
     ) {
-      // #region agent log - HYP-E: 插件可用
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'status_panel.ts:1235',
-          message: '记忆增强插件可用',
-          data: {
-            success: true,
-            hasExtGetAllTables: typeof memoryEnhancement.ext_getAllTables === 'function',
-            hasExtExportAllTablesAsJson: typeof memoryEnhancement.ext_exportAllTablesAsJson === 'function',
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-status-panel',
-          runId: 'run1',
-          hypothesisId: 'E',
-        }),
-      }).catch(() => {}); */
-      // #endregion
       return memoryEnhancement;
     }
 
-    // #region agent log - HYP-E: 插件不可用
     // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'status_panel.ts:1237',
-        message: '记忆增强插件不可用',
-        data: {
-          hasPlugin: !!memoryEnhancement,
-          hasExtGetAllTables: !!(memoryEnhancement && typeof memoryEnhancement.ext_getAllTables === 'function'),
-          hasExtExportAllTablesAsJson: !!(
-            memoryEnhancement && typeof memoryEnhancement.ext_exportAllTablesAsJson === 'function'
-          ),
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-status-panel',
-        runId: 'run1',
-        hypothesisId: 'E',
-      }),
-    }).catch(() => {}); */
-    // #endregion
     return null;
   } catch (error) {
     console.warn('[状态栏] 检测记忆增强插件时出错:', error);
-    // #region agent log - HYP-E: 插件检测出错
     // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'status_panel.ts:1239',
-        message: '记忆增强插件检测出错',
-        data: {
-          error: error instanceof Error ? error.message : String(error),
-          errorStack: error instanceof Error ? error.stack : undefined,
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-status-panel',
-        runId: 'run1',
-        hypothesisId: 'E',
-      }),
-    }).catch(() => {}); */
-    // #endregion
     return null;
   }
 }
@@ -1318,25 +1088,7 @@ function getStateFromMemoryEnhancement(): ProtagonistState | null {
     // 记忆增强插件不提供 getState 方法，需要从表格数据中解析状态
     // 优先尝试 ext_exportAllTablesAsJson（因为它更稳定，返回格式更规范）
     if (!memoryState) {
-      // #region agent log - HYP-E: 尝试从变量系统获取状态
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'status_panel.ts:getStateFromMemoryEnhancement',
-          message: '尝试从表格数据获取记忆增强插件状态',
-          data: {
-            hasExtGetAllTables: typeof plugin.ext_getAllTables === 'function',
-            hasExtExportAllTablesAsJson: typeof plugin.ext_exportAllTablesAsJson === 'function',
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-status-panel',
-          runId: 'run1',
-          hypothesisId: 'E',
-        }),
-      }).catch(() => {}); */
-      // #endregion
 
       // 尝试从聊天变量中读取状态数据
       // 记忆增强插件可能将数据存储在特定路径下
@@ -1365,26 +1117,7 @@ function getStateFromMemoryEnhancement(): ProtagonistState | null {
             const candidate = chatVars[path];
             if (candidate && typeof candidate === 'object' && ('health' in candidate || 'mental' in candidate)) {
               memoryState = candidate;
-              // #region agent log - HYP-E: 从聊天变量找到状态
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'status_panel.ts:getStateFromMemoryEnhancement',
-                  message: '从聊天变量找到状态数据',
-                  data: {
-                    path: `chat.${path}`,
-                    hasHealth: 'health' in candidate,
-                    hasMental: 'mental' in candidate,
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-status-panel',
-                  runId: 'run1',
-                  hypothesisId: 'E',
-                }),
-              }).catch(() => {}); */
-              // #endregion
               break;
             }
           }
@@ -1394,26 +1127,7 @@ function getStateFromMemoryEnhancement(): ProtagonistState | null {
             const candidate = messageVars[path];
             if (candidate && typeof candidate === 'object' && ('health' in candidate || 'mental' in candidate)) {
               memoryState = candidate;
-              // #region agent log - HYP-E: 从消息变量找到状态
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'status_panel.ts:getStateFromMemoryEnhancement',
-                  message: '从消息变量找到状态数据',
-                  data: {
-                    path: `message.${path}`,
-                    hasHealth: 'health' in candidate,
-                    hasMental: 'mental' in candidate,
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-status-panel',
-                  runId: 'run1',
-                  hypothesisId: 'E',
-                }),
-              }).catch(() => {}); */
-              // #endregion
               break;
             }
           }
@@ -1443,71 +1157,18 @@ function getStateFromMemoryEnhancement(): ProtagonistState | null {
           const foundInChat = searchInVars(chatVars);
           if (foundInChat) {
             memoryState = foundInChat;
-            // #region agent log - HYP-E: 递归搜索找到状态
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'status_panel.ts:getStateFromMemoryEnhancement',
-                message: '递归搜索聊天变量找到状态数据',
-                data: {
-                  hasHealth: 'health' in foundInChat,
-                  hasMental: 'mental' in foundInChat,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-status-panel',
-                runId: 'run1',
-                hypothesisId: 'E',
-              }),
-            }).catch(() => {}); */
-            // #endregion
           } else {
             const foundInMessage = searchInVars(messageVars);
             if (foundInMessage) {
               memoryState = foundInMessage;
-              // #region agent log - HYP-E: 递归搜索找到状态
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'status_panel.ts:getStateFromMemoryEnhancement',
-                  message: '递归搜索消息变量找到状态数据',
-                  data: {
-                    hasHealth: 'health' in foundInMessage,
-                    hasMental: 'mental' in foundInMessage,
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-status-panel',
-                  runId: 'run1',
-                  hypothesisId: 'E',
-                }),
-              }).catch(() => {}); */
-              // #endregion
             }
           }
         }
       } catch (error) {
         console.warn('[状态栏] 从变量系统读取状态时出错:', error);
-        // #region agent log - HYP-E: 变量系统读取失败
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'status_panel.ts:getStateFromMemoryEnhancement',
-            message: '从变量系统读取状态失败',
-            data: {
-              error: error instanceof Error ? error.message : String(error),
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-status-panel',
-            runId: 'run1',
-            hypothesisId: 'E',
-          }),
-        }).catch(() => {}); */
-        // #endregion
       }
 
       // 如果变量系统也没找到，尝试使用 ext_exportAllTablesAsJson（优先，因为它更稳定）
@@ -1516,46 +1177,10 @@ function getStateFromMemoryEnhancement(): ProtagonistState | null {
         // 优先尝试 ext_exportAllTablesAsJson
         if (typeof plugin.ext_exportAllTablesAsJson === 'function') {
           try {
-            // #region agent log - HYP-E: 使用 ext_exportAllTablesAsJson 获取状态
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'status_panel.ts:getStateFromMemoryEnhancement',
-                message: '使用 ext_exportAllTablesAsJson 获取状态',
-                data: {
-                  hasExtExportAllTablesAsJson: true,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-status-panel',
-                runId: 'run1',
-                hypothesisId: 'E',
-              }),
-            }).catch(() => {}); */
-            // #endregion
 
             const jsonData = plugin.ext_exportAllTablesAsJson();
-            // #region agent log - HYP-E: ext_exportAllTablesAsJson 返回结果
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'status_panel.ts:getStateFromMemoryEnhancement',
-                message: 'ext_exportAllTablesAsJson 返回结果',
-                data: {
-                  isObject: typeof jsonData === 'object' && jsonData !== null,
-                  tableCount: typeof jsonData === 'object' && jsonData !== null ? Object.keys(jsonData).length : 0,
-                  tableUids: typeof jsonData === 'object' && jsonData !== null ? Object.keys(jsonData).slice(0, 5) : [],
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-status-panel',
-                runId: 'run1',
-                hypothesisId: 'E',
-              }),
-            }).catch(() => {}); */
-            // #endregion
 
             // ext_exportAllTablesAsJson 返回格式: {uid: {uid, name, content: Array<Array<string>>}, ...}
             if (jsonData && typeof jsonData === 'object' && !Array.isArray(jsonData)) {
@@ -1645,96 +1270,24 @@ function getStateFromMemoryEnhancement(): ProtagonistState | null {
 
                   if ('health' in stateObj || 'mental' in stateObj) {
                     memoryState = stateObj;
-                    // #region agent log - HYP-E: 从 JSON 表格数据解析出状态
                     // 调试日志已禁用以避免 CORS 错误
-                    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({
-                        location: 'status_panel.ts:getStateFromMemoryEnhancement',
-                        message: '从 JSON 表格数据解析出状态',
-                        data: {
-                          tableName: targetTable.name || 'unknown',
-                          hasHealth: 'health' in stateObj,
-                          hasMental: 'mental' in stateObj,
-                        },
-                        timestamp: Date.now(),
-                        sessionId: 'debug-status-panel',
-                        runId: 'run1',
-                        hypothesisId: 'E',
-                      }),
-                    }).catch(() => {}); */
-                    // #endregion
                   }
                 }
               }
             }
           } catch (jsonError) {
             console.warn('[状态栏] ext_exportAllTablesAsJson 调用失败，尝试 ext_getAllTables:', jsonError);
-            // #region agent log - HYP-E: ext_exportAllTablesAsJson 失败，尝试 ext_getAllTables
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'status_panel.ts:getStateFromMemoryEnhancement',
-                message: 'ext_exportAllTablesAsJson 失败，尝试 ext_getAllTables',
-                data: {
-                  error: jsonError instanceof Error ? jsonError.message : String(jsonError),
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-status-panel',
-                runId: 'run1',
-                hypothesisId: 'E',
-              }),
-            }).catch(() => {}); */
-            // #endregion
           }
         }
 
         // 如果 ext_exportAllTablesAsJson 失败或不可用，尝试 ext_getAllTables（作为最后手段）
         if (!memoryState && typeof plugin.ext_getAllTables === 'function') {
           try {
-            // #region agent log - HYP-E: 使用 ext_getAllTables 获取状态
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'status_panel.ts:getStateFromMemoryEnhancement',
-                message: '使用 ext_getAllTables 获取状态',
-                data: {
-                  hasExtGetAllTables: true,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-status-panel',
-                runId: 'run1',
-                hypothesisId: 'E',
-              }),
-            }).catch(() => {}); */
-            // #endregion
 
             const allTables = plugin.ext_getAllTables();
-            // #region agent log - HYP-E: ext_getAllTables 返回结果
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'status_panel.ts:getStateFromMemoryEnhancement',
-                message: 'ext_getAllTables 返回结果',
-                data: {
-                  isArray: Array.isArray(allTables),
-                  length: Array.isArray(allTables) ? allTables.length : 0,
-                  tableNames: Array.isArray(allTables) ? allTables.map((t: any) => t?.name).filter(Boolean) : [],
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-status-panel',
-                runId: 'run1',
-                hypothesisId: 'E',
-              }),
-            }).catch(() => {}); */
-            // #endregion
 
             // ext_getAllTables 返回的是数组，格式: [{name: string, data: Array<Array<string>>}, ...]
             // data 的第一行是表头，后续行是数据
@@ -1821,27 +1374,7 @@ function getStateFromMemoryEnhancement(): ProtagonistState | null {
                   // 如果找到了 health 或 mental，则认为找到了状态数据
                   if ('health' in stateObj || 'mental' in stateObj) {
                     memoryState = stateObj;
-                    // #region agent log - HYP-E: 从表格数据解析出状态
                     // 调试日志已禁用以避免 CORS 错误
-                    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({
-                        location: 'status_panel.ts:getStateFromMemoryEnhancement',
-                        message: '从表格数据解析出状态',
-                        data: {
-                          tableName: targetTable.name,
-                          hasHealth: 'health' in stateObj,
-                          hasMental: 'mental' in stateObj,
-                          stateKeys: Object.keys(stateObj).slice(0, 10),
-                        },
-                        timestamp: Date.now(),
-                        sessionId: 'debug-status-panel',
-                        runId: 'run1',
-                        hypothesisId: 'E',
-                      }),
-                    }).catch(() => {}); */
-                    // #endregion
                   }
                 }
               }
@@ -1849,73 +1382,20 @@ function getStateFromMemoryEnhancement(): ProtagonistState | null {
           } catch (extError: any) {
             // ext_getAllTables 可能出错（如 table.getBody is not a function），忽略错误
             console.warn('[状态栏] ext_getAllTables 调用失败，跳过:', extError);
-            // #region agent log - HYP-E: ext_getAllTables 调用失败
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'status_panel.ts:getStateFromMemoryEnhancement',
-                message: 'ext_getAllTables 调用失败',
-                data: {
-                  error: extError instanceof Error ? extError.message : String(extError),
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-status-panel',
-                runId: 'run1',
-                hypothesisId: 'E',
-              }),
-            }).catch(() => {}); */
-            // #endregion
           }
         }
       }
     } // 结束 if (!memoryState) - 尝试从表格数据获取状态
 
     if (!memoryState || typeof memoryState !== 'object') {
-      // #region agent log - HYP-E: 无法获取状态
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'status_panel.ts:getStateFromMemoryEnhancement',
-          message: '无法从插件获取状态',
-          data: {
-            hasExtGetAllTables: typeof plugin.ext_getAllTables === 'function',
-            hasExtExportAllTablesAsJson: typeof plugin.ext_exportAllTablesAsJson === 'function',
-            memoryStateType: typeof memoryState,
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-status-panel',
-          runId: 'run1',
-          hypothesisId: 'E',
-        }),
-      }).catch(() => {}); */
-      // #endregion
       return null;
     }
 
     // 检查是否有基本的状态字段
     if (memoryState.health === undefined && memoryState.mental === undefined) {
-      // #region agent log - HYP-E: 状态数据不完整
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'status_panel.ts:getStateFromMemoryEnhancement',
-          message: '状态数据不完整（缺少 health 和 mental）',
-          data: {
-            memoryStateKeys: Object.keys(memoryState).slice(0, 20),
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-status-panel',
-          runId: 'run1',
-          hypothesisId: 'E',
-        }),
-      }).catch(() => {}); */
-      // #endregion
       return null;
     }
 
@@ -2033,28 +1513,7 @@ const StatusPanel: StatusPanelImpl & {
 
     // 如果记忆增强插件不可用，回退到状态栏模块内部状态
     debugLog('[状态栏] 记忆增强插件不可用，使用状态栏模块内部状态');
-    // #region agent log
     // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'status_panel.ts:1262',
-        message: 'getState返回clothing数据',
-        data: {
-          top: state.clothing.top || 'null',
-          bottom: state.clothing.bottom || 'null',
-          topLength: state.clothing.top?.length || 0,
-          bottomLength: state.clothing.bottom?.length || 0,
-          allClothing: JSON.stringify(state.clothing),
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'run1',
-        hypothesisId: 'E',
-      }),
-    }).catch(() => {}); */
-    // #endregion
     const internalState: ProtagonistState = {
       name: state.name,
       age: state.age,

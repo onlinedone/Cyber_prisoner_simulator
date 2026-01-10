@@ -307,47 +307,11 @@ console.info('[知识库加载器] v5.1.0 启动...');
  * 安全地获取世界书名称列表（支持多种访问方式）
  */
 function safeGetWorldbookNames(): string[] {
-  // #region agent log
-  fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      location: 'worldbook_loader.ts:safeGetWorldbookNames',
-      message: '尝试获取世界书名称',
-      data: {
-        hasGlobalFn: typeof (window as any).getWorldbookNames !== 'undefined',
-        hasTavernHelper: typeof window !== 'undefined' && !!(window as any).TavernHelper,
-        hasTavernHelperFn:
-          typeof window !== 'undefined' &&
-          !!(window as any).TavernHelper &&
-          typeof (window as any).TavernHelper.getWorldbookNames === 'function',
-      },
-      timestamp: Date.now(),
-      sessionId: 'debug-session',
-      runId: 'initial',
-      hypothesisId: 'A',
-    }),
-  }).catch(() => {});
-  // #endregion
+  // 调试日志已禁用以避免 CORS 错误
 
   // 假设A: 尝试直接调用全局函数
   if (typeof (window as any).getWorldbookNames !== 'undefined') {
-    // #region agent log
     // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'worldbook_loader.ts:safeGetWorldbookNames',
-        message: '通过全局函数获取',
-        data: {},
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'initial',
-        hypothesisId: 'A',
-      }),
-    }).catch(() => {}); */
-    // #endregion
     return (window as any).getWorldbookNames();
   }
 
@@ -355,45 +319,12 @@ function safeGetWorldbookNames(): string[] {
   if (typeof window !== 'undefined' && (window as any).TavernHelper) {
     const helper = (window as any).TavernHelper;
     if (typeof helper.getWorldbookNames === 'function') {
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'worldbook_loader.ts:safeGetWorldbookNames',
-          message: '通过TavernHelper获取',
-          data: {},
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'initial',
-          hypothesisId: 'B',
-        }),
-      }).catch(() => {}); */
-      // #endregion
       return helper.getWorldbookNames();
     }
   }
 
-  // #region agent log
   // 调试日志已禁用以避免 CORS 错误
-  /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      location: 'worldbook_loader.ts:safeGetWorldbookNames',
-      message: '所有方式都失败',
-      data: {
-        windowType: typeof window,
-        tavernHelperType: typeof window !== 'undefined' ? typeof (window as any).TavernHelper : 'N/A',
-      },
-      timestamp: Date.now(),
-      sessionId: 'debug-session',
-      runId: 'initial',
-      hypothesisId: 'C',
-    }),
-  }).catch(() => {}); */
-  // #endregion
 
   throw new Error(
     'getWorldbookNames 函数不可用。' +
@@ -512,39 +443,9 @@ $(() => {
 
       try {
         // 获取所有世界书名称
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'worldbook_loader.ts:_loadWorldbookInternal',
-            message: '调用safeGetWorldbookNames前',
-            data: { bookName, displayName: config.displayName },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'initial',
-            hypothesisId: 'A',
-          }),
-        }).catch(() => {}); */
-        // #endregion
         const allWorldbookNames = safeGetWorldbookNames();
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'worldbook_loader.ts:_loadWorldbookInternal',
-            message: '调用safeGetWorldbookNames后',
-            data: { count: allWorldbookNames.length, names: allWorldbookNames.slice(0, 5) },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'initial',
-            hypothesisId: 'A',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 优化匹配策略：优先匹配中文名称（displayName），因为实际知识库使用中文名称
         let targetWorldbookName: string | null = null;
@@ -575,27 +476,7 @@ $(() => {
 
         if (!targetWorldbookName) {
           const availableBooks = allWorldbookNames.join(', ');
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'worldbook_loader.ts:_loadWorldbookInternal',
-              message: '未找到匹配的世界书',
-              data: {
-                bookName,
-                displayName: config.displayName,
-                availableBooks: allWorldbookNames,
-                searchingFor: config.name,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-getworldbook',
-              hypothesisId: 'E',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           throw new Error(
             `未找到世界书: ${config.displayName} (${bookName})\n` +
               `可用的世界书: ${availableBooks}\n` +
@@ -604,75 +485,13 @@ $(() => {
         }
 
         // 获取世界书内容
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'worldbook_loader.ts:_loadWorldbookInternal',
-            message: '调用getWorldbook前',
-            data: {
-              targetWorldbookName,
-              bookName,
-              displayName: config.displayName,
-              allAvailableBooks: allWorldbookNames,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-getworldbook',
-            hypothesisId: 'A',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         let entries;
         let worldbookData: unknown;
         try {
           worldbookData = await getWorldbook(targetWorldbookName);
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'worldbook_loader.ts:_loadWorldbookInternal',
-              message: '调用getWorldbook后 - 原始数据',
-              data: {
-                worldbookDataType: typeof worldbookData,
-                worldbookDataIsArray: Array.isArray(worldbookData),
-                worldbookDataIsObject: worldbookData && typeof worldbookData === 'object',
-                worldbookDataKeys:
-                  worldbookData && typeof worldbookData === 'object' ? Object.keys(worldbookData as object) : null,
-                worldbookDataHasEntriesProperty:
-                  worldbookData &&
-                  typeof worldbookData === 'object' &&
-                  !Array.isArray(worldbookData) &&
-                  'entries' in (worldbookData as object),
-                worldbookDataEntriesType:
-                  worldbookData &&
-                  typeof worldbookData === 'object' &&
-                  !Array.isArray(worldbookData) &&
-                  'entries' in (worldbookData as object)
-                    ? typeof (worldbookData as { entries?: unknown }).entries
-                    : null,
-                worldbookDataEntriesIsArray:
-                  worldbookData &&
-                  typeof worldbookData === 'object' &&
-                  !Array.isArray(worldbookData) &&
-                  'entries' in (worldbookData as object)
-                    ? Array.isArray((worldbookData as { entries?: unknown }).entries)
-                    : null,
-                targetWorldbookName,
-                bookName,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-entries-undefined',
-              hypothesisId: 'A',
-            }),
-          }).catch(() => {}); */
-          // #endregion
 
           // 处理返回值：getWorldbook 返回数组或包含 entries 的对象
           // ⚠️ 重要：数组也有 entries 属性（Array.prototype.entries 方法），必须先检查是否为数组
@@ -693,59 +512,9 @@ $(() => {
             entries = Array.isArray(worldbookData) ? worldbookData : [];
           }
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'worldbook_loader.ts:_loadWorldbookInternal',
-              message: '调用getWorldbook后 - 处理后',
-              data: {
-                entriesType: typeof entries,
-                entriesIsArray: Array.isArray(entries),
-                entriesLength: entries?.length,
-                entriesIsUndefined: entries === undefined,
-                entriesIsNull: entries === null,
-                entriesValue:
-                  entries === undefined || entries === null
-                    ? null
-                    : Array.isArray(entries)
-                      ? `Array(${entries.length})`
-                      : String(entries),
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-entries-undefined',
-              hypothesisId: 'B',
-            }),
-          }).catch(() => {}); */
-          // #endregion
         } catch (getWorldbookError) {
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'worldbook_loader.ts:_loadWorldbookInternal',
-              message: 'getWorldbook抛出错误',
-              data: {
-                error: getWorldbookError instanceof Error ? getWorldbookError.message : String(getWorldbookError),
-                errorStack: getWorldbookError instanceof Error ? getWorldbookError.stack : undefined,
-                targetWorldbookName,
-                bookName,
-                displayName: config.displayName,
-                allAvailableBooks: allWorldbookNames,
-                errorType: typeof getWorldbookError,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-getworldbook',
-              hypothesisId: 'B',
-            }),
-          }).catch(() => {}); */
-          // #endregion
 
           // 检查是否是特定世界书的数据问题，尝试备用名称
           const errorMessage =
@@ -774,30 +543,7 @@ $(() => {
             if (this.failedBooks) {
               this.failedBooks.add(bookName);
               console.warn(`[知识库加载器] ⚠ 已将 "${bookName}" 标记为失败，后续将跳过此世界书`);
-              // #region agent log
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'worldbook_loader.ts:_loadWorldbookInternal',
-                  message: '标记世界书为失败',
-                  data: {
-                    bookName,
-                    displayName: config.displayName,
-                    targetWorldbookName,
-                    errorMessage,
-                    isDataFormatError,
-                    failedBooksSize: this.failedBooks.size,
-                    failedBooksArray: Array.from(this.failedBooks),
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-session',
-                  runId: 'fix-getworldbook',
-                  hypothesisId: 'E',
-                }),
-              }).catch(() => {}); */
-              // #endregion
             }
           }
 
@@ -814,29 +560,7 @@ $(() => {
 
         // 检查返回值类型
         if (entries === undefined || entries === null) {
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'worldbook_loader.ts:_loadWorldbookInternal',
-              message: 'entries为null或undefined',
-              data: {
-                entriesType: typeof entries,
-                entriesValue: entries,
-                worldbookDataType: typeof worldbookData,
-                worldbookDataValue: worldbookData,
-                targetWorldbookName,
-                bookName,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-entries-undefined',
-              hypothesisId: 'C',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           throw new Error(
             `世界书 "${targetWorldbookName}" 返回值为空 (undefined/null)\n` +
               `原始数据类型: ${typeof worldbookData}\n` +
@@ -845,34 +569,7 @@ $(() => {
         }
 
         if (!Array.isArray(entries)) {
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'worldbook_loader.ts:_loadWorldbookInternal',
-              message: 'entries不是数组',
-              data: {
-                entriesType: typeof entries,
-                entriesConstructor:
-                  entries && typeof entries === 'object' && 'constructor' in entries
-                    ? (entries as any).constructor?.name
-                    : undefined,
-                entriesValue: entries,
-                worldbookDataType: typeof worldbookData,
-                worldbookDataKeys:
-                  worldbookData && typeof worldbookData === 'object' ? Object.keys(worldbookData as object) : null,
-                targetWorldbookName,
-                bookName,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-entries-undefined',
-              hypothesisId: 'D',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           throw new Error(
             `世界书 "${targetWorldbookName}" 返回值不是数组 (类型: ${typeof entries})\n` +
               `原始数据类型: ${typeof worldbookData}\n` +

@@ -198,26 +198,12 @@ function normalizeError(error: unknown): Error {
 }
 
 function bootstrapDetentionSystem(): DetentionSystem {
-  // #region agent log
-  console.log('[DEBUG-HYP-D] core.ts:172 - bootstrapDetentionSystem 函数开始执行', {
-    timestamp: Date.now(),
-    location: 'core.ts:172',
-    hypothesisId: 'D',
-  });
-  // #endregion
+  // 调试日志已禁用以避免 CORS 错误
 
   const events = new EventEmitter();
   const CacheManager = createCacheManager();
 
-  // #region agent log
-  console.log('[DEBUG-HYP-D] core.ts:175 - EventEmitter 和 CacheManager 已创建', {
-    timestamp: Date.now(),
-    eventsType: typeof events,
-    cacheManagerType: typeof CacheManager,
-    location: 'core.ts:175',
-    hypothesisId: 'D',
-  });
-  // #endregion
+  // 调试日志已禁用以避免 CORS 错误
 
   const system: DetentionSystem = {
     version: '3.2.0',
@@ -454,19 +440,7 @@ function bootstrapDetentionSystem(): DetentionSystem {
     },
   };
 
-  // #region agent log
-  console.log('[DEBUG-HYP-D] core.ts:365 - bootstrapDetentionSystem 准备返回 system 对象', {
-    timestamp: Date.now(),
-    systemType: typeof system,
-    systemExists: !!system,
-    hasVersion: 'version' in system,
-    hasModules: 'modules' in system,
-    hasEvents: 'events' in system,
-    systemVersion: system.version,
-    location: 'core.ts:365',
-    hypothesisId: 'D',
-  });
-  // #endregion
+  // 调试日志已禁用以避免 CORS 错误
 
   return system;
 }
@@ -484,22 +458,11 @@ function stopCacheCleanup() {
   }
 }
 
-// #region agent log
-console.log('[DEBUG-HYP-B] core.ts:363 - 准备创建核心系统', {
-  timestamp: Date.now(),
-  windowExists: typeof window !== 'undefined',
-  windowDetentionSystemExists: typeof window.detentionSystem !== 'undefined',
-  location: 'core.ts:363',
-  hypothesisId: 'B',
-});
-// #endregion
+// 调试日志已禁用以避免 CORS 错误
 
 // 立即创建核心系统，让其他模块可以立即访问
 if (!window.detentionSystem) {
-  // #region agent log
   // 调试日志已禁用以避免 CORS 错误
-  // 所有调试日志代码已注释掉
-  // #endregion
 
   try {
     window.detentionSystem = bootstrapDetentionSystem();
@@ -507,44 +470,9 @@ if (!window.detentionSystem) {
     (window as any).DS = window.detentionSystem;
     console.info('[核心系统] ✓ 已将 DS 暴露到全局（作为 window.detentionSystem 的别名）');
 
-    // #region agent log (已禁用以避免 CORS 错误)
-    // 调试日志已注释掉
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'core.ts:创建核心系统',
-        message: '核心系统创建成功',
-        data: {
-          hasWindowDetentionSystem: typeof window.detentionSystem !== 'undefined',
-          hasPing: typeof (window.detentionSystem as DetentionSystem).ping === 'function',
-          pingResult:
-            typeof (window.detentionSystem as DetentionSystem).ping === 'function'
-              ? (window.detentionSystem as DetentionSystem).ping()
-              : 'N/A',
-          hasInitializeState:
-            typeof (window.detentionSystem as DetentionSystem & { initializeState?: unknown }).initializeState ===
-            'function',
-          version: (window.detentionSystem as DetentionSystem).version,
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'fix-init-failure',
-        hypothesisId: 'B',
-      }),
-    }).catch(() => {}); */
-    // #endregion
+    // 调试日志已禁用以避免 CORS 错误
 
-    // #region agent log
-    console.log('[DEBUG-HYP-D] core.ts:365 - bootstrapDetentionSystem 执行完成', {
-      timestamp: Date.now(),
-      resultType: typeof window.detentionSystem,
-      resultExists: !!window.detentionSystem,
-      hasVersion: !!(window.detentionSystem && 'version' in window.detentionSystem),
-      location: 'core.ts:365',
-      hypothesisId: 'D',
-    });
-    // #endregion
+    // 调试日志已禁用以避免 CORS 错误
 
     console.info('[核心系统] ✓ 核心系统对象已创建（脚本加载时）');
     console.info('[核心系统] window.detentionSystem 类型:', typeof window.detentionSystem);
@@ -556,25 +484,7 @@ if (!window.detentionSystem) {
     // 如果是 iframe 环境，尝试将系统暴露到主窗口
     try {
       if (window.parent && window.parent !== window) {
-        // #region agent log (已禁用以避免 CORS 错误)
-        // 调试日志已注释掉
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:iframe暴露',
-            message: '检测到 iframe 环境，准备暴露到主窗口',
-            data: {
-              hasParent: !!window.parent,
-              parentIsDifferent: window.parent !== window,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-init-failure',
-            hypothesisId: 'C',
-          }),
-        }).catch(() => {}); */
-        // #endregion
+        // 调试日志已禁用以避免 CORS 错误
 
         // 在 jQuery ready 中执行，确保父窗口已加载
         $(() => {
@@ -585,49 +495,11 @@ if (!window.detentionSystem) {
             (window.parent as any).DS = window.detentionSystem;
             console.info('[核心系统] ✓ 已将系统暴露到主窗口（iframe 模式）');
 
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'core.ts:iframe暴露',
-                message: '成功暴露到主窗口',
-                data: {
-                  parentHasDetentionSystem:
-                    typeof (window.parent as typeof window.parent & { detentionSystem?: DetentionSystem })
-                      .detentionSystem !== 'undefined',
-                  parentHasDS: typeof (window.parent as any).DS !== 'undefined',
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-init-failure',
-                hypothesisId: 'D',
-              }),
-            }).catch(() => {}); */
-            // #endregion
           } catch (e) {
             console.warn('[核心系统] ⚠ 无法将系统暴露到主窗口（可能是跨域限制）:', e);
 
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'core.ts:iframe暴露',
-                message: '暴露到主窗口失败',
-                data: {
-                  error: e instanceof Error ? e.message : String(e),
-                  errorType: e instanceof Error ? e.constructor.name : typeof e,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-init-failure',
-                hypothesisId: 'E',
-              }),
-            }).catch(() => {}); */
-            // #endregion
           }
         });
 
@@ -638,127 +510,36 @@ if (!window.detentionSystem) {
           (window.parent as any).DS = window.detentionSystem;
           console.info('[核心系统] ✓ 已立即将系统暴露到主窗口（iframe 模式，立即暴露）');
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:iframe暴露',
-              message: '立即暴露到主窗口成功',
-              data: {
-                parentHasDetentionSystem:
-                  typeof (window.parent as typeof window.parent & { detentionSystem?: DetentionSystem })
-                    .detentionSystem !== 'undefined',
-                parentHasDS: typeof (window.parent as any).DS !== 'undefined',
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-init-failure',
-              hypothesisId: 'F',
-            }),
-          }).catch(() => {}); */
-          // #endregion
         } catch (e) {
           console.debug('[核心系统] 立即暴露失败（将在 jQuery ready 时重试）:', e);
         }
       } else {
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:iframe暴露',
-            message: '非 iframe 环境，无需暴露到主窗口',
-            data: {
-              hasParent: !!window.parent,
-              parentIsDifferent: window.parent !== window,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-init-failure',
-            hypothesisId: 'G',
-          }),
-        }).catch(() => {}); */
-        // #endregion
       }
     } catch (e) {
       console.warn('[核心系统] ⚠ iframe 检测失败:', e);
 
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'core.ts:iframe暴露',
-          message: 'iframe 检测异常',
-          data: {
-            error: e instanceof Error ? e.message : String(e),
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'fix-init-failure',
-          hypothesisId: 'H',
-        }),
-      }).catch(() => {}); */
-      // #endregion
     }
   } catch (error) {
-    // #region agent log
-    console.error('[DEBUG-HYP-D] core.ts:365 - bootstrapDetentionSystem 执行失败', {
-      timestamp: Date.now(),
-      error: error instanceof Error ? error.message : String(error),
-      errorStack: error instanceof Error ? error.stack : undefined,
-      location: 'core.ts:365',
-      hypothesisId: 'D',
-    });
-    // #endregion
+    // 调试日志已禁用以避免 CORS 错误
     throw error;
   }
 } else {
-  // #region agent log
-  console.log('[DEBUG-HYP-E] core.ts:364 - window.detentionSystem 已存在，跳过创建', {
-    timestamp: Date.now(),
-    existingType: typeof window.detentionSystem,
-    location: 'core.ts:364',
-    hypothesisId: 'E',
-  });
-  // #endregion
+  // 调试日志已禁用以避免 CORS 错误
 }
 
-// #region agent log
-console.log('[DEBUG-HYP-F] core.ts:371 - 检查 jQuery 是否可用', {
-  timestamp: Date.now(),
-  jQueryExists: typeof $ !== 'undefined',
-  jQueryType: typeof $,
-  location: 'core.ts:371',
-  hypothesisId: 'F',
-});
-// #endregion
+// 调试日志已禁用以避免 CORS 错误
 
 $(() => {
-  // #region agent log
-  console.log('[DEBUG-HYP-F] core.ts:371 - jQuery ready 回调执行', {
-    timestamp: Date.now(),
-    windowDetentionSystemExists: typeof window.detentionSystem !== 'undefined',
-    location: 'core.ts:371',
-    hypothesisId: 'F',
-  });
-  // #endregion
+  // 调试日志已禁用以避免 CORS 错误
 
   console.info('[核心系统] 酒馆页面已加载（jQuery ready）');
 
   // 确保核心系统存在（双重保险）
   if (!window.detentionSystem) {
-    // #region agent log
-    console.warn('[DEBUG-HYP-E] core.ts:375 - 在 jQuery ready 时未找到核心系统，重新创建', {
-      timestamp: Date.now(),
-      location: 'core.ts:375',
-      hypothesisId: 'E',
-    });
-    // #endregion
+    // 调试日志已禁用以避免 CORS 错误
 
     console.warn('[核心系统] 警告：在 jQuery ready 时未找到核心系统，重新创建');
     window.detentionSystem = bootstrapDetentionSystem();
@@ -769,15 +550,7 @@ $(() => {
     }
     console.info('[核心系统] 核心系统对象已创建（jQuery ready 时）');
   } else {
-    // #region agent log
-    console.log('[DEBUG-HYP-E] core.ts:375 - jQuery ready 时核心系统已存在', {
-      timestamp: Date.now(),
-      systemType: typeof window.detentionSystem,
-      systemVersion: window.detentionSystem?.version,
-      location: 'core.ts:375',
-      hypothesisId: 'E',
-    });
-    // #endregion
+    // 调试日志已禁用以避免 CORS 错误
   }
 
   const system = window.detentionSystem!;
@@ -811,51 +584,12 @@ $(() => {
           (window.parent as any).DS = system;
           console.info('[核心系统] ✓ 初始化完成后已同步到主窗口');
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:初始化后暴露',
-              message: '初始化完成后暴露到主窗口',
-              data: {
-                parentHasDetentionSystem:
-                  typeof (window.parent as typeof window.parent & { detentionSystem?: DetentionSystem })
-                    .detentionSystem !== 'undefined',
-                parentHasDS: typeof (window.parent as any).DS !== 'undefined',
-                modulesCount: Object.keys(system.modules).length,
-                moduleNames: Object.keys(system.modules),
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-init-failure',
-              hypothesisId: 'I',
-            }),
-          }).catch(() => {}); */
-          // #endregion
         }
       } catch (e) {
         console.warn('[核心系统] ⚠ 初始化后暴露到主窗口失败:', e);
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:初始化后暴露',
-            message: '初始化后暴露失败',
-            data: {
-              error: e instanceof Error ? e.message : String(e),
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-init-failure',
-            hypothesisId: 'J',
-          }),
-        }).catch(() => {}); */
-        // #endregion
       }
 
       // 确保在当前窗口也暴露 DS（如果还没有）
@@ -910,57 +644,14 @@ $(() => {
         // 2. 在 GENERATION_STARTED 中检测并停止系统事件消息触发的生成
         // 3. 设置 waitingForEventResponse 标志，让其他监听器知道正在处理事件
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:USER_MESSAGE_RENDERED监听',
-            message: '检测到系统事件消息，跳过处理（不隐藏，已由event_triggered处理）',
-            data: {
-              message_id,
-              isSystemEventMessage,
-              isSystemByContent,
-              userInput: userInput.substring(0, 50) + '...',
-              waitingForEventResponse,
-              duringGenerating:
-                typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-duplicate-trigger-v7',
-            hypothesisId: 'SKIP_SYSTEM_EVENT',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 如果正在等待事件响应，立即停止任何可能被触发的生成
         if (waitingForEventResponse) {
           // 立即停止所有生成，防止其他监听器（如 quick-reply）自动触发生成
           try {
             await stopAllGeneration();
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'core.ts:USER_MESSAGE_RENDERED监听',
-                message: '在USER_MESSAGE_RENDERED中停止生成（防止其他监听器自动触发）',
-                data: {
-                  message_id,
-                  waitingForEventResponse,
-                  afterStopDuringGenerating:
-                    typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-duplicate-trigger-v7',
-                hypothesisId: 'STOP_IN_USER_RENDERED',
-              }),
-            }).catch(() => {}); */
-            // #endregion
           } catch (error) {
             console.warn('[核心系统] 在USER_MESSAGE_RENDERED中停止生成失败:', error);
           }
@@ -982,22 +673,7 @@ $(() => {
           skipCommandMessages.add(message_id);
           console.info(`[核心系统] ✓ 已在USER_MESSAGE_RENDERED中隐藏跳过天数指令消息 (message_id: ${message_id})`);
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:USER_MESSAGE_RENDERED监听',
-              message: '已隐藏跳过指令消息',
-              data: { message_id, userInput },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-skip-rounds-early',
-              hypothesisId: 'HIDE_EARLY',
-            }),
-          }).catch(() => {}); */
-          // #endregion
         } catch (error) {
           console.warn('[核心系统] 在USER_MESSAGE_RENDERED中隐藏消息失败:', error);
         }
@@ -1028,27 +704,7 @@ $(() => {
           userInput.startsWith('[系统事件]') || (userInput.startsWith('[第') && userInput.includes(']'));
 
         if (isSystemEventMessage || isSystemByContent) {
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:GENERATE_BEFORE_COMBINE_PROMPTS监听',
-              message: '检测到系统事件消息，但无法在此阶段阻止生成（已由其他机制处理）',
-              data: {
-                message_id: lastUserMessage.message_id,
-                isSystemEventMessage,
-                isSystemByContent,
-                waitingForEventResponse,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-duplicate-trigger-v7',
-              hypothesisId: 'GENERATE_BEFORE_CHECK',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           // 注意：GENERATE_BEFORE_COMBINE_PROMPTS 事件不能阻止生成，它只是一个通知事件
           // 真正的阻止应该在 MESSAGE_SENT 和 USER_MESSAGE_RENDERED 中完成
         }
@@ -1073,62 +729,12 @@ $(() => {
 
   // 同时监听 iframe_events 和 tavern_events 的 GENERATION_STARTED，因为可能触发的是不同的类型
   eventOn(iframe_events.GENERATION_STARTED, (generation_id: string) => {
-    // #region agent log - 追踪所有 GENERATION_STARTED 事件（iframe）
-    const now = Date.now();
-    generationTracking.push({
-      generation_id: generation_id,
-      type: 'iframe',
-      timestamp: now,
-      triggerTime: lastTriggerTime,
-      eventName: lastTriggerEventName,
-      source: 'iframe',
-    });
     // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'core.ts:GENERATION_STARTED监听:iframe',
-        message: 'iframe_events.GENERATION_STARTED 事件触发（追踪流式生成）',
-        data: {
-          generation_id,
-          timestamp: now,
-          lastTriggerTime,
-          lastTriggerEventName,
-          timeSinceLastTrigger: lastTriggerTime ? now - lastTriggerTime : null,
-          trackingCount: generationTracking.length,
-          source: 'iframe',
-        },
-        timestamp: now,
-        sessionId: 'debug-session',
-        runId: 'track-streaming-gen',
-        hypothesisId: 'GEN_STARTED_TRACK_IFRAME',
-      }),
-    }).catch(() => {}); */
-    // #endregion
 
     if (skipMessageId !== null) {
       console.info(`[核心系统] ⚠ 检测到正在生成跳过指令消息，立即停止生成 (generation_id: ${generation_id})`);
 
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'core.ts:GENERATION_STARTED监听',
-          message: '检测到正在生成跳过指令消息，准备停止',
-          data: {
-            generation_id,
-            skipMessageId,
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'fix-skip-rounds',
-          hypothesisId: 'STOP_GEN',
-        }),
-      }).catch(() => {}); */
-      // #endregion
 
       stopGenerationById(generation_id).then(success => {
         if (success) {
@@ -1159,29 +765,7 @@ $(() => {
             `[核心系统] ⚠ 检测到正在生成系统事件消息（可能由其他监听器触发），立即停止生成 (generation_id: ${generation_id})`,
           );
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:GENERATION_STARTED监听',
-              message: '检测到正在生成系统事件消息（可能由其他监听器触发），准备停止',
-              data: {
-                generation_id,
-                message_id: lastUserMessage.message_id,
-                isSystemEventMessage,
-                isSystemByContent,
-                waitingForEventResponse,
-                userInput: userInput.substring(0, 100),
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-duplicate-trigger-v7',
-              hypothesisId: 'STOP_SYSTEM_EVENT_GEN',
-            }),
-          }).catch(() => {}); */
-          // #endregion
 
           stopGenerationById(generation_id).then(success => {
             if (success) {
@@ -1199,42 +783,7 @@ $(() => {
 
   // 同时监听 tavern_events.GENERATION_STARTED（因为 triggerSlash 可能触发的是这个）
   eventOn(tavern_events.GENERATION_STARTED, (type: string, options: unknown, dry_run: boolean) => {
-    // #region agent log - 追踪所有 GENERATION_STARTED 事件（tavern）
-    const now = Date.now();
-    generationTracking.push({
-      generation_id: null,
-      type,
-      timestamp: now,
-      triggerTime: lastTriggerTime,
-      eventName: lastTriggerEventName,
-      source: 'tavern',
-    });
     // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'core.ts:GENERATION_STARTED监听:tavern',
-        message: 'tavern_events.GENERATION_STARTED 事件触发（追踪流式生成）',
-        data: {
-          type,
-          dry_run,
-          options: typeof options === 'object' && options !== null ? Object.keys(options as object) : typeof options,
-          timestamp: now,
-          lastTriggerTime,
-          lastTriggerEventName,
-          timeSinceLastTrigger: lastTriggerTime ? now - lastTriggerTime : null,
-          trackingCount: generationTracking.length,
-          source: 'tavern',
-          waitingForEventResponse,
-        },
-        timestamp: now,
-        sessionId: 'debug-session',
-        runId: 'track-streaming-gen',
-        hypothesisId: 'GEN_STARTED_TRACK_TAVERN',
-      }),
-    }).catch(() => {}); */
-    // #endregion
   });
 
   // 追踪收到的 AI 消息，检查是否有消息被分割
@@ -1273,48 +822,7 @@ $(() => {
           messagePreview: messageText.substring(0, 100),
         });
 
-        // #region agent log - 追踪 CHARACTER_MESSAGE_RENDERED 事件
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:CHARACTER_MESSAGE_RENDERED监听',
-            message: 'CHARACTER_MESSAGE_RENDERED 事件触发（追踪消息分块）',
-            data: {
-              message_id,
-              timestamp: now,
-              lastTriggerTime,
-              lastTriggerEventName,
-              timeSinceLastTrigger: lastTriggerTime ? now - lastTriggerTime : null,
-              messageLength: messageText.length,
-              messagePreview: messageText.substring(0, 200),
-              trackingCount: aiMessageTracking.length,
-              allMessageIds: aiMessageTracking.map(m => m.message_id),
-              allMessages: aiMessageTracking.map(m => ({
-                id: m.message_id,
-                length: m.messageLength,
-                triggerTime: m.triggerTime,
-                eventName: m.eventName,
-                timestamp: m.timestamp,
-              })),
-              totalCharacters: aiMessageTracking.reduce((sum, m) => sum + m.messageLength, 0),
-              // 检查最近是否有其他消息在短时间内创建（可能是分割）
-              recentMessages: aiMessageTracking
-                .filter(m => Math.abs(m.timestamp - now) < 5000 && m.message_id !== message_id)
-                .map(m => ({
-                  id: m.message_id,
-                  length: m.messageLength,
-                  timeDiff: Math.abs(m.timestamp - now),
-                })),
-            },
-            timestamp: now,
-            sessionId: 'debug-session',
-            runId: 'track-streaming-gen',
-            hypothesisId: 'CHAR_MSG_RENDERED_TRACK',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 检查是否有多个消息关联到同一个触发事件
         const relatedMessages = aiMessageTracking.filter(
@@ -1338,40 +846,7 @@ $(() => {
             },
           );
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:CHARACTER_MESSAGE_RENDERED监听',
-              message: '⚠ 检测到可能的消息分割（一次生成被分成多次）',
-              data: {
-                eventName: lastTriggerEventName,
-                triggerTime: lastTriggerTime,
-                messageCount: relatedMessages.length,
-                messages: relatedMessages
-                  .sort((a, b) => a.timestamp - b.timestamp)
-                  .map((m, i, arr) => ({
-                    message_id: m.message_id,
-                    messageLength: m.messageLength,
-                    timestamp: m.timestamp,
-                    timeSinceTrigger: lastTriggerTime ? m.timestamp - lastTriggerTime : null,
-                    timeSincePrevious: i > 0 ? m.timestamp - arr[i - 1].timestamp : null,
-                    preview: m.messagePreview.substring(0, 150),
-                  })),
-                totalLength: relatedMessages.reduce((sum, m) => sum + m.messageLength, 0),
-                averageLength: relatedMessages.reduce((sum, m) => sum + m.messageLength, 0) / relatedMessages.length,
-                timeGaps,
-                potentialSplit: timeGaps.length > 0 && timeGaps.some(gap => gap < 2000), // 如果消息间隔小于2秒，可能是分割
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'track-streaming-gen',
-              hypothesisId: 'MESSAGE_SPLIT_DETECTED',
-            }),
-          }).catch(() => {}); */
-          // #endregion
         }
 
         // 检查是否有其他消息在很短时间内创建（即使 triggerTime 不匹配，也可能是相关的）
@@ -1393,26 +868,7 @@ $(() => {
   // 监听用户消息发送，触发动态世界书加载和天数跳过
   // 使用同步方式立即处理，避免延迟
   eventOn(tavern_events.MESSAGE_SENT, async (message_id: number | string) => {
-    // #region agent log
     // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'core.ts:MESSAGE_SENT监听',
-        message: 'MESSAGE_SENT事件触发',
-        data: {
-          message_id,
-          messageIdType: typeof message_id,
-          waitingForEventResponse,
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'fix-duplicate-trigger-v5',
-        hypothesisId: 'A',
-      }),
-    }).catch(() => {}); */
-    // #endregion
 
     try {
       console.info(`[核心系统] 📨 MESSAGE_SENT 事件触发，message_id: ${message_id}`);
@@ -1420,25 +876,7 @@ $(() => {
       // 早期检查：如果正在等待事件响应，快速检查是否为系统消息并跳过
       // 这样可以避免在事件处理过程中重复处理消息
       if (waitingForEventResponse) {
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:MESSAGE_SENT监听',
-            message: '检测到等待事件响应，快速检查是否为系统消息',
-            data: {
-              message_id,
-              waitingForEventResponse: true,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-duplicate-trigger-v5',
-            hypothesisId: 'EARLY_CHECK',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 快速检查消息是否为系统事件消息
         const messages = getChatMessages(-1, { role: 'user' });
@@ -1453,29 +891,7 @@ $(() => {
             userInput.startsWith('[系统事件]') || (userInput.startsWith('[第') && userInput.includes(']'));
 
           if (isSystemEventMessage || isSystemByContent) {
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'core.ts:MESSAGE_SENT监听',
-                message: '早期检查：确认为系统消息，直接返回（不触发任何处理）',
-                data: {
-                  message_id,
-                  isSystemEventMessage,
-                  isSystemByContent,
-                  matchedByData: isSystemEventMessage,
-                  matchedByContent: isSystemByContent,
-                  waitingForEventResponse: true,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-duplicate-trigger-v5',
-                hypothesisId: 'EARLY_SKIP',
-              }),
-            }).catch(() => {}); */
-            // #endregion
 
             // 直接返回，不触发任何处理（包括 user_input 事件）
             return;
@@ -1486,51 +902,11 @@ $(() => {
       // 获取用户输入内容
       const messages = getChatMessages(-1, { role: 'user' });
 
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'core.ts:MESSAGE_SENT监听',
-          message: '获取用户消息列表',
-          data: {
-            message_id,
-            messagesCount: messages.length,
-            messageIds: messages.map(m => m.message_id),
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'fix-skip-rounds-input',
-          hypothesisId: 'B',
-        }),
-      }).catch(() => {}); */
-      // #endregion
 
       const userMessage = messages.find(m => m.message_id === Number(message_id));
 
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'core.ts:MESSAGE_SENT监听',
-          message: '查找匹配的用户消息',
-          data: {
-            message_id,
-            foundMessage: !!userMessage,
-            hasMessage: !!(userMessage && userMessage.message),
-            messageLength: userMessage?.message?.length || 0,
-            messagePreview: userMessage?.message?.substring(0, 100) || 'N/A',
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'fix-skip-rounds-input',
-          hypothesisId: 'C',
-        }),
-      }).catch(() => {}); */
-      // #endregion
 
       if (userMessage && userMessage.message) {
         const userInput = userMessage.message;
@@ -1547,34 +923,7 @@ $(() => {
           (userInput.startsWith('[第') && userInput.includes(']'))
         ) {
           // 这是系统生成的事件消息，不是用户的跳过指令，直接跳过
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:MESSAGE_SENT监听',
-              message: '跳过系统生成的事件消息',
-              data: {
-                userInput: userInput.substring(0, 100),
-                message_id: Number(message_id),
-                isSystemEventMessage,
-                matchedByData: isSystemEventMessage,
-                matchedByContent:
-                  userInput.startsWith('[系统事件]') || (userInput.startsWith('[第') && userInput.includes(']')),
-                matchedPattern: isSystemEventMessage
-                  ? 'data标记'
-                  : userInput.startsWith('[系统事件]')
-                    ? '[系统事件]'
-                    : '[第X天]',
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-duplicate-trigger-v2',
-              hypothesisId: 'SKIP_SYSTEM_MSG',
-            }),
-          }).catch(() => {}); */
-          // #endregion
 
           // 系统消息已跳过，不再触发任何事件，因为：
           // 1. event_triggered 监听器已经处理了事件消息的创建和AI生成
@@ -1586,27 +935,7 @@ $(() => {
           //   DS_EMIT_SYSTEM.events.emit('user_input', { text: userInput, message_id });
           // }
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:MESSAGE_SENT监听',
-              message: '系统消息已跳过，直接返回',
-              data: {
-                message_id: Number(message_id),
-                currentMessageId: Number(message_id),
-                waitingForEventResponse,
-                isSystemMessage: true,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-duplicate-trigger',
-              hypothesisId: 'SKIP_RETURN',
-            }),
-          }).catch(() => {}); */
-          // #endregion
 
           return;
         }
@@ -1616,28 +945,7 @@ $(() => {
         const protagonistMatch = userInput.match(protagonistPattern);
 
         if (protagonistMatch) {
-          // #region agent log - HYP-PROTAGONIST: 检测到生成主角指令
-          try {
-            // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'core.ts:MESSAGE_SENT监听:检测到生成主角指令',
-                message: '检测到用户请求生成主角',
-                data: {
-                  userInput,
-                  message_id: Number(message_id),
-                  match: protagonistMatch[0],
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'protagonist-generation',
-                hypothesisId: 'PROTAGONIST-DETECT',
-              }),
-            }).catch(() => {}); */
-          } catch (e) {}
-          // #endregion
+          // 调试日志已禁用以避免 CORS 错误
 
           console.info('[核心系统] 检测到生成主角指令:', userInput);
 
@@ -1722,53 +1030,11 @@ $(() => {
                 options.education = 'high';
               }
 
-              // #region agent log - HYP-PROTAGONIST: 准备调用generateProtagonist
-              try {
-                // 调试日志已禁用以避免 CORS 错误
-                /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    location: 'core.ts:MESSAGE_SENT监听:准备调用generateProtagonist',
-                    message: '准备调用generateProtagonist生成主角',
-                    data: {
-                      hasGenerateProtagonist: !!npcSystem.generateProtagonist,
-                      options,
-                    },
-                    timestamp: Date.now(),
-                    sessionId: 'debug-session',
-                    runId: 'protagonist-generation',
-                    hypothesisId: 'PROTAGONIST-BEFORE',
-                  }),
-                }).catch(() => {}); */
-              } catch (e) {}
-              // #endregion
+              // 调试日志已禁用以避免 CORS 错误
 
               const protagonistData = npcSystem.generateProtagonist(options);
 
-              // #region agent log - HYP-PROTAGONIST: generateProtagonist调用完成
-              try {
-                // 调试日志已禁用以避免 CORS 错误
-                /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    location: 'core.ts:MESSAGE_SENT监听:generateProtagonist调用完成',
-                    message: 'generateProtagonist调用完成',
-                    data: {
-                      hasProtagonistData: !!protagonistData,
-                      protagonistName: protagonistData?.name || 'N/A',
-                      protagonistAge: protagonistData?.age || 'N/A',
-                      protagonistCrime: protagonistData?.crime || 'N/A',
-                    },
-                    timestamp: Date.now(),
-                    sessionId: 'debug-session',
-                    runId: 'protagonist-generation',
-                    hypothesisId: 'PROTAGONIST-AFTER',
-                  }),
-                }).catch(() => {}); */
-              } catch (e) {}
-              // #endregion
+              // 调试日志已禁用以避免 CORS 错误
 
               if (protagonistData && protagonistData.name) {
                 // 保存主角信息到聊天变量
@@ -1807,29 +1073,7 @@ $(() => {
                     protagonistData.crime,
                   );
 
-                  // #region agent log - HYP-PROTAGONIST: 主角信息已保存
-                  try {
-                    // 调试日志已禁用以避免 CORS 错误
-                    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({
-                        location: 'core.ts:MESSAGE_SENT监听:主角信息已保存',
-                        message: '主角信息已保存到聊天变量',
-                        data: {
-                          protagonistName: protagonistData.name,
-                          protagonistAge: protagonistData.age,
-                          protagonistCrime: protagonistData.crime,
-                          chatId,
-                        },
-                        timestamp: Date.now(),
-                        sessionId: 'debug-session',
-                        runId: 'protagonist-generation',
-                        hypothesisId: 'PROTAGONIST-SAVED',
-                      }),
-                    }).catch(() => {}); */
-                  } catch (e) {}
-                  // #endregion
+                  // 调试日志已禁用以避免 CORS 错误
                 }
               } else {
                 console.warn('[核心系统] generateProtagonist返回空数据');
@@ -1840,26 +1084,7 @@ $(() => {
           } catch (error) {
             console.error('[核心系统] 生成主角失败:', error);
 
-            // #region agent log - HYP-PROTAGONIST: 生成主角失败
-            try {
-              // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'core.ts:MESSAGE_SENT监听:生成主角失败',
-                  message: '生成主角失败',
-                  data: {
-                    error: error instanceof Error ? error.message : String(error),
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-session',
-                  runId: 'protagonist-generation',
-                  hypothesisId: 'PROTAGONIST-ERROR',
-                }),
-              }).catch(() => {}); */
-            } catch (e) {}
-            // #endregion
+            // 调试日志已禁用以避免 CORS 错误
           }
 
           // 主角生成指令已处理，继续处理其他逻辑（不return，允许后续逻辑执行）
@@ -1871,25 +1096,7 @@ $(() => {
           /(?:跳过|推进|快速推进|快进)\s*(\d+|十[一二三四五六七八九]?|[二三四五六七八九]十[一二三四五六七八九]?|百[一二三四五六七八九]?十?[一二三四五六七八九]?|千[一二三四五六七八九]?百?[一二三四五六七八九]?十?[一二三四五六七八九]?|万)\s*天[。，！？\s]*/;
         const skipDayMatch = userInput.match(skipDayPattern);
 
-        // #region agent log (已禁用以避免 CORS 错误)
-        // 调试日志已注释掉
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:MESSAGE_SENT监听',
-            message: '检测跳过天数指令',
-            data: {
-              userInput,
-              skipDayMatch: skipDayMatch ? skipDayMatch[0] : null,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-skip-rounds-input',
-            hypothesisId: 'D',
-          }),
-        }).catch(() => {}); */
-        // #endregion
+        // 调试日志已禁用以避免 CORS 错误
 
         const DS_CHECK = window.detentionSystem;
         if (DS_CHECK && DS_CHECK.initialized) {
@@ -1972,54 +1179,14 @@ $(() => {
               // 标记这条消息，用于在生成开始时停止生成
               skipMessageId = Number(message_id);
 
-              // #region agent log
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'core.ts:MESSAGE_SENT监听',
-                  message: '检测到跳过回合/天数指令',
-                  data: {
-                    userInput,
-                    daysToSkip,
-                    originalInput: userInput,
-                    message_id: Number(message_id),
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-session',
-                  runId: 'fix-skip-rounds',
-                  hypothesisId: 'A',
-                }),
-              }).catch(() => {}); */
-              // #endregion
 
               // 立即停止所有正在进行的生成，防止AI响应跳过指令
               try {
                 await stopAllGeneration();
                 console.info(`[核心系统] ✓ 已停止所有正在进行的生成`);
 
-                // #region agent log
                 // 调试日志已禁用以避免 CORS 错误
-                /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    location: 'core.ts:MESSAGE_SENT监听',
-                    message: '已调用stopAllGeneration，开始等待生成停止',
-                    data: {
-                      duringGenerating:
-                        typeof builtin !== 'undefined' && builtin.duringGenerating
-                          ? builtin.duringGenerating()
-                          : 'unknown',
-                    },
-                    timestamp: Date.now(),
-                    sessionId: 'debug-session',
-                    runId: 'fix-skip-rounds',
-                    hypothesisId: 'STOP_GEN',
-                  }),
-                }).catch(() => {}); */
-                // #endregion
 
                 // 等待生成完全停止（复用event_triggered的等待逻辑）
                 const waitForGenerationToStop = (): Promise<void> => {
@@ -2054,27 +1221,7 @@ $(() => {
                       if (!resolved) {
                         resolved = true;
                         cleanup();
-                        // #region agent log
                         // 调试日志已禁用以避免 CORS 错误
-                        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({
-                            location: 'core.ts:MESSAGE_SENT监听',
-                            message: '等待生成停止超时（跳过天数）',
-                            data: {
-                              duringGenerating:
-                                typeof builtin !== 'undefined' && builtin.duringGenerating
-                                  ? builtin.duringGenerating()
-                                  : 'unknown',
-                            },
-                            timestamp: Date.now(),
-                            sessionId: 'debug-session',
-                            runId: 'fix-skip-rounds',
-                            hypothesisId: 'WAIT_TIMEOUT',
-                          }),
-                        }).catch(() => {}); */
-                        // #endregion
                         resolve();
                       }
                     }, 2500);
@@ -2108,29 +1255,7 @@ $(() => {
                   await new Promise(resolve => setTimeout(resolve, 500));
                 }
 
-                // #region agent log
                 // 调试日志已禁用以避免 CORS 错误
-                /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    location: 'core.ts:MESSAGE_SENT监听',
-                    message: '生成已完全停止，准备执行跳过天数',
-                    data: {
-                      duringGenerating:
-                        typeof builtin !== 'undefined' && builtin.duringGenerating
-                          ? builtin.duringGenerating()
-                          : 'unknown',
-                      finalCheckCount,
-                      forcedStop: finalCheckCount > 0,
-                    },
-                    timestamp: Date.now(),
-                    sessionId: 'debug-session',
-                    runId: 'fix-skip-rounds',
-                    hypothesisId: 'GEN_STOPPED',
-                  }),
-                }).catch(() => {}); */
-                // #endregion
               } catch (stopError) {
                 console.warn('[核心系统] 停止生成失败:', stopError);
               }
@@ -2149,45 +1274,10 @@ $(() => {
                   skipCommandMessages.add(Number(message_id));
                   console.info(`[核心系统] ✓ 已在MESSAGE_SENT中隐藏跳过指令消息 (message_id: ${message_id})`);
 
-                  // #region agent log
                   // 调试日志已禁用以避免 CORS 错误
-                  /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      location: 'core.ts:MESSAGE_SENT监听',
-                      message: '已隐藏跳过指令消息',
-                      data: {
-                        message_id: Number(message_id),
-                      },
-                      timestamp: Date.now(),
-                      sessionId: 'debug-session',
-                      runId: 'fix-skip-rounds',
-                      hypothesisId: 'DELETE',
-                    }),
-                  }).catch(() => {}); */
-                  // #endregion
                 } catch (hideError) {
                   console.warn('[核心系统] 隐藏消息失败:', hideError);
-                  // #region agent log
                   // 调试日志已禁用以避免 CORS 错误
-                  /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      location: 'core.ts:MESSAGE_SENT监听',
-                      message: '隐藏消息失败',
-                      data: {
-                        error: hideError instanceof Error ? hideError.message : String(hideError),
-                        message_id: Number(message_id),
-                      },
-                      timestamp: Date.now(),
-                      sessionId: 'debug-session',
-                      runId: 'fix-skip-rounds',
-                      hypothesisId: 'HIDE_ERROR',
-                    }),
-                  }).catch(() => {}); */
-                  // #endregion
                 }
               } else {
                 console.info(`[核心系统] 跳过指令消息已在USER_MESSAGE_RENDERED中被隐藏 (message_id: ${message_id})`);
@@ -2226,55 +1316,14 @@ $(() => {
                   event?: { name?: string; priority?: number };
                 };
 
-                // #region agent log
                 // 调试日志已禁用以避免 CORS 错误
-                /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    location: 'core.ts:MESSAGE_SENT监听',
-                    message: '跳过回合/天数执行完成',
-                    data: {
-                      daysToSkip,
-                      result,
-                      interrupted: result.interrupted,
-                      eventName: result.event?.name,
-                    },
-                    timestamp: Date.now(),
-                    sessionId: 'debug-session',
-                    runId: 'fix-skip-rounds',
-                    hypothesisId: 'B',
-                  }),
-                }).catch(() => {}); */
-                // #endregion
 
                 if (result && result.interrupted && result.event) {
                   // 优先使用事件的实际发生天数，而不是currentDay（可能还没有更新）
                   const eventDay = result.event.day ?? result.tempCurrentDay ?? result.currentDay ?? 0;
                   console.info(`[核心系统] 跳过 ${daysToSkip} 天后触发事件: ${result.event.name} (第${eventDay}天)`);
 
-                  // #region agent log
                   // 调试日志已禁用以避免 CORS 错误
-                  /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      location: 'core.ts:MESSAGE_SENT监听',
-                      message: '检测到事件打断',
-                      data: {
-                        daysToSkip,
-                        eventName: result.event.name,
-                        eventPriority: result.event.priority,
-                        currentDay: result.currentDay,
-                        willWaitForEventTriggered: true,
-                      },
-                      timestamp: Date.now(),
-                      sessionId: 'debug-session',
-                      runId: 'fix-skip-rounds',
-                      hypothesisId: 'INTERRUPTED',
-                    }),
-                  }).catch(() => {}); */
-                  // #endregion
 
                   // 事件已经在 advanceDay 中通过 DS.events.emit('event_triggered') 触发
                   // event_triggered 监听器会自动创建用户消息并触发AI生成
@@ -2310,25 +1359,7 @@ $(() => {
               } catch (error) {
                 console.error('[核心系统] 执行跳过天数失败:', error);
 
-                // #region agent log
                 // 调试日志已禁用以避免 CORS 错误
-                /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    location: 'core.ts:MESSAGE_SENT监听',
-                    message: '跳过天数执行失败',
-                    data: {
-                      error: error instanceof Error ? error.message : String(error),
-                      daysToSkip,
-                    },
-                    timestamp: Date.now(),
-                    sessionId: 'debug-session',
-                    runId: 'fix-skip-rounds',
-                    hypothesisId: 'C',
-                  }),
-                }).catch(() => {}); */
-                // #endregion
               }
 
               // 清除标记（原始消息已删除，不需要再停止生成）
@@ -2395,25 +1426,7 @@ $(() => {
           | undefined;
 
         if (!event || !event.name) {
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:event_triggered监听',
-              message: '事件数据无效，跳过',
-              data: {
-                hasEvent: !!event,
-                eventName: event?.name,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-event-trigger',
-              hypothesisId: 'B',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           return;
         }
 
@@ -2423,25 +1436,7 @@ $(() => {
         const eventPriority = event.priority ?? 5;
         if (eventPriority > 4) {
           console.debug(`[核心系统] 跳过日常事件 ${event.name} 的AI触发（优先级: ${eventPriority}）`);
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:event_triggered监听',
-              message: '跳过低优先级事件',
-              data: {
-                eventName: event.name,
-                eventPriority,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-event-trigger',
-              hypothesisId: 'C',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           return;
         }
 
@@ -2449,26 +1444,7 @@ $(() => {
         // 在创建消息之前就设置标志，确保 MESSAGE_SENT 监听器能够识别这是系统消息
         waitingForEventResponse = true;
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:event_triggered监听',
-            message: '设置 waitingForEventResponse 标志',
-            data: {
-              eventName: event.name,
-              eventId: event.id,
-              waitingForEventResponse: true,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-duplicate-trigger-v5',
-            hypothesisId: 'SET_FLAG',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         console.info(`[核心系统] 检测到高优先级事件: ${event.name}，准备触发AI生成`);
 
@@ -2492,27 +1468,7 @@ $(() => {
         let npcInfoText = '';
         const eventId = event.id || '';
 
-        // #region agent log - NPC注入调试
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:event_triggered监听-NPC注入',
-            message: '开始获取NPC信息',
-            data: {
-              eventId,
-              eventName: event.name,
-              hasGenerateNPCForEvent: typeof DS_EVENT.generateNPCForEvent === 'function',
-              hasGetCurrentCellNPCs: typeof DS_EVENT.getCurrentCellNPCs === 'function',
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-npc-injection',
-            hypothesisId: 'NPC_INJECT_START',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 对于需要特定NPC的事件（如提审、律师会见等），生成或获取NPC信息
         if (
@@ -2530,34 +1486,7 @@ $(() => {
             if (typeof DS_EVENT.generateNPCForEvent === 'function') {
               const eventNPC = DS_EVENT.generateNPCForEvent(eventId);
 
-              // #region agent log
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'core.ts:event_triggered监听-NPC注入',
-                  message: '已生成事件NPC',
-                  data: {
-                    eventId,
-                    npcType:
-                      typeof eventNPC === 'object' && eventNPC !== null
-                        ? Array.isArray(eventNPC)
-                          ? 'array'
-                          : Object.keys(eventNPC)
-                        : typeof eventNPC,
-                    npcName:
-                      typeof eventNPC === 'object' && eventNPC !== null && 'name' in eventNPC
-                        ? (eventNPC as { name: string }).name
-                        : undefined,
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-session',
-                  runId: 'fix-npc-injection',
-                  hypothesisId: 'NPC_GENERATED',
-                }),
-              }).catch(() => {}); */
-              // #endregion
 
               if (eventNPC && typeof eventNPC === 'object') {
                 // 处理单个NPC（如警察、律师等）
@@ -2597,25 +1526,7 @@ $(() => {
           } catch (npcError) {
             console.warn('[核心系统] 生成事件NPC失败:', npcError);
 
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'core.ts:event_triggered监听-NPC注入',
-                message: '生成事件NPC失败',
-                data: {
-                  eventId,
-                  error: npcError instanceof Error ? npcError.message : String(npcError),
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-npc-injection',
-                hypothesisId: 'NPC_GEN_ERROR',
-              }),
-            }).catch(() => {}); */
-            // #endregion
           }
         }
 
@@ -2630,55 +1541,14 @@ $(() => {
               | undefined;
             const targetCellType = (event as { to?: string }).to || eventSystemModule?.cellType || 'pretrial';
 
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'core.ts:event_triggered监听-NPC注入',
-                message: '开始处理监室转移NPC生成',
-                data: {
-                  eventId: 'cell_transfer',
-                  targetCellType,
-                  hasGenerateNPC: typeof DS_EVENT.generateNPC === 'function',
-                  hasSetCurrentCellNPCs: typeof DS_EVENT.setCurrentCellNPCs === 'function',
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-npc-injection',
-                hypothesisId: 'CELL_TRANSFER_START',
-              }),
-            }).catch(() => {}); */
-            // #endregion
 
             // 直接生成新监室的NPC（不依赖cell_transfer事件监听器，确保同步执行）
             if (typeof DS_EVENT.generateNPC === 'function' && typeof DS_EVENT.setCurrentCellNPCs === 'function') {
               const npcCount = Math.floor(Math.random() * 5) + 3; // 3-7人
               const newNPCs = DS_EVENT.generateNPC(npcCount, { cellType: targetCellType });
 
-              // #region agent log
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'core.ts:event_triggered监听-NPC注入',
-                  message: '已生成新监室NPC',
-                  data: {
-                    eventId: 'cell_transfer',
-                    npcCount: Array.isArray(newNPCs) ? newNPCs.length : 0,
-                    npcNames: Array.isArray(newNPCs)
-                      ? newNPCs.map((npc: { name?: string }) => npc.name).filter(Boolean)
-                      : [],
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-session',
-                  runId: 'fix-npc-injection',
-                  hypothesisId: 'CELL_NPC_GENERATED',
-                }),
-              }).catch(() => {}); */
-              // #endregion
 
               if (Array.isArray(newNPCs) && newNPCs.length > 0) {
                 // 设置当前监室NPC（确保NPC系统状态一致）
@@ -2705,25 +1575,7 @@ $(() => {
           } catch (cellNPCError) {
             console.warn('[核心系统] 生成监室转移NPC失败:', cellNPCError);
 
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'core.ts:event_triggered监听-NPC注入',
-                message: '生成监室转移NPC失败',
-                data: {
-                  eventId: 'cell_transfer',
-                  error: cellNPCError instanceof Error ? cellNPCError.message : String(cellNPCError),
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-npc-injection',
-                hypothesisId: 'CELL_NPC_ERROR',
-              }),
-            }).catch(() => {}); */
-            // #endregion
           }
         }
 
@@ -2742,25 +1594,7 @@ $(() => {
             if ((!cellNPCs || (Array.isArray(cellNPCs) && cellNPCs.length === 0)) && currentDay <= 1) {
               console.info('[核心系统] 检测到初始场景，生成初始监室NPC');
 
-              // #region agent log
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'core.ts:event_triggered监听-NPC注入',
-                  message: '生成初始监室NPC',
-                  data: {
-                    currentDay,
-                    eventId,
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-session',
-                  runId: 'fix-npc-injection',
-                  hypothesisId: 'INIT_CELL_NPC',
-                }),
-              }).catch(() => {}); */
-              // #endregion
 
               if (typeof DS_EVENT.generateNPC === 'function') {
                 const eventSystemModule = DS_EVENT.getModule('eventSystem') as
@@ -2796,25 +1630,7 @@ $(() => {
           } catch (cellNPCError) {
             console.warn('[核心系统] 获取随机事件NPC失败:', cellNPCError);
 
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'core.ts:event_triggered监听-NPC注入',
-                message: '获取随机事件NPC失败',
-                data: {
-                  eventId,
-                  error: cellNPCError instanceof Error ? cellNPCError.message : String(cellNPCError),
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-npc-injection',
-                hypothesisId: 'RANDOM_NPC_ERROR',
-              }),
-            }).catch(() => {}); */
-            // #endregion
           }
         }
 
@@ -2828,144 +1644,24 @@ $(() => {
           userInput = `[系统事件] 第${currentDay}天：${eventText}。请详细描述事件的发展和主角的反应。${npcInfoText}`;
         }
 
-        // #region agent log - NPC注入结果
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:event_triggered监听-NPC注入',
-            message: 'NPC信息注入完成',
-            data: {
-              eventId,
-              eventName: event.name,
-              hasNPCInfo: !!npcInfoText,
-              npcInfoLength: npcInfoText.length,
-              finalUserInput: userInput.substring(0, 200),
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-npc-injection',
-            hypothesisId: 'NPC_INJECT_COMPLETE',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:event_triggered监听',
-            message: '构建事件描述',
-            data: {
-              eventName: event.name,
-              currentDay,
-              userInput,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-event-description',
-            hypothesisId: 'BUILD_DESC',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:event_triggered监听',
-            message: '开始处理事件触发AI生成',
-            data: {
-              eventName: event.name,
-              eventId: event.id,
-              eventPriority,
-              userInput,
-              currentDay,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-ai-output',
-            hypothesisId: 'A',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 先停止所有正在进行的生成（在创建消息之前）
         await stopAllGeneration();
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:event_triggered监听',
-            message: '在创建消息前停止所有生成',
-            data: {
-              eventName: event.name,
-              duringGenerating:
-                typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-ai-output',
-            hypothesisId: 'BEFORE_CREATE',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 创建用户消息
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:event_triggered监听',
-            message: '准备创建用户消息',
-            data: {
-              eventName: event.name,
-              eventId: event.id,
-              userInputLength: userInput.length,
-              waitingForEventResponse,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-duplicate-trigger',
-            hypothesisId: 'HYP-A',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 在创建消息前再次停止所有生成，确保不会有自动触发
         await stopAllGeneration();
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:event_triggered监听',
-            message: '创建消息前再次停止生成',
-            data: {
-              eventName: event.name,
-              duringGenerating:
-                typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
-              beforeCreateChatMessages: true,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-duplicate-trigger-v4',
-            hypothesisId: 'HYP-D',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 使用 refresh: 'affected' 创建消息，这样消息会显示并触发 MESSAGE_SENT 事件
         // MESSAGE_SENT 监听器会通过检查消息内容来跳过系统消息，避免重复处理
@@ -2987,27 +1683,7 @@ $(() => {
           { refresh: 'affected' }, // 使用 'affected' 让消息显示，但 MESSAGE_SENT 监听器会跳过它
         );
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:event_triggered监听',
-            message: 'createChatMessages 调用后（等待完成前）',
-            data: {
-              eventName: event.name,
-              duringGenerating:
-                typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
-              createPromisePending: true,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-duplicate-trigger-v4',
-            hypothesisId: 'HYP-F',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 等待消息创建完成
         await createPromise;
@@ -3017,119 +1693,25 @@ $(() => {
         await new Promise(resolve => setTimeout(resolve, 150)); // 增加延迟，确保 MESSAGE_SENT 事件处理完成
         await stopAllGeneration();
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:event_triggered监听',
-            message: '创建消息后再次停止生成（createChatMessages 完成 + 延迟后）',
-            data: {
-              eventName: event.name,
-              duringGenerating:
-                typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
-              afterCreateChatMessages: true,
-              afterDelay: true,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-duplicate-trigger-v4',
-            hypothesisId: 'HYP-E',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:event_triggered监听',
-            message: '用户消息已创建（refresh: affected，带 data 标记）',
-            data: {
-              eventName: event.name,
-              eventId: event.id,
-              eventMessageId: getLastMessageId(),
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-duplicate-trigger-v2',
-            hypothesisId: 'HYP-B',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 标记事件消息的message_id，用于检测是否被删除/重新生成
         // 等待一小段时间确保消息已创建并 MESSAGE_SENT 事件已处理
         await new Promise(resolve => setTimeout(resolve, 200));
         const eventMessageId = getLastMessageId();
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:event_triggered监听',
-            message: '消息已创建，等待 MESSAGE_SENT 处理完成',
-            data: {
-              eventName: event.name,
-              eventMessageId,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-duplicate-trigger-v2',
-            hypothesisId: 'HYP-C',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'core.ts:event_triggered监听',
-            message: '用户消息已创建，检查生成状态',
-            data: {
-              userInput,
-              duringGenerating:
-                typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-ai-output',
-            hypothesisId: 'B',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 确保没有正在进行的生成，然后再触发AI生成
         try {
           // 再次停止所有正在进行的生成（防止createChatMessages触发了新生成）
           await stopAllGeneration();
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:event_triggered监听',
-              message: '已调用stopAllGeneration，开始等待生成停止',
-              data: {
-                eventName: event.name,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-ai-output',
-              hypothesisId: 'WAIT_STOP_START',
-            }),
-          }).catch(() => {}); */
-          // #endregion
 
           // 等待生成完全停止（通过监听 GENERATION_ENDED 事件或超时）
           const waitForGenerationToStop = (): Promise<void> => {
@@ -3157,31 +1739,7 @@ $(() => {
                 async (type: string, options: unknown, dry_run: boolean) => {
                   generationStartedCount++;
                   const now = Date.now();
-                  // #region agent log
                   // 调试日志已禁用以避免 CORS 错误
-                  /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      location: 'core.ts:event_triggered监听:waitForGenerationToStop',
-                      message: '等待期间检测到新生成（tavern_events.GENERATION_STARTED），立即停止',
-                      data: {
-                        eventName: event.name,
-                        generationStartedCount,
-                        type,
-                        dry_run,
-                        timestamp: now,
-                        lastTriggerTime,
-                        lastTriggerEventName,
-                        timeSinceLastTrigger: lastTriggerTime ? now - lastTriggerTime : null,
-                      },
-                      timestamp: now,
-                      sessionId: 'debug-session',
-                      runId: 'track-streaming-gen',
-                      hypothesisId: 'NEW_GENERATION_DETECTED_IN_WAIT',
-                    }),
-                  }).catch(() => {}); */
-                  // #endregion
                   await stopAllGeneration();
                 },
               );
@@ -3190,25 +1748,7 @@ $(() => {
               eventReturn = eventOnce(tavern_events.GENERATION_ENDED, () => {
                 if (!resolved) {
                   generationEndedReceived = true;
-                  // #region agent log
                   // 调试日志已禁用以避免 CORS 错误
-                  /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      location: 'core.ts:event_triggered监听',
-                      message: '收到GENERATION_ENDED事件',
-                      data: {
-                        eventName: event.name,
-                        generationStartedCount,
-                      },
-                      timestamp: Date.now(),
-                      sessionId: 'debug-session',
-                      runId: 'fix-ai-output',
-                      hypothesisId: 'GENERATION_ENDED_RECEIVED',
-                    }),
-                  }).catch(() => {}); */
-                  // #endregion
                   // 即使收到GENERATION_ENDED，也等待一段时间确保完全停止
                   setTimeout(() => {
                     if (!resolved) {
@@ -3226,30 +1766,7 @@ $(() => {
                 if (!resolved) {
                   resolved = true;
                   cleanup();
-                  // #region agent log
                   // 调试日志已禁用以避免 CORS 错误
-                  /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      location: 'core.ts:event_triggered监听',
-                      message: '等待生成停止超时',
-                      data: {
-                        eventName: event.name,
-                        generationEndedReceived,
-                        generationStartedCount,
-                        duringGenerating:
-                          typeof builtin !== 'undefined' && builtin.duringGenerating
-                            ? builtin.duringGenerating()
-                            : 'unknown',
-                      },
-                      timestamp: Date.now(),
-                      sessionId: 'debug-session',
-                      runId: 'fix-ai-output',
-                      hypothesisId: 'WAIT_TIMEOUT',
-                    }),
-                  }).catch(() => {}); */
-                  // #endregion
                   resolve();
                 }
               }, 2500); // 增加到2500ms超时，给更多时间
@@ -3258,24 +1775,7 @@ $(() => {
 
           await waitForGenerationToStop();
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:event_triggered监听',
-              message: '等待生成停止完成，准备再次停止并触发',
-              data: {
-                eventName: event.name,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-ai-output',
-              hypothesisId: 'WAIT_STOP_DONE',
-            }),
-          }).catch(() => {}); */
-          // #endregion
 
           // 检查是否仍在生成，如果是在生成，等待生成自然结束而不是强制停止
           const waitForGenerationToComplete = (): Promise<void> => {
@@ -3286,24 +1786,7 @@ $(() => {
                 return;
               }
 
-              // #region agent log
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'core.ts:event_triggered监听',
-                  message: '检测到仍在生成，等待生成自然结束',
-                  data: {
-                    eventName: event.name,
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-session',
-                  runId: 'fix-ai-output',
-                  hypothesisId: 'WAIT_NATURAL_END',
-                }),
-              }).catch(() => {}); */
-              // #endregion
 
               let timeoutHandle: ReturnType<typeof setTimeout> | null = null;
 
@@ -3315,28 +1798,7 @@ $(() => {
                 }
                 // 额外等待500ms确保完全结束
                 setTimeout(() => {
-                  // #region agent log
                   // 调试日志已禁用以避免 CORS 错误
-                  /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                      location: 'core.ts:event_triggered监听',
-                      message: '生成自然结束',
-                      data: {
-                        eventName: event.name,
-                        duringGenerating:
-                          typeof builtin !== 'undefined' && builtin.duringGenerating
-                            ? builtin.duringGenerating()
-                            : 'unknown',
-                      },
-                      timestamp: Date.now(),
-                      sessionId: 'debug-session',
-                      runId: 'fix-ai-output',
-                      hypothesisId: 'NATURAL_END',
-                    }),
-                  }).catch(() => {}); */
-                  // #endregion
                   resolve();
                 }, 500);
               });
@@ -3345,28 +1807,7 @@ $(() => {
               timeoutHandle = setTimeout(() => {
                 eventReturn.stop();
                 timeoutHandle = null;
-                // #region agent log
                 // 调试日志已禁用以避免 CORS 错误
-                /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    location: 'core.ts:event_triggered监听',
-                    message: '等待生成自然结束超时（10秒）',
-                    data: {
-                      eventName: event.name,
-                      duringGenerating:
-                        typeof builtin !== 'undefined' && builtin.duringGenerating
-                          ? builtin.duringGenerating()
-                          : 'unknown',
-                    },
-                    timestamp: Date.now(),
-                    sessionId: 'debug-session',
-                    runId: 'fix-ai-output',
-                    hypothesisId: 'NATURAL_END_TIMEOUT',
-                  }),
-                }).catch(() => {}); */
-                // #endregion
                 resolve(); // 即使超时也resolve，因为我们已经尽力了
               }, 10000);
             });
@@ -3391,26 +1832,7 @@ $(() => {
 
           // 如果强制停止后仍在生成，记录警告但继续触发（因为我们已经尽力了）
           if (typeof builtin !== 'undefined' && builtin.duringGenerating && builtin.duringGenerating()) {
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'core.ts:event_triggered监听',
-                message: '强制停止后仍在生成，但继续触发AI生成',
-                data: {
-                  eventName: event.name,
-                  duringGenerating: builtin.duringGenerating(),
-                  forceStopAttempts,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-ai-output',
-                hypothesisId: 'FORCE_STOP_FAILED',
-              }),
-            }).catch(() => {}); */
-            // #endregion
             console.warn(`[核心系统] ⚠ 强制停止后仍在生成，但继续触发AI生成，事件: ${event.name}`);
             // 不再返回，继续触发AI生成
           }
@@ -3418,28 +1840,7 @@ $(() => {
           // 额外等待300ms确保完全准备好
           await new Promise(resolve => setTimeout(resolve, 300));
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:event_triggered监听',
-              message: '准备触发AI生成',
-              data: {
-                eventName: event.name,
-                eventId: event.id,
-                eventMessageId: eventMessageId,
-                beforeTriggerDuringGenerating:
-                  typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-ai-output',
-              hypothesisId: 'BEFORE_TRIGGER',
-            }),
-          }).catch(() => {}); */
-          // #endregion
 
           // 触发AI生成
           // 保存事件名称，用于后续回调（避免闭包问题）
@@ -3485,101 +1886,11 @@ $(() => {
               lastAssistantMessagePreview.includes('<thinking>') || // 包含思考标记，可能是未完成的
               lastAssistantMessagePreview.includes('...')); // 包含省略号，可能是未完成的
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:event_triggered监听',
-              message: '准备调用 triggerSlash(/trigger)',
-              data: {
-                eventName: event.name,
-                eventId: event.id,
-                eventMessageId: eventMessageId,
-                triggerTime: lastTriggerTime,
-                beforeTriggerDuringGenerating:
-                  typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
-                messagesBeforeTrigger: messagesBeforeTrigger.length,
-                messageIdsBeforeTrigger: messagesBeforeTrigger.map(m => m.message_id),
-                lastAssistantMessageId,
-                lastAssistantMessageLength,
-                lastAssistantMessagePreview,
-                potentiallyIncompleteMessage,
-                // 如果检测到可能未完成的消息，记录警告
-                warning: potentiallyIncompleteMessage
-                  ? '检测到可能未完成的助手消息，流式生成可能会更新此消息而不是创建新消息'
-                  : null,
-              },
-              timestamp: lastTriggerTime,
-              sessionId: 'debug-session',
-              runId: 'track-streaming-gen',
-              hypothesisId: 'BEFORE_TRIGGER_SLASH',
-            }),
-          }).catch(() => {}); */
-          // #endregion
 
           await triggerSlash('/trigger');
 
-          // #region agent log
-          const afterTriggerTime = Date.now();
-
-          // 记录 triggerSlash 调用后的消息列表，用于对比
-          let messagesAfterTrigger: Array<{ message_id: number; role: string; messageLength: number }> = [];
-          try {
-            // 稍微等待一下，让消息有时间被创建
-            await new Promise(resolve => setTimeout(resolve, 100));
-            const allMessages = getChatMessages(-1);
-            messagesAfterTrigger = allMessages.map(m => ({
-              message_id: m.message_id || 0,
-              role: m.role || 'unknown',
-              messageLength: (m.message || '').length,
-            }));
-          } catch (error) {
-            console.warn('[核心系统] 获取 triggerSlash 后的消息列表失败:', error);
-          }
-
-          const newMessages = messagesAfterTrigger.filter(
-            m => !messagesBeforeTrigger.some(b => b.message_id === m.message_id),
-          );
-
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:event_triggered监听',
-              message: 'triggerSlash(/trigger) 调用完成',
-              data: {
-                eventName: event.name,
-                eventId: event.id,
-                eventMessageId: eventMessageId,
-                triggerTime: lastTriggerTime,
-                afterTriggerTime,
-                timeSinceTrigger: afterTriggerTime - lastTriggerTime!,
-                generationsTriggered: generationTracking.length,
-                afterTriggerDuringGenerating:
-                  typeof builtin !== 'undefined' && builtin.duringGenerating ? builtin.duringGenerating() : 'unknown',
-                messagesBeforeCount: messagesBeforeTrigger.length,
-                messagesAfterCount: messagesAfterTrigger.length,
-                newMessagesCount: newMessages.length,
-                newMessageIds: newMessages.map(m => m.message_id),
-                newAssistantMessages: newMessages.filter(m => m.role === 'assistant'),
-                // 检查是否有新的助手消息被立即创建（可能是之前的生成）
-                immediatelyCreatedAssistantMessages: newMessages.filter(
-                  m =>
-                    m.role === 'assistant' &&
-                    messagesBeforeTrigger.length > 0 &&
-                    m.message_id > Math.max(...messagesBeforeTrigger.map(b => b.message_id)),
-                ),
-              },
-              timestamp: afterTriggerTime,
-              sessionId: 'debug-session',
-              runId: 'track-streaming-gen',
-              hypothesisId: 'AFTER_TRIGGER_SLASH',
-            }),
-          }).catch(() => {}); */
-          // #endregion
 
           console.info(`[核心系统] ✓ 已触发AI生成，事件: ${event.name}`);
 
@@ -3654,72 +1965,7 @@ $(() => {
               // 忽略错误
             }
 
-            // #region agent log - 追踪 GENERATION_ENDED 事件
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'core.ts:event_triggered监听:GENERATION_ENDED',
-                message: 'GENERATION_ENDED 事件触发（追踪流式生成）',
-                data: {
-                  eventName: eventName,
-                  eventId: eventId,
-                  eventMessageId: eventMessageId,
-                  generationEndMessageId: message_id,
-                  triggerTime: lastTriggerTime,
-                  endTime,
-                  timeSinceTrigger: lastTriggerTime ? endTime - lastTriggerTime : null,
-                  generationsTracked: generationTracking.length,
-                  generationIds: generationTracking.map(g => ({ id: g.generation_id, type: g.type, source: g.source })),
-                  relatedMessagesCount: relatedMessages.length,
-                  relatedMessageIds: relatedMessages.map(m => m.message_id),
-                  totalCharactersInRelatedMessages: relatedMessages.reduce((sum, m) => sum + m.messageLength, 0),
-                  messageIdMatched,
-                  // 如果消息 ID 不匹配，检查 message_id 是否存在于聊天中
-                  messageEndExists: messageEndContent !== null,
-                  messageEndLength,
-                  messageEndPreview: messageEndContent ? messageEndContent.substring(0, 200) : null,
-                  // 检查 message_id 5 的内容，看看是否被更新为本次生成的内容
-                  message5Exists: message5Content !== null,
-                  message5Length,
-                  message5Preview,
-                  message5ContainsEventContent,
-                  message5ContainsSystemEvent,
-                  // 如果 message_id 6 不存在但 message_id 5 包含本次生成的内容，说明内容被更新到了 message_id 5
-                  contentUpdatedToMessage5,
-                  allAssistantMessagesCount: allAssistantMessages.length,
-                  allAssistantMessageIds: allAssistantMessages.map(m => m.message_id),
-                  assistantMessagesAfterTriggerTime: allAssistantMessages.filter(
-                    m => !m.timestamp || (lastTriggerTime && m.timestamp >= lastTriggerTime),
-                  ),
-                  // 如果消息 ID 不匹配，可能是消息分割
-                  potentialMessageSplit: relatedMessages.length > 0 && !messageIdMatched,
-                  allTrackedMessages: aiMessageTracking.map(m => ({
-                    id: m.message_id,
-                    triggerTime: m.triggerTime,
-                    eventName: m.eventName,
-                    length: m.messageLength,
-                    timestamp: m.timestamp,
-                  })),
-                  // 检查是否有其他消息在时间窗口内（可能是分割的）
-                  nearbyMessages: aiMessageTracking
-                    .filter(m => Math.abs(m.timestamp - endTime) < 5000)
-                    .map(m => ({
-                      id: m.message_id,
-                      length: m.messageLength,
-                      timeDiff: Math.abs(m.timestamp - endTime),
-                      triggerTime: m.triggerTime,
-                      eventName: m.eventName,
-                    })),
-                },
-                timestamp: endTime,
-                sessionId: 'debug-session',
-                runId: 'track-streaming-gen',
-                hypothesisId: 'GEN_ENDED_TRACK',
-              }),
-            }).catch(() => {}); */
-            // #endregion
 
             // 检查是否是内容被更新到了已存在的 message_id 5（无论是否有 relatedMessages）
             if (contentUpdatedToMessage5) {
@@ -3738,49 +1984,7 @@ $(() => {
                 },
               );
 
-              // #region agent log
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'core.ts:event_triggered监听:GENERATION_ENDED',
-                  message:
-                    '⚠ 检测到流式生成将内容更新到了已存在的 message_id 5（而不是创建新的 message_id 6），已自动使用正确的 message_id',
-                  data: {
-                    eventName: eventName,
-                    expectedMessageId: message_id,
-                    actualMessageId,
-                    trackedMessageIds: relatedMessages.map(m => m.message_id),
-                    message5Exists: message5Content !== null,
-                    message5Length,
-                    message5Preview,
-                    message5ContainsEventContent,
-                    message5ContainsSystemEvent,
-                    contentUpdatedToMessage5: true,
-                    allTrackedMessages: aiMessageTracking.map(m => ({
-                      id: m.message_id,
-                      triggerTime: m.triggerTime,
-                      eventName: m.eventName,
-                      length: m.messageLength,
-                      preview: m.messagePreview.substring(0, 100),
-                      timestamp: m.timestamp,
-                    })),
-                    triggerTime: lastTriggerTime,
-                    eventMessageId: eventMessageId,
-                    // 这是问题的根本原因：内容被更新到了已存在的消息，而不是创建新消息
-                    rootCause:
-                      '流式生成将内容更新到了已存在的 message_id 5，导致 GENERATION_ENDED 期望的 message_id 6 不存在',
-                    // 优化：使用实际的 message_id 而不是期望的 message_id
-                    optimization: '已自动使用实际的 message_id 5 进行处理，避免消息 ID 不匹配的问题',
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-session',
-                  runId: 'track-streaming-gen',
-                  hypothesisId: 'CONTENT_UPDATED_TO_EXISTING_MESSAGE',
-                }),
-              }).catch(() => {}); */
-              // #endregion
 
               // 优化：使用实际的 message_id 进行后续处理（如果需要）
               // 注意：这里不修改 message_id 变量，因为 GENERATION_ENDED 事件已经传递了期望的 message_id
@@ -3801,36 +2005,7 @@ $(() => {
                 },
               );
 
-              // #region agent log
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'core.ts:event_triggered监听:GENERATION_ENDED',
-                  message: '⚠ 检测到消息 ID 不匹配（可能的消息分割）',
-                  data: {
-                    eventName: eventName,
-                    generationEndMessageId: message_id,
-                    trackedMessageIds: relatedMessages.map(m => m.message_id),
-                    allTrackedMessages: aiMessageTracking.map(m => ({
-                      id: m.message_id,
-                      triggerTime: m.triggerTime,
-                      eventName: m.eventName,
-                      length: m.messageLength,
-                      preview: m.messagePreview.substring(0, 100),
-                      timestamp: m.timestamp,
-                    })),
-                    triggerTime: lastTriggerTime,
-                    eventMessageId: eventMessageId,
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-session',
-                  runId: 'track-streaming-gen',
-                  hypothesisId: 'MESSAGE_ID_MISMATCH',
-                }),
-              }).catch(() => {}); */
-              // #endregion
             } else if (!contentUpdatedToMessage5 && relatedMessages.length > 1) {
               // 检查是否有多条消息关联到同一个触发事件（可能是消息分割）
               // 检测到多条消息关联到同一个触发事件（可能是消息分割）
@@ -3845,36 +2020,7 @@ $(() => {
                 },
               );
 
-              // #region agent log
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'core.ts:event_triggered监听:GENERATION_ENDED',
-                  message: '⚠ 检测到可能的消息分割（一次生成被分成多次）',
-                  data: {
-                    eventName: lastTriggerEventName,
-                    triggerTime: lastTriggerTime,
-                    generationEndMessageId: message_id,
-                    messageCount: relatedMessages.length,
-                    messages: relatedMessages.map(m => ({
-                      message_id: m.message_id,
-                      messageLength: m.messageLength,
-                      timestamp: m.timestamp,
-                      timeSinceTrigger: lastTriggerTime ? m.timestamp - lastTriggerTime : null,
-                      preview: m.messagePreview,
-                    })),
-                    totalLength: relatedMessages.reduce((sum, m) => sum + m.messageLength, 0),
-                    eventMessageId: eventMessageId,
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-session',
-                  runId: 'track-streaming-gen',
-                  hypothesisId: 'MESSAGE_SPLIT_DETECTED_IN_GEN_ENDED',
-                }),
-              }).catch(() => {}); */
-              // #endregion
             }
 
             // 在AI回复结束时，确认天数推进并保存状态快照
@@ -3904,24 +2050,7 @@ $(() => {
                 }
                 console.debug('[核心系统] 已保存AI回复结束时的状态快照');
 
-                // #region agent log
                 // 调试日志已禁用以避免 CORS 错误
-                /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    location: 'core.ts:event_triggered监听',
-                    message: 'AI回复结束时保存状态快照',
-                    data: {
-                      eventName: event.name,
-                    },
-                    timestamp: Date.now(),
-                    sessionId: 'debug-session',
-                    runId: 'fix-snapshot-timing',
-                    hypothesisId: 'SAVE_SNAPSHOT_ON_REPLY_END',
-                  }),
-                }).catch(() => {}); */
-                // #endregion
               }
             } catch (error) {
               console.warn('[核心系统] 保存AI回复结束时状态快照失败:', error);
@@ -3943,25 +2072,7 @@ $(() => {
                   const rollbackSuccess = eventSystem.rollbackToInterruptSnapshot();
                   if (rollbackSuccess) {
                     console.info(`[核心系统] ✓ 检测到事件消息被删除，已回退到事件打断时的状态`);
-                    // #region agent log
                     // 调试日志已禁用以避免 CORS 错误
-                    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({
-                        location: 'core.ts:event_triggered监听',
-                        message: '检测到事件消息被删除，已回退状态',
-                        data: {
-                          eventName: event.name,
-                          eventMessageId,
-                        },
-                        timestamp: Date.now(),
-                        sessionId: 'debug-session',
-                        runId: 'add-rollback',
-                        hypothesisId: 'ROLLBACK_ON_DELETE',
-                      }),
-                    }).catch(() => {}); */
-                    // #endregion
                   }
                 }
               }
@@ -3982,44 +2093,11 @@ $(() => {
             }
           }, 30000);
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:event_triggered监听',
-              message: 'AI生成已触发',
-              data: { eventName: event.name },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-ai-output',
-              hypothesisId: 'C',
-            }),
-          }).catch(() => {}); */
-          // #endregion
         } catch (error) {
           console.error(`[核心系统] ✗ 触发AI生成失败:`, error);
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'core.ts:event_triggered监听',
-              message: 'AI生成触发失败',
-              data: {
-                error: error instanceof Error ? error.message : String(error),
-                eventName: event.name,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-ai-output',
-              hypothesisId: 'D',
-            }),
-          }).catch(() => {}); */
-          // #endregion
         }
       } catch (error) {
         console.error('[核心系统] 处理事件触发AI生成失败:', error);
@@ -4063,19 +2141,4 @@ const systemCheck = {
 
 console.info('[核心系统] 检查 window.detentionSystem:', systemCheck);
 
-// #region agent log
 // 调试日志已禁用以避免 CORS 错误
-/* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    location: 'core.ts:脚本加载完成检查',
-    message: '脚本加载完成时的系统状态检查',
-    data: systemCheck,
-    timestamp: Date.now(),
-    sessionId: 'debug-session',
-    runId: 'fix-init-failure',
-    hypothesisId: 'FINAL_CHECK',
-  }),
-}).catch(() => {}); */
-// #endregion

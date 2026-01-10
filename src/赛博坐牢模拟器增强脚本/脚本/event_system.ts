@@ -200,74 +200,16 @@ $(() => {
         const state = statusPanel.getState();
         if (state && (state.days !== undefined || state.day !== undefined)) {
           const dayFromMemory = state.days ?? state.day ?? fallback;
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:getCurrentDayFromMemoryEnhancement',
-              message: '从记忆增强插件获取天数',
-              data: {
-                dayFromMemory,
-                fallback,
-                hasStatusPanel: !!statusPanel,
-                stateHasDays: state.days !== undefined,
-                stateHasDay: state.day !== undefined,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-day-from-memory',
-              hypothesisId: 'GET_DAY_FROM_MEMORY',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           return dayFromMemory;
         }
       }
 
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'event_system.ts:getCurrentDayFromMemoryEnhancement',
-          message: '无法从记忆增强插件获取天数，使用回退值',
-          data: {
-            fallback,
-            hasStatusPanel: !!statusPanel,
-            hasGetState: !!(statusPanel && statusPanel.getState),
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'fix-day-from-memory',
-          hypothesisId: 'GET_DAY_FALLBACK',
-        }),
-      }).catch(() => {}); */
-      // #endregion
       return fallback;
     } catch (error) {
       console.warn('[事件系统] 从记忆增强插件获取天数失败:', error);
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'event_system.ts:getCurrentDayFromMemoryEnhancement',
-          message: '获取天数时出错',
-          data: {
-            error: error instanceof Error ? error.message : String(error),
-            fallback,
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'fix-day-from-memory',
-          hypothesisId: 'GET_DAY_ERROR',
-        }),
-      }).catch(() => {}); */
-      // #endregion
       return fallback;
     }
   }
@@ -499,27 +441,7 @@ $(() => {
 
             // 如果剩余天数等于需要的触发次数，强制触发（确保必定触发）
             if (remainingDays === requiredTriggers) {
-              // #region agent log
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'event_system.ts:interrogation_condition',
-                  message: '前10天剩余天数等于需要触发次数，强制触发提审',
-                  data: {
-                    currentDay: system.currentDay,
-                    remainingDays,
-                    requiredTriggers,
-                    interrogationCount: system.eventCounters.interrogation,
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-session',
-                  runId: 'guarantee-interrogation',
-                  hypothesisId: 'A',
-                }),
-              }).catch(() => {}); */
-              // #endregion
               return true;
             }
 
@@ -528,28 +450,7 @@ $(() => {
             const forcedProbability = requiredTriggers / remainingDays; // 确保在剩余天数内必定触发一次
             const shouldTrigger = Math.random() < forcedProbability;
 
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'event_system.ts:interrogation_condition',
-                message: '前10天内检查提审触发',
-                data: {
-                  currentDay: system.currentDay,
-                  remainingDays,
-                  forcedProbability,
-                  shouldTrigger,
-                  interrogationCount: system.eventCounters.interrogation,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'guarantee-interrogation',
-                hypothesisId: 'B',
-              }),
-            }).catch(() => {}); */
-            // #endregion
 
             if (shouldTrigger) {
               return true;
@@ -782,25 +683,7 @@ $(() => {
 
         if (!currentChatId) {
           console.debug('[事件系统] 没有打开的聊天文件，跳过从聊天变量加载状态');
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:initialize',
-              message: '没有聊天文件，跳过加载状态',
-              data: {
-                hasChatId: false,
-                startDay,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-save-chat-error',
-              hypothesisId: 'INIT_LOAD_SKIPPED',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           // 使用默认值
           this.currentDay = startDay;
           this.legalTimeline.arrestDay = startDay;
@@ -837,25 +720,7 @@ $(() => {
           }
         } catch (getVarsError) {
           console.debug('[事件系统] 获取聊天变量失败，聊天文件可能未创建:', getVarsError);
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:initialize',
-              message: '获取聊天变量失败，使用默认值',
-              data: {
-                error: getVarsError instanceof Error ? getVarsError.message : String(getVarsError),
-                startDay,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-save-chat-error',
-              hypothesisId: 'GET_CHAT_VARS_ERROR',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           // 使用默认值
           this.currentDay = startDay;
           this.legalTimeline.arrestDay = startDay;
@@ -1005,47 +870,10 @@ $(() => {
             typeof SillyTavern !== 'undefined' && SillyTavern.getCurrentChatId ? SillyTavern.getCurrentChatId() : null;
 
           if (currentChatId) {
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'event_system.ts:initialize',
-                message: '初始化后延迟保存状态',
-                data: {
-                  currentChatId,
-                  currentDay: this.currentDay,
-                  hasChatId: !!currentChatId,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-save-conflict',
-                hypothesisId: 'INIT_SAVE_DELAYED',
-              }),
-            }).catch(() => {}); */
-            // #endregion
             this.saveStateToChatVars();
           } else {
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'event_system.ts:initialize',
-                message: '初始化后跳过保存（无聊天ID）',
-                data: {
-                  currentDay: this.currentDay,
-                  hasChatId: false,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-save-conflict',
-                hypothesisId: 'INIT_SAVE_SKIPPED',
-              }),
-            }).catch(() => {}); */
-            // #endregion
             console.debug('[事件系统] 初始化时无聊天ID，跳过保存状态');
           }
         } catch (error) {
@@ -1077,25 +905,7 @@ $(() => {
 
           if (!currentChatId) {
             console.debug('[事件系统] 没有打开的聊天文件，跳过保存状态到聊天变量');
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'event_system.ts:saveStateToChatVars',
-                message: '没有聊天文件，跳过保存',
-                data: {
-                  hasChatId: false,
-                  currentDay: this.currentDay,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-save-chat-error',
-                hypothesisId: 'NO_CHAT_SKIP',
-              }),
-            }).catch(() => {}); */
-            // #endregion
             saveStateTimer = null;
             return;
           }
@@ -1113,29 +923,7 @@ $(() => {
             assignedOfficers: { ...this.assignedOfficers },
           };
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:saveStateToChatVars',
-              message: '准备保存状态到聊天变量',
-              data: {
-                stateDataSize: JSON.stringify(stateData).length,
-                currentDay: this.currentDay,
-                currentStage: this.currentStage,
-                eventHistoryLength: this.eventHistory.length,
-                currentChatId,
-                hasChatId: !!currentChatId,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-save-conflict',
-              hypothesisId: 'SAVE_STATE_START',
-            }),
-          }).catch(() => {}); */
-          // #endregion
 
           // 检查数据大小，如果太大则截断 eventHistory
           const stateDataStr = JSON.stringify(stateData);
@@ -1146,27 +934,7 @@ $(() => {
               ...stateData,
               eventHistory: this.eventHistory.slice(-50),
             };
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'event_system.ts:saveStateToChatVars',
-                message: '数据过大，已截断',
-                data: {
-                  originalSize: stateDataStr.length,
-                  truncatedSize: JSON.stringify(truncatedStateData).length,
-                  originalHistoryLength: this.eventHistory.length,
-                  truncatedHistoryLength: truncatedStateData.eventHistory.length,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-save-conflict',
-                hypothesisId: 'DATA_TOO_LARGE',
-              }),
-            }).catch(() => {}); */
-            // #endregion
             stateData.eventHistory = truncatedStateData.eventHistory;
           }
 
@@ -1175,50 +943,13 @@ $(() => {
             const testChatVars = getVariables({ type: 'chat' });
             if (!testChatVars || typeof testChatVars !== 'object') {
               console.debug('[事件系统] 无法获取聊天变量，聊天文件可能未创建，跳过保存状态');
-              // #region agent log
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'event_system.ts:saveStateToChatVars',
-                  message: '无法获取聊天变量，跳过保存',
-                  data: {
-                    hasChatId: !!currentChatId,
-                    hasChatVars: !!testChatVars,
-                    chatVarsType: typeof testChatVars,
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-session',
-                  runId: 'fix-save-chat-error',
-                  hypothesisId: 'NO_CHAT_VARS',
-                }),
-              }).catch(() => {}); */
-              // #endregion
               saveStateTimer = null;
               return;
             }
           } catch (testError) {
             console.debug('[事件系统] 测试获取聊天变量失败，聊天文件可能未创建，跳过保存状态:', testError);
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'event_system.ts:saveStateToChatVars',
-                message: '测试获取聊天变量失败，跳过保存',
-                data: {
-                  hasChatId: !!currentChatId,
-                  error: testError instanceof Error ? testError.message : String(testError),
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-save-chat-error',
-                hypothesisId: 'TEST_CHAT_VARS_ERROR',
-              }),
-            }).catch(() => {}); */
-            // #endregion
             saveStateTimer = null;
             return;
           }
@@ -1228,50 +959,13 @@ $(() => {
             const testChatVars = getVariables({ type: 'chat' });
             if (!testChatVars || typeof testChatVars !== 'object') {
               console.debug('[事件系统] 无法获取聊天变量，聊天文件可能未创建，跳过保存状态');
-              // #region agent log
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'event_system.ts:saveStateToChatVars',
-                  message: '无法获取聊天变量，跳过保存',
-                  data: {
-                    hasChatId: !!currentChatId,
-                    hasChatVars: !!testChatVars,
-                    chatVarsType: typeof testChatVars,
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-session',
-                  runId: 'fix-save-chat-error',
-                  hypothesisId: 'NO_CHAT_VARS',
-                }),
-              }).catch(() => {}); */
-              // #endregion
               saveStateTimer = null;
               return;
             }
           } catch (testError) {
             console.debug('[事件系统] 测试获取聊天变量失败，聊天文件可能未创建，跳过保存状态:', testError);
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'event_system.ts:saveStateToChatVars',
-                message: '测试获取聊天变量失败，跳过保存',
-                data: {
-                  hasChatId: !!currentChatId,
-                  error: testError instanceof Error ? testError.message : String(testError),
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-save-chat-error',
-                hypothesisId: 'TEST_CHAT_VARS_ERROR',
-              }),
-            }).catch(() => {}); */
-            // #endregion
             saveStateTimer = null;
             return;
           }
@@ -1285,46 +979,10 @@ $(() => {
             { type: 'chat' },
           );
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:saveStateToChatVars',
-              message: '状态已保存到聊天变量 (updateVariablesWith)',
-              data: {
-                success: true,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-save-conflict',
-              hypothesisId: 'SAVE_STATE_SUCCESS',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           console.debug('[事件系统] ✓ 状态已保存到聊天变量 (防抖)');
         } catch (error) {
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:saveStateToChatVars',
-              message: '保存状态到聊天变量失败 (updateVariablesWith)',
-              data: {
-                error: error instanceof Error ? error.message : String(error),
-                errorType: error instanceof Error ? error.constructor.name : typeof error,
-                errorStack: error instanceof Error ? error.stack : undefined,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-save-conflict',
-              hypothesisId: 'SAVE_STATE_ERROR',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           console.warn('[事件系统] 保存状态到聊天变量失败 (updateVariablesWith):', error);
           // 如果 updateVariablesWith 失败，不再尝试 replaceVariables，避免进一步冲突
           // 因为错误可能是服务器端的，重复尝试可能导致更多问题
@@ -1584,22 +1242,7 @@ $(() => {
       // 从记忆增强插件获取当前天数（唯一数据源）
       let tempCurrentDay = this.getCurrentDayInternal();
 
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'event_system.ts:advanceDay',
-          message: '开始推进天数',
-          data: { days, daysType: typeof days, startDay: this.currentDay, tempCurrentDay },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'fix-day-calculation',
-          hypothesisId: 'A',
-        }),
-      }).catch(() => {}); */
-      // #endregion
 
       // 确保days是整数且>=1
       const daysToAdvance = Math.max(1, Math.floor(days));
@@ -1610,55 +1253,14 @@ $(() => {
         // 注意：不立即更新 this.currentDay，而是使用临时变量
         // 只有在AI完成回复后，才会通过 confirmDayAdvancement 确认更新
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'event_system.ts:advanceDay',
-            message: '开始处理第N天',
-            data: {
-              currentDay: this.currentDay,
-              tempCurrentDay,
-              dayIndex: i,
-              daysRemaining: daysToAdvance - i - 1,
-              willCheckDay0: tempCurrentDay === 0,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-day0-events',
-            hypothesisId: 'HYP-B',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 临时设置currentDay用于事件判定，但不持久化
         const originalCurrentDay = this.currentDay;
         this.currentDay = tempCurrentDay;
         this.lastEventDay = tempCurrentDay;
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'event_system.ts:advanceDay',
-            message: '准备检查事件 - 临时天数设置',
-            data: {
-              originalCurrentDay,
-              tempCurrentDay,
-              currentDayBeforeCheck: this.currentDay,
-              willSkipDay0: tempCurrentDay === 0,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-day0-events',
-            hypothesisId: 'HYP-C',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         this.checkComplexityAdjustment();
 
@@ -1667,55 +1269,11 @@ $(() => {
         // 恢复originalCurrentDay，等待AI完成回复后再确认更新
         this.currentDay = originalCurrentDay;
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'event_system.ts:advanceDay',
-            message: '检查事件结果',
-            data: {
-              currentDay: this.currentDay,
-              tempCurrentDay,
-              originalCurrentDay,
-              hasEvent: !!dayEvent,
-              eventName: dayEvent?.name,
-              eventId: dayEvent?.id,
-              eventPriority: dayEvent?.priority,
-              eventDay: dayEvent?.day,
-              isDay0Event: tempCurrentDay === 0 && !!dayEvent,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-day0-events',
-            hypothesisId: 'HYP-D',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 如果是第0天的事件，跳过（不应该发生）
         if (tempCurrentDay === 0 && dayEvent && dayEvent.id !== 'no_event') {
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:advanceDay',
-              message: '检测到第0天事件，跳过',
-              data: {
-                eventId: dayEvent.id,
-                eventName: dayEvent.name,
-                tempCurrentDay,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-day0-events',
-              hypothesisId: 'HYP-E',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           continue; // 跳过第0天的事件，继续处理下一天
         }
 
@@ -1736,31 +1294,7 @@ $(() => {
           const eventPriority = dayEvent.priority ?? this.PRIORITY.DAILY;
           const shouldInterrupt = eventPriority <= this.PRIORITY.RANDOM;
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:advanceDay',
-              message: '分析事件优先级',
-              data: {
-                currentDay: this.currentDay,
-                tempCurrentDay,
-                eventName: dayEvent.name,
-                eventId: dayEvent.id,
-                eventPriority,
-                PRIORITY_RANDOM: this.PRIORITY.RANDOM,
-                shouldInterrupt,
-                daysRemaining: daysToAdvance - i - 1,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-interruption-v2',
-              hypothesisId: 'D',
-            }),
-          }).catch(() => {}); */
-          // #endregion
 
           // 前四类事件（LEGAL: 1, PROCEDURAL: 2, CONDITION: 3, RANDOM: 4）应该立即打断，不再继续推进后续天数
           // 只有日常事件（DAILY: 5）继续推进，简单记录即可
@@ -1787,32 +1321,7 @@ $(() => {
             };
             DS.events.emit('event_triggered', eventData);
 
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'event_system.ts:advanceDay',
-                message: '执行立即打断并返回',
-                data: {
-                  currentDay: this.currentDay,
-                  tempCurrentDay,
-                  startDay,
-                  pendingDays,
-                  eventName: dayEvent.name,
-                  eventPriority,
-                  accumulatedEventsCount: events.length,
-                  daysSkipped: i + 1,
-                  daysRemaining: daysToAdvance - i - 1,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-day-calculation',
-                hypothesisId: 'E',
-              }),
-            }).catch(() => {}); */
-            // #endregion
 
             const result = {
               interrupted: true,
@@ -1822,22 +1331,7 @@ $(() => {
               event: { ...dayEvent, day: tempCurrentDay },
             };
 
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'event_system.ts:advanceDay',
-                message: '返回打断结果',
-                data: { currentDay: this.currentDay, eventName: dayEvent.name, result },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-interruption-v2',
-                hypothesisId: 'E',
-              }),
-            }).catch(() => {}); */
-            // #endregion
 
             return result;
           } else {
@@ -1846,75 +1340,14 @@ $(() => {
             console.debug(
               `[事件系统] 第${tempCurrentDay}天触发事件: ${dayEvent.name} (优先级: ${eventPriority})，继续推进`,
             );
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'event_system.ts:advanceDay',
-                message: '非前三类事件，继续推进',
-                data: {
-                  currentDay: this.currentDay,
-                  tempCurrentDay,
-                  eventName: dayEvent.name,
-                  eventPriority,
-                  daysRemaining: daysToAdvance - i - 1,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'simplify-date-system',
-                hypothesisId: 'F',
-              }),
-            }).catch(() => {}); */
-            // #endregion
           }
         } else {
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:advanceDay',
-              message: '无事件，继续循环',
-              data: {
-                currentDay: this.currentDay,
-                tempCurrentDay,
-                daysRemaining: daysToAdvance - i - 1,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'simplify-date-system',
-              hypothesisId: 'G',
-            }),
-          }).catch(() => {}); */
-          // #endregion
         }
       }
 
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'event_system.ts:advanceDay',
-          message: '循环结束，检查打断事件',
-          data: {
-            currentDay: this.currentDay,
-            daysAdvanced: daysToAdvance,
-            startDay,
-            eventsCount: events.length,
-            hasInterruptedEvent: events.some(e => (e.priority ?? this.PRIORITY.DAILY) <= this.PRIORITY.CONDITION),
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'simplify-date-system',
-          hypothesisId: 'H',
-        }),
-      }).catch(() => {}); */
-      // #endregion
 
       // 循环结束，检查是否有前四类事件打断（LEGAL, PROCEDURAL, CONDITION, RANDOM）
       const interruptedEvent = events.find(e => {
@@ -1950,46 +1383,11 @@ $(() => {
     },
 
     checkDayEvents(): EventRecord {
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'event_system.ts:checkDayEvents',
-          message: '开始检查事件 - 入口',
-          data: {
-            currentDay: this.currentDay,
-            shouldSkipDay0: this.currentDay === 0,
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'fix-day0-events',
-          hypothesisId: 'HYP-A',
-        }),
-      }).catch(() => {}); */
-      // #endregion
 
       // 第0天不应该发生任何事件
       if (this.currentDay === 0) {
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'event_system.ts:checkDayEvents',
-            message: '第0天，跳过所有事件检查',
-            data: {
-              currentDay: this.currentDay,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-day0-events',
-            hypothesisId: 'HYP-A',
-          }),
-        }).catch(() => {}); */
-        // #endregion
         return {
           id: 'no_event',
           name: '无事件',
@@ -2009,26 +1407,7 @@ $(() => {
       const cellTransferResult = this.checkCellTransfer();
       if (cellTransferResult) {
         // 监室转移是一个特殊事件，优先级设为 LEGAL（与重大法律事件同级）
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'event_system.ts:checkDayEvents',
-            message: '检测到监室转移事件',
-            data: {
-              currentDay: this.currentDay,
-              cellType: this.cellType,
-              priority: this.PRIORITY.LEGAL,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-cell-transfer',
-            hypothesisId: 'CELL_TRANSFER',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 获取监室转移的中文名称
         const cellTypeNames: Record<string, string> = {
@@ -2056,27 +1435,7 @@ $(() => {
       // 2. 检查重大法律事件（第二优先级）
       const legalEvent = this.checkLegalEvent();
       if (legalEvent) {
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'event_system.ts:checkDayEvents',
-            message: '检测到法律事件',
-            data: {
-              currentDay: this.currentDay,
-              eventId: legalEvent.id,
-              eventName: legalEvent.name,
-              priority: this.PRIORITY.LEGAL,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-interruption',
-            hypothesisId: 'C',
-          }),
-        }).catch(() => {}); */
-        // #endregion
         return {
           ...legalEvent,
           priority: this.PRIORITY.LEGAL,
@@ -2163,30 +1522,7 @@ $(() => {
           }
         }
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'event_system.ts:checkDayEvents',
-            message: '检测到条件事件',
-            data: {
-              currentDay: this.currentDay,
-              eventId: conditionEvent.id,
-              eventName: conditionEvent.name,
-              isProcedural,
-              priority: eventPriority,
-              assignedPolice: this.assignedOfficers.police,
-              assignedProsecutor: this.assignedOfficers.prosecutor,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-interruption',
-            hypothesisId: 'C',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         // 高优先级事件（LEGAL、PROCEDURAL、CONDITION）需要打断
         const shouldInterrupt = eventPriority <= this.PRIORITY.CONDITION;
@@ -2475,29 +1811,7 @@ $(() => {
     checkConditionEvent(): EventRecord | null {
       const state = this.getProtagonistState();
 
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'event_system.ts:checkConditionEvent',
-          message: '开始检查条件事件',
-          data: {
-            currentDay: this.currentDay,
-            stateHealth: state.health,
-            stateMental: state.mental,
-            stateStrength: state.strength,
-            stateIntelligence: state.intelligence,
-            conditionEventsCount: this.conditionEvents.length,
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'check-status-dependency',
-          hypothesisId: 'E',
-        }),
-      }).catch(() => {}); */
-      // #endregion
 
       for (const event of this.conditionEvents) {
         if (event.stageChangeOnly && this.currentDay !== this.lastStageChangeDay) {
@@ -2506,83 +1820,14 @@ $(() => {
 
         if (event.checkAlways || !event.stageChangeOnly) {
           const conditionResult = event.condition(state, this);
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:checkConditionEvent',
-              message: '检查条件事件条件',
-              data: {
-                eventId: event.id,
-                eventName: event.name,
-                conditionResult,
-                stateHealth: state.health,
-                stateMental: state.mental,
-                stateStrength: state.strength,
-                stateIntelligence: state.intelligence,
-                eventWeight: event.weight,
-                dependsOnStatusPanel: ['mental_breakdown', 'health_crisis', 'medical_visit'].includes(event.id),
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'check-status-dependency',
-              hypothesisId: 'F',
-            }),
-          }).catch(() => {}); */
-          // #endregion
 
           if (conditionResult) {
             const randomCheck = Math.random() * 100 < event.weight;
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'event_system.ts:checkConditionEvent',
-                message: '条件满足，检查权重',
-                data: {
-                  eventId: event.id,
-                  eventName: event.name,
-                  conditionResult,
-                  randomCheck,
-                  randomValue: Math.random() * 100,
-                  eventWeight: event.weight,
-                  willTrigger: randomCheck,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'check-status-dependency',
-                hypothesisId: 'G',
-              }),
-            }).catch(() => {}); */
-            // #endregion
 
             if (randomCheck) {
-              // #region agent log
               // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  location: 'event_system.ts:checkConditionEvent',
-                  message: '条件事件触发',
-                  data: {
-                    eventId: event.id,
-                    eventName: event.name,
-                    stateHealth: state.health,
-                    stateMental: state.mental,
-                    dependsOnStatusPanel: ['mental_breakdown', 'health_crisis', 'medical_visit'].includes(event.id),
-                  },
-                  timestamp: Date.now(),
-                  sessionId: 'debug-session',
-                  runId: 'check-status-dependency',
-                  hypothesisId: 'H',
-                }),
-              }).catch(() => {}); */
-              // #endregion
 
               return {
                 id: event.id,
@@ -2653,77 +1898,17 @@ $(() => {
       // 标记：这是新版本的代码，支持记忆强化插件
       console.log('[事件系统] getProtagonistState: 新版本代码已加载，支持记忆强化插件');
 
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'event_system.ts:getProtagonistState',
-          message: '开始获取主角状态（新版本：支持记忆强化插件）',
-          data: {
-            hasDS: !!DS,
-            hasGetModule: typeof DS?.getModule === 'function',
-            codeVersion: 'memory-enhancement-integration-v1',
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'memory-enhancement-integration',
-          hypothesisId: 'A',
-        }),
-      }).catch(() => {}); */
-      // #endregion
 
       // 优先使用状态栏模块的 getState()，它已经集成了记忆增强插件支持
       // 状态栏模块会按优先级顺序：记忆增强插件 > 状态栏模块 > 聊天记录解析 > 默认值
       const statusPanel = DS.getModule<{ getState?: () => ProtagonistState }>('statusPanel');
 
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'event_system.ts:getProtagonistState',
-          message: '检查状态栏模块',
-          data: {
-            hasStatusPanel: !!statusPanel,
-            hasGetState: !!(statusPanel && statusPanel.getState),
-            statusPanelType: typeof statusPanel,
-            willUseFallback: !(statusPanel && statusPanel.getState),
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'memory-enhancement-integration',
-          hypothesisId: 'B',
-        }),
-      }).catch(() => {}); */
-      // #endregion
 
       if (statusPanel && statusPanel.getState) {
         const state = statusPanel.getState();
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'event_system.ts:getProtagonistState',
-            message: '从状态栏获取状态成功（状态栏已集成记忆增强插件）',
-            data: {
-              health: state.health,
-              mental: state.mental,
-              strength: state.strength,
-              intelligence: state.intelligence,
-              source: 'statusPanel (with memory enhancement integration)',
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'memory-enhancement-integration',
-            hypothesisId: 'C',
-          }),
-        }).catch(() => {}); */
-        // #endregion
         // 返回完整的状态对象（状态栏模块已经处理了记忆增强插件的优先级）
         return state;
       }
@@ -2737,26 +1922,7 @@ $(() => {
         // 其他字段使用 undefined，符合 ProtagonistState 接口定义
       };
 
-      // #region agent log
       // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'event_system.ts:getProtagonistState',
-          message: '状态栏不存在，使用默认值',
-          data: {
-            ...fallbackState,
-            source: 'fallback',
-            warning: '状态栏模块未找到或未初始化，事件系统使用默认状态值',
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'memory-enhancement-integration',
-          hypothesisId: 'D',
-        }),
-      }).catch(() => {}); */
-      // #endregion
 
       console.warn('[事件系统] 状态栏模块不可用，使用默认状态值');
       return fallbackState;
@@ -2892,25 +2058,7 @@ $(() => {
 
         if (!currentChatId) {
           console.debug('[事件系统] 没有打开的聊天文件，跳过保存事件打断快照');
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:saveEventInterruptSnapshot',
-              message: '没有聊天文件，跳过保存快照',
-              data: {
-                hasChatId: false,
-                currentDay: this.currentDay,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-save-chat-error',
-              hypothesisId: 'NO_CHAT_SKIP',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           return;
         }
 
@@ -2919,49 +2067,12 @@ $(() => {
           const testChatVars = getVariables({ type: 'chat' });
           if (!testChatVars || typeof testChatVars !== 'object') {
             console.debug('[事件系统] 无法获取聊天变量，聊天文件可能未创建，跳过保存事件打断快照');
-            // #region agent log
             // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                location: 'event_system.ts:saveEventInterruptSnapshot',
-                message: '无法获取聊天变量，跳过保存快照',
-                data: {
-                  hasChatId: !!currentChatId,
-                  hasChatVars: !!testChatVars,
-                  chatVarsType: typeof testChatVars,
-                },
-                timestamp: Date.now(),
-                sessionId: 'debug-session',
-                runId: 'fix-save-chat-error',
-                hypothesisId: 'NO_CHAT_VARS',
-              }),
-            }).catch(() => {}); */
-            // #endregion
             return;
           }
         } catch (testError) {
           console.debug('[事件系统] 测试获取聊天变量失败，聊天文件可能未创建，跳过保存事件打断快照:', testError);
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:saveEventInterruptSnapshot',
-              message: '测试获取聊天变量失败，跳过保存快照',
-              data: {
-                hasChatId: !!currentChatId,
-                error: testError instanceof Error ? testError.message : String(testError),
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-save-chat-error',
-              hypothesisId: 'TEST_CHAT_VARS_ERROR',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           return;
         }
 
@@ -2982,27 +2093,7 @@ $(() => {
 
         // 使用 updateVariablesWith 而不是 replaceVariables，更安全
         try {
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:saveEventInterruptSnapshot',
-              message: '准备保存事件打断快照',
-              data: {
-                snapshotSize: JSON.stringify(snapshot).length,
-                currentDay: this.currentDay,
-                currentChatId,
-                hasChatId: !!currentChatId,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-save-conflict',
-              hypothesisId: 'SAVE_SNAPSHOT_START',
-            }),
-          }).catch(() => {}); */
-          // #endregion
 
           updateVariablesWith(
             variables => {
@@ -3011,69 +2102,16 @@ $(() => {
             { type: 'chat' },
           );
 
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:saveEventInterruptSnapshot',
-              message: '事件打断快照已保存 (updateVariablesWith)',
-              data: {
-                success: true,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-save-conflict',
-              hypothesisId: 'SAVE_SNAPSHOT_SUCCESS',
-            }),
-          }).catch(() => {}); */
-          // #endregion
         } catch (updateError) {
-          // #region agent log
           // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              location: 'event_system.ts:saveEventInterruptSnapshot',
-              message: '保存事件打断快照失败 (updateVariablesWith)',
-              data: {
-                error: updateError instanceof Error ? updateError.message : String(updateError),
-                errorType: updateError instanceof Error ? updateError.constructor.name : typeof updateError,
-              },
-              timestamp: Date.now(),
-              sessionId: 'debug-session',
-              runId: 'fix-save-conflict',
-              hypothesisId: 'SAVE_SNAPSHOT_ERROR',
-            }),
-          }).catch(() => {}); */
-          // #endregion
           // 如果 updateVariablesWith 失败，不再尝试 replaceVariables，避免进一步冲突
           console.warn('[事件系统] 保存事件打断快照失败 (updateVariablesWith):', updateError);
         }
 
         console.debug('[事件系统] 事件打断快照已保存');
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'event_system.ts:saveEventInterruptSnapshot',
-            message: '事件打断快照已保存',
-            data: {
-              currentDay: this.currentDay,
-              snapshotTime: snapshot.snapshotTime,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'add-rollback',
-            hypothesisId: 'SAVE_SNAPSHOT',
-          }),
-        }).catch(() => {}); */
-        // #endregion
       } catch (error) {
         console.warn('[事件系统] 保存事件打断快照失败:', error);
       }
@@ -3114,27 +2152,7 @@ $(() => {
         // 保存更新后的状态
         this.saveStateToChatVars();
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'event_system.ts:confirmDayAdvancement',
-            message: '已确认天数推进',
-            data: {
-              oldDay,
-              newDay,
-              pendingDays,
-              currentDayFromMemory: this.getCurrentDayInternal(),
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'fix-day-calculation',
-            hypothesisId: 'CONFIRM_DAY',
-          }),
-        }).catch(() => {}); */
-        // #endregion
       }
     },
 
@@ -3185,24 +2203,7 @@ $(() => {
         // 保存回退后的状态
         this.saveStateToChatVars();
 
-        // #region agent log
         // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'event_system.ts:rollbackToInterruptSnapshot',
-            message: '已回退到事件打断时的状态',
-            data: {
-              currentDay: this.currentDay,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'add-rollback',
-            hypothesisId: 'ROLLBACK_SUCCESS',
-          }),
-        }).catch(() => {}); */
-        // #endregion
 
         return true;
       } catch (error) {
@@ -3215,50 +2216,9 @@ $(() => {
   // 向核心暴露接口
   DS.generateRandomEvent = (_context?: unknown) => EventSystem.generateRandomEvent();
   DS.advanceDay = (days?: number) => {
-    // #region agent log
     // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'event_system.ts:DS.advanceDay包装',
-        message: 'DS.advanceDay被调用',
-        data: {
-          days,
-          hasEventSystem: !!EventSystem,
-          eventSystemType: typeof EventSystem,
-          advanceDayType: typeof EventSystem.advanceDay,
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'fix-undefined-return',
-        hypothesisId: 'A',
-      }),
-    }).catch(() => {}); */
-    // #endregion
     const result = EventSystem.advanceDay(days);
-    // #region agent log
     // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'event_system.ts:DS.advanceDay包装',
-        message: 'DS.advanceDay返回结果',
-        data: {
-          resultType: typeof result,
-          hasResult: !!result,
-          resultKeys: result ? Object.keys(result) : [],
-          interrupted: result?.interrupted,
-          currentDay: result?.currentDay,
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'fix-undefined-return',
-        hypothesisId: 'B',
-      }),
-    }).catch(() => {}); */
-    // #endregion
     return result;
   };
   // 从记忆增强插件获取天数（唯一数据源）

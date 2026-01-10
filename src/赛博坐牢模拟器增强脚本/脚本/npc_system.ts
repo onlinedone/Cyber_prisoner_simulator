@@ -176,38 +176,7 @@ declare global {
   }
 }
 
-// #region agent log - HYP-A: 检查核心系统是否已创建
-try {
-  // 调试日志已禁用以避免 CORS 错误
-  /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      location: 'npc_system.ts:检查核心系统',
-      message: 'NPC系统开始加载，检查核心系统',
-      data: {
-        windowExists: typeof window !== 'undefined',
-        windowDetentionSystemExists: typeof window.detentionSystem !== 'undefined',
-        windowDetentionSystemType: typeof window.detentionSystem,
-        hasPing:
-          typeof window.detentionSystem !== 'undefined' && typeof (window.detentionSystem as any).ping === 'function',
-        pingResult:
-          typeof window.detentionSystem !== 'undefined' && typeof (window.detentionSystem as any).ping === 'function'
-            ? (window.detentionSystem as any).ping()
-            : 'N/A',
-        isIframe: typeof window !== 'undefined' && window.parent !== window,
-        currentUrl: typeof window !== 'undefined' && window.location ? window.location.href : 'N/A',
-      },
-      timestamp: Date.now(),
-      sessionId: 'debug-session',
-      runId: 'npc-load-debug',
-      hypothesisId: 'A',
-    }),
-  }).catch(() => {}); */
-} catch (e) {
-  console.error('[NPC系统] 调试日志发送失败:', e);
-}
-// #endregion
+// 调试日志已禁用以避免 CORS 错误
 
 console.info('[NPC系统] 开始加载...');
 
@@ -640,33 +609,7 @@ $(() => {
       '[NPC系统] window.__DETENTION_SYSTEM_CORE_LOADED__:',
       (window as any).__DETENTION_SYSTEM_CORE_LOADED__,
     );
-    // #region agent log - HYP-B: 核心系统未找到
-    try {
-      // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'npc_system.ts:核心系统未找到',
-          message: 'NPC系统检测到核心系统未加载',
-          data: {
-            windowType: typeof window,
-            detentionSystemType: typeof window.detentionSystem,
-            modulesLoaded:
-              typeof window.detentionSystem !== 'undefined' && (window.detentionSystem as any).modules
-                ? Object.keys((window.detentionSystem as any).modules)
-                : [],
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'npc-load-debug',
-          hypothesisId: 'B',
-        }),
-      }).catch(() => {}); */
-    } catch (e) {
-      console.error('[NPC系统] 调试日志发送失败:', e);
-    }
-    // #endregion
+    // 调试日志已禁用以避免 CORS 错误
     return;
   }
 
@@ -676,33 +619,7 @@ $(() => {
   console.info('✓ [NPC系统] 开始加载...');
   // 创建全局标记
   (window as any).__NPC_SYSTEM_LOADING__ = true;
-  // #region agent log - HYP-C: 核心系统已找到，开始初始化
-  try {
-    // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'npc_system.ts:核心系统已找到',
-        message: 'NPC系统检测到核心系统，开始初始化',
-        data: {
-          hasGenerateNPC: typeof DS.generateNPC === 'function',
-          hasGenerateNPCForEvent: typeof DS.generateNPCForEvent === 'function',
-          hasGetCurrentCellNPCs: typeof DS.getCurrentCellNPCs === 'function',
-          hasModules: 'modules' in DS,
-          modulesCount: 'modules' in DS ? Object.keys(DS.modules).length : 0,
-          moduleNames: 'modules' in DS ? Object.keys(DS.modules) : [],
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'npc-load-debug',
-        hypothesisId: 'C',
-      }),
-    }).catch(() => {}); */
-  } catch (e) {
-    console.error('[NPC系统] 调试日志发送失败:', e);
-  }
-  // #endregion
+  // 调试日志已禁用以避免 CORS 错误
 
   // ========== NPC生成器 ==========
   const NPCGenerator = {
@@ -1096,26 +1013,7 @@ $(() => {
      * @returns 主角信息对象
      */
     generateProtagonist(options: ProtagonistOptions = {}): ProtagonistInfo {
-      // #region agent log - HYP-PROTAGONIST: 开始生成主角
-      try {
-        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'npc_system.ts:generateProtagonist开始',
-            message: '开始生成主角',
-            data: {
-              options: options,
-              hasOptions: !!options,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'protagonist-generation',
-            hypothesisId: 'PROTAGONIST_START',
-          }),
-        }).catch(() => {});
-      } catch (e) {}
-      // #endregion
+      // 调试日志已禁用以避免 CORS 错误
 
       // 1. 生成年龄
       let age: number;
@@ -1314,32 +1212,7 @@ $(() => {
         personality.tags.push('善于交际');
       }
 
-      // #region agent log - HYP-PROTAGONIST: 主角生成完成
-      try {
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'npc_system.ts:generateProtagonist完成',
-            message: '主角生成完成',
-            data: {
-              name: name,
-              age: age,
-              crime: crimeData.crime,
-              sentence: crimeData.sentence,
-              education: education,
-              profession: profession,
-              personalityTags: personality.tags,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'protagonist-generation',
-            hypothesisId: 'PROTAGONIST_COMPLETE',
-          }),
-        }).catch(() => {}); */
-      } catch (e) {}
-      // #endregion
+      // 调试日志已禁用以避免 CORS 错误
 
       return {
         name,
@@ -1449,61 +1322,12 @@ $(() => {
 
   DS.registerModule('npcSystem', NPCGenerator);
 
-  // #region agent log - HYP-D: 模块注册完成
-  try {
-    // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'npc_system.ts:模块注册',
-        message: 'NPC系统模块注册完成',
-        data: {
-          registeredModule: DS.getModule('npcSystem') ? '已注册' : '未注册',
-          hasGenerateNPC: typeof DS.generateNPC === 'function',
-          hasGenerateNPCForEvent: typeof DS.generateNPCForEvent === 'function',
-          hasGetCurrentCellNPCs: typeof DS.getCurrentCellNPCs === 'function',
-          modulesCount: Object.keys(DS.modules).length,
-          moduleNames: Object.keys(DS.modules),
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'npc-load-debug',
-        hypothesisId: 'D',
-      }),
-    }).catch(() => {}); */
-  } catch (e) {
-    console.error('[NPC系统] 调试日志发送失败:', e);
-  }
-  // #endregion
+  // 调试日志已禁用以避免 CORS 错误
 
   // 同步到主窗口（iframe 环境）
   try {
     if (window.parent && window.parent !== window) {
-      // #region agent log - HYP-E: 同步到主窗口前
-      try {
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'npc_system.ts:同步到主窗口前',
-            message: '准备同步NPC系统到主窗口',
-            data: {
-              parentExists: !!window.parent,
-              parentIsDifferent: window.parent !== window,
-              parentHasDetentionSystem: typeof (window.parent as any).detentionSystem !== 'undefined',
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'npc-load-debug',
-            hypothesisId: 'E',
-          }),
-        }).catch(() => {}); */
-      } catch (e) {
-        console.error('[NPC系统] 调试日志发送失败:', e);
-      }
-      // #endregion
+      // 调试日志已禁用以避免 CORS 错误
 
       // 同步整个 DS 对象（包含所有已挂载的方法）
       const parentWindow = window.parent as typeof window.parent & { detentionSystem?: DetentionSystem };
@@ -1551,62 +1375,10 @@ $(() => {
         console.error('[NPC系统] ❌ 错误：主窗口 detentionSystem 为空！');
       }
 
-      // #region agent log - HYP-F: 同步到主窗口后
-      try {
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            location: 'npc_system.ts:同步到主窗口后',
-            message: 'NPC系统已同步到主窗口',
-            data: {
-              parentHasDetentionSystem: typeof (window.parent as any).detentionSystem !== 'undefined',
-              parentHasGenerateNPC: typeof (window.parent as any).detentionSystem?.generateNPC === 'function',
-              parentHasGenerateProtagonist:
-                typeof (window.parent as any).detentionSystem?.generateProtagonist === 'function',
-              parentHasGenerateNPCForEvent:
-                typeof (window.parent as any).detentionSystem?.generateNPCForEvent === 'function',
-              iframeHasGenerateProtagonist: typeof DS.generateProtagonist === 'function',
-              parentModulesCount: (window.parent as any).detentionSystem?.modules
-                ? Object.keys((window.parent as any).detentionSystem.modules).length
-                : 0,
-            },
-            timestamp: Date.now(),
-            sessionId: 'debug-session',
-            runId: 'npc-load-debug',
-            hypothesisId: 'F',
-          }),
-        }).catch(() => {}); */
-      } catch (e) {
-        console.error('[NPC系统] 调试日志发送失败:', e);
-      }
-      // #endregion
+      // 调试日志已禁用以避免 CORS 错误
     }
   } catch (e) {
-    // #region agent log - HYP-G: 同步失败
-    try {
-      // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'npc_system.ts:同步失败',
-          message: 'NPC系统同步到主窗口失败',
-          data: {
-            error: e instanceof Error ? e.message : String(e),
-            errorType: typeof e,
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'npc-load-debug',
-          hypothesisId: 'G',
-        }),
-      }).catch(() => {}); */
-    } catch (logError) {
-      console.error('[NPC系统] 调试日志发送失败:', logError);
-    }
-    // #endregion
+    // 调试日志已禁用以避免 CORS 错误
     console.warn('[NPC系统] 同步到主窗口失败:', e);
   }
 

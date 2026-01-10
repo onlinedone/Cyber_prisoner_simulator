@@ -10,46 +10,7 @@
  * 5. 知识库加载器 (worldbook_loader.ts) - 动态加载知识库
  */
 
-// #region agent log - HYP-A: 脚本文件是否被加载和执行
-// 调试日志：只在本地开发环境中发送，避免在生产环境中触发 CORS 错误
-try {
-  const isLocalDev =
-    typeof window !== 'undefined' &&
-    window.location &&
-    (window.location.hostname === 'localhost' ||
-      window.location.hostname === '127.0.0.1' ||
-      window.location.hostname.startsWith('192.168.') ||
-      window.location.hostname.startsWith('10.') ||
-      window.location.hostname.startsWith('172.'));
-
-  if (isLocalDev) {
-    fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'index.ts:入口点',
-        message: '脚本文件开始执行',
-        data: {
-          windowExists: typeof window !== 'undefined',
-          windowDetentionSystemExists: typeof window.detentionSystem !== 'undefined',
-          windowDetentionSystemType: typeof window.detentionSystem,
-          userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'N/A',
-          isIframe: typeof window !== 'undefined' && window.parent !== window,
-          currentUrl: typeof window !== 'undefined' && window.location ? window.location.href : 'N/A',
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'script-load-debug',
-        hypothesisId: 'A',
-      }),
-    }).catch(() => {
-      // 静默失败，不输出错误
-    });
-  }
-} catch (e) {
-  // 静默失败，不输出错误
-}
-// #endregion
+// 调试日志已禁用以避免 CORS 错误
 
 // 非常明显的日志，确保能看到
 console.info('🔵 [看守所模拟器] 脚本文件开始执行！');
@@ -66,39 +27,7 @@ console.log('[DEBUG-HYP-A] index.ts:13 - 脚本文件开始加载', {
 console.info('[看守所模拟器] 脚本文件已加载，开始执行...');
 console.info('[看守所模拟器] 如果看到这条消息，说明脚本正在执行！');
 
-// #region agent log - HYP-B: 模块导入是否成功
-// 调试日志：只在本地开发环境中发送，避免在生产环境中触发 CORS 错误
-try {
-  const isLocalDev =
-    typeof window !== 'undefined' &&
-    window.location &&
-    (window.location.hostname === 'localhost' ||
-      window.location.hostname === '127.0.0.1' ||
-      window.location.hostname.startsWith('192.168.') ||
-      window.location.hostname.startsWith('10.') ||
-      window.location.hostname.startsWith('172.'));
-
-  if (isLocalDev) {
-    fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        location: 'index.ts:模块导入前',
-        message: '准备导入模块',
-        data: {
-          windowDetentionSystemExists: typeof window.detentionSystem !== 'undefined',
-        },
-        timestamp: Date.now(),
-        sessionId: 'debug-session',
-        runId: 'script-load-debug',
-        hypothesisId: 'B',
-      }),
-    }).catch(() => {});
-  }
-} catch (e) {
-  // 静默失败，不输出错误
-}
-// #endregion
+// 调试日志已禁用以避免 CORS 错误
 
 // 按顺序导入所有模块（必须在顶层）
 import './core';
@@ -107,54 +36,7 @@ import './npc_system';
 import './status_panel';
 import './worldbook_loader';
 
-// #region agent log - HYP-C: 模块导入后检查
-// 调试日志：只在本地开发环境中发送，避免在生产环境中触发 CORS 错误
-setTimeout(() => {
-  try {
-    const isLocalDev =
-      typeof window !== 'undefined' &&
-      window.location &&
-      (window.location.hostname === 'localhost' ||
-        window.location.hostname === '127.0.0.1' ||
-        window.location.hostname.startsWith('192.168.') ||
-        window.location.hostname.startsWith('10.') ||
-        window.location.hostname.startsWith('172.'));
-
-    if (isLocalDev) {
-      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          location: 'index.ts:模块导入后',
-          message: '所有模块导入完成，检查window.detentionSystem',
-          data: {
-            windowDetentionSystemExists: typeof window.detentionSystem !== 'undefined',
-            windowDetentionSystemType: typeof window.detentionSystem,
-            hasPing:
-              typeof window.detentionSystem !== 'undefined' &&
-              typeof (window.detentionSystem as any).ping === 'function',
-            pingResult:
-              typeof window.detentionSystem !== 'undefined' &&
-              typeof (window.detentionSystem as any).ping === 'function'
-                ? (window.detentionSystem as any).ping()
-                : 'N/A',
-            version:
-              typeof window.detentionSystem !== 'undefined' && (window.detentionSystem as any).version
-                ? (window.detentionSystem as any).version
-                : 'N/A',
-          },
-          timestamp: Date.now(),
-          sessionId: 'debug-session',
-          runId: 'script-load-debug',
-          hypothesisId: 'C',
-        }),
-      }).catch(() => {});
-    }
-  } catch (e) {
-    // 静默失败，不输出错误
-  }
-}, 100);
-// #endregion
+// 调试日志已禁用以避免 CORS 错误
 
 console.log('[DEBUG-HYP-A] index.ts:22 - 所有模块导入完成', {
   timestamp: Date.now(),
