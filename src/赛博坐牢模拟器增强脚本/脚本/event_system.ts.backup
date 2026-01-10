@@ -201,8 +201,7 @@ $(() => {
         if (state && (state.days !== undefined || state.day !== undefined)) {
           const dayFromMemory = state.days ?? state.day ?? fallback;
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -220,15 +219,14 @@ $(() => {
               runId: 'fix-day-from-memory',
               hypothesisId: 'GET_DAY_FROM_MEMORY',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
           return dayFromMemory;
         }
       }
 
       // #region agent log
-      // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -244,14 +242,13 @@ $(() => {
           runId: 'fix-day-from-memory',
           hypothesisId: 'GET_DAY_FALLBACK',
         }),
-      }).catch(() => {}); */
+      }).catch(() => {});
       // #endregion
       return fallback;
     } catch (error) {
       console.warn('[事件系统] 从记忆增强插件获取天数失败:', error);
       // #region agent log
-      // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -266,7 +263,7 @@ $(() => {
           runId: 'fix-day-from-memory',
           hypothesisId: 'GET_DAY_ERROR',
         }),
-      }).catch(() => {}); */
+      }).catch(() => {});
       // #endregion
       return fallback;
     }
@@ -500,8 +497,7 @@ $(() => {
             // 如果剩余天数等于需要的触发次数，强制触发（确保必定触发）
             if (remainingDays === requiredTriggers) {
               // #region agent log
-              // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+              fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -518,7 +514,7 @@ $(() => {
                   runId: 'guarantee-interrogation',
                   hypothesisId: 'A',
                 }),
-              }).catch(() => {}); */
+              }).catch(() => {});
               // #endregion
               return true;
             }
@@ -529,8 +525,7 @@ $(() => {
             const shouldTrigger = Math.random() < forcedProbability;
 
             // #region agent log
-            // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+            fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -548,7 +543,7 @@ $(() => {
                 runId: 'guarantee-interrogation',
                 hypothesisId: 'B',
               }),
-            }).catch(() => {}); */
+            }).catch(() => {});
             // #endregion
 
             if (shouldTrigger) {
@@ -783,8 +778,7 @@ $(() => {
         if (!currentChatId) {
           console.debug('[事件系统] 没有打开的聊天文件，跳过从聊天变量加载状态');
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -799,7 +793,7 @@ $(() => {
               runId: 'fix-save-chat-error',
               hypothesisId: 'INIT_LOAD_SKIPPED',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
           // 使用默认值
           this.currentDay = startDay;
@@ -838,8 +832,7 @@ $(() => {
         } catch (getVarsError) {
           console.debug('[事件系统] 获取聊天变量失败，聊天文件可能未创建:', getVarsError);
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -854,7 +847,7 @@ $(() => {
               runId: 'fix-save-chat-error',
               hypothesisId: 'GET_CHAT_VARS_ERROR',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
           // 使用默认值
           this.currentDay = startDay;
@@ -1006,8 +999,7 @@ $(() => {
 
           if (currentChatId) {
             // #region agent log
-            // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+            fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -1023,13 +1015,12 @@ $(() => {
                 runId: 'fix-save-conflict',
                 hypothesisId: 'INIT_SAVE_DELAYED',
               }),
-            }).catch(() => {}); */
+            }).catch(() => {});
             // #endregion
             this.saveStateToChatVars();
           } else {
             // #region agent log
-            // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+            fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -1044,7 +1035,7 @@ $(() => {
                 runId: 'fix-save-conflict',
                 hypothesisId: 'INIT_SAVE_SKIPPED',
               }),
-            }).catch(() => {}); */
+            }).catch(() => {});
             // #endregion
             console.debug('[事件系统] 初始化时无聊天ID，跳过保存状态');
           }
@@ -1078,8 +1069,7 @@ $(() => {
           if (!currentChatId) {
             console.debug('[事件系统] 没有打开的聊天文件，跳过保存状态到聊天变量');
             // #region agent log
-            // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+            fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -1094,7 +1084,7 @@ $(() => {
                 runId: 'fix-save-chat-error',
                 hypothesisId: 'NO_CHAT_SKIP',
               }),
-            }).catch(() => {}); */
+            }).catch(() => {});
             // #endregion
             saveStateTimer = null;
             return;
@@ -1114,8 +1104,7 @@ $(() => {
           };
 
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -1134,7 +1123,7 @@ $(() => {
               runId: 'fix-save-conflict',
               hypothesisId: 'SAVE_STATE_START',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
 
           // 检查数据大小，如果太大则截断 eventHistory
@@ -1147,8 +1136,7 @@ $(() => {
               eventHistory: this.eventHistory.slice(-50),
             };
             // #region agent log
-            // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+            fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -1165,7 +1153,7 @@ $(() => {
                 runId: 'fix-save-conflict',
                 hypothesisId: 'DATA_TOO_LARGE',
               }),
-            }).catch(() => {}); */
+            }).catch(() => {});
             // #endregion
             stateData.eventHistory = truncatedStateData.eventHistory;
           }
@@ -1176,8 +1164,7 @@ $(() => {
             if (!testChatVars || typeof testChatVars !== 'object') {
               console.debug('[事件系统] 无法获取聊天变量，聊天文件可能未创建，跳过保存状态');
               // #region agent log
-              // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+              fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -1193,7 +1180,7 @@ $(() => {
                   runId: 'fix-save-chat-error',
                   hypothesisId: 'NO_CHAT_VARS',
                 }),
-              }).catch(() => {}); */
+              }).catch(() => {});
               // #endregion
               saveStateTimer = null;
               return;
@@ -1201,8 +1188,7 @@ $(() => {
           } catch (testError) {
             console.debug('[事件系统] 测试获取聊天变量失败，聊天文件可能未创建，跳过保存状态:', testError);
             // #region agent log
-            // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+            fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -1217,7 +1203,7 @@ $(() => {
                 runId: 'fix-save-chat-error',
                 hypothesisId: 'TEST_CHAT_VARS_ERROR',
               }),
-            }).catch(() => {}); */
+            }).catch(() => {});
             // #endregion
             saveStateTimer = null;
             return;
@@ -1229,8 +1215,7 @@ $(() => {
             if (!testChatVars || typeof testChatVars !== 'object') {
               console.debug('[事件系统] 无法获取聊天变量，聊天文件可能未创建，跳过保存状态');
               // #region agent log
-              // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+              fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -1246,7 +1231,7 @@ $(() => {
                   runId: 'fix-save-chat-error',
                   hypothesisId: 'NO_CHAT_VARS',
                 }),
-              }).catch(() => {}); */
+              }).catch(() => {});
               // #endregion
               saveStateTimer = null;
               return;
@@ -1254,8 +1239,7 @@ $(() => {
           } catch (testError) {
             console.debug('[事件系统] 测试获取聊天变量失败，聊天文件可能未创建，跳过保存状态:', testError);
             // #region agent log
-            // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+            fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -1270,7 +1254,7 @@ $(() => {
                 runId: 'fix-save-chat-error',
                 hypothesisId: 'TEST_CHAT_VARS_ERROR',
               }),
-            }).catch(() => {}); */
+            }).catch(() => {});
             // #endregion
             saveStateTimer = null;
             return;
@@ -1286,8 +1270,7 @@ $(() => {
           );
 
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -1301,13 +1284,12 @@ $(() => {
               runId: 'fix-save-conflict',
               hypothesisId: 'SAVE_STATE_SUCCESS',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
           console.debug('[事件系统] ✓ 状态已保存到聊天变量 (防抖)');
         } catch (error) {
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -1323,7 +1305,7 @@ $(() => {
               runId: 'fix-save-conflict',
               hypothesisId: 'SAVE_STATE_ERROR',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
           console.warn('[事件系统] 保存状态到聊天变量失败 (updateVariablesWith):', error);
           // 如果 updateVariablesWith 失败，不再尝试 replaceVariables，避免进一步冲突
@@ -1585,8 +1567,7 @@ $(() => {
       let tempCurrentDay = this.getCurrentDayInternal();
 
       // #region agent log
-      // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1598,7 +1579,7 @@ $(() => {
           runId: 'fix-day-calculation',
           hypothesisId: 'A',
         }),
-      }).catch(() => {}); */
+      }).catch(() => {});
       // #endregion
 
       // 确保days是整数且>=1
@@ -1611,8 +1592,7 @@ $(() => {
         // 只有在AI完成回复后，才会通过 confirmDayAdvancement 确认更新
 
         // #region agent log
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1630,7 +1610,7 @@ $(() => {
             runId: 'fix-day0-events',
             hypothesisId: 'HYP-B',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
         // #endregion
 
         // 临时设置currentDay用于事件判定，但不持久化
@@ -1639,8 +1619,7 @@ $(() => {
         this.lastEventDay = tempCurrentDay;
 
         // #region agent log
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1657,7 +1636,7 @@ $(() => {
             runId: 'fix-day0-events',
             hypothesisId: 'HYP-C',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
         // #endregion
 
         this.checkComplexityAdjustment();
@@ -1668,8 +1647,7 @@ $(() => {
         this.currentDay = originalCurrentDay;
 
         // #region agent log
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1691,14 +1669,13 @@ $(() => {
             runId: 'fix-day0-events',
             hypothesisId: 'HYP-D',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
         // #endregion
 
         // 如果是第0天的事件，跳过（不应该发生）
         if (tempCurrentDay === 0 && dayEvent && dayEvent.id !== 'no_event') {
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -1714,7 +1691,7 @@ $(() => {
               runId: 'fix-day0-events',
               hypothesisId: 'HYP-E',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
           continue; // 跳过第0天的事件，继续处理下一天
         }
@@ -1737,8 +1714,7 @@ $(() => {
           const shouldInterrupt = eventPriority <= this.PRIORITY.RANDOM;
 
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -1759,7 +1735,7 @@ $(() => {
               runId: 'fix-interruption-v2',
               hypothesisId: 'D',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
 
           // 前四类事件（LEGAL: 1, PROCEDURAL: 2, CONDITION: 3, RANDOM: 4）应该立即打断，不再继续推进后续天数
@@ -1788,8 +1764,7 @@ $(() => {
             DS.events.emit('event_triggered', eventData);
 
             // #region agent log
-            // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+            fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -1811,7 +1786,7 @@ $(() => {
                 runId: 'fix-day-calculation',
                 hypothesisId: 'E',
               }),
-            }).catch(() => {}); */
+            }).catch(() => {});
             // #endregion
 
             const result = {
@@ -1823,8 +1798,7 @@ $(() => {
             };
 
             // #region agent log
-            // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+            fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -1836,7 +1810,7 @@ $(() => {
                 runId: 'fix-interruption-v2',
                 hypothesisId: 'E',
               }),
-            }).catch(() => {}); */
+            }).catch(() => {});
             // #endregion
 
             return result;
@@ -1847,8 +1821,7 @@ $(() => {
               `[事件系统] 第${tempCurrentDay}天触发事件: ${dayEvent.name} (优先级: ${eventPriority})，继续推进`,
             );
             // #region agent log
-            // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+            fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -1866,13 +1839,12 @@ $(() => {
                 runId: 'simplify-date-system',
                 hypothesisId: 'F',
               }),
-            }).catch(() => {}); */
+            }).catch(() => {});
             // #endregion
           }
         } else {
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -1888,14 +1860,13 @@ $(() => {
               runId: 'simplify-date-system',
               hypothesisId: 'G',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
         }
       }
 
       // #region agent log
-      // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1913,7 +1884,7 @@ $(() => {
           runId: 'simplify-date-system',
           hypothesisId: 'H',
         }),
-      }).catch(() => {}); */
+      }).catch(() => {});
       // #endregion
 
       // 循环结束，检查是否有前四类事件打断（LEGAL, PROCEDURAL, CONDITION, RANDOM）
@@ -1951,8 +1922,7 @@ $(() => {
 
     checkDayEvents(): EventRecord {
       // #region agent log
-      // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1967,14 +1937,13 @@ $(() => {
           runId: 'fix-day0-events',
           hypothesisId: 'HYP-A',
         }),
-      }).catch(() => {}); */
+      }).catch(() => {});
       // #endregion
 
       // 第0天不应该发生任何事件
       if (this.currentDay === 0) {
         // #region agent log
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1988,7 +1957,7 @@ $(() => {
             runId: 'fix-day0-events',
             hypothesisId: 'HYP-A',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
         // #endregion
         return {
           id: 'no_event',
@@ -2010,8 +1979,7 @@ $(() => {
       if (cellTransferResult) {
         // 监室转移是一个特殊事件，优先级设为 LEGAL（与重大法律事件同级）
         // #region agent log
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -2027,7 +1995,7 @@ $(() => {
             runId: 'fix-cell-transfer',
             hypothesisId: 'CELL_TRANSFER',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
         // #endregion
 
         // 获取监室转移的中文名称
@@ -2057,8 +2025,7 @@ $(() => {
       const legalEvent = this.checkLegalEvent();
       if (legalEvent) {
         // #region agent log
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -2075,7 +2042,7 @@ $(() => {
             runId: 'fix-interruption',
             hypothesisId: 'C',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
         // #endregion
         return {
           ...legalEvent,
@@ -2164,8 +2131,7 @@ $(() => {
         }
 
         // #region agent log
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -2185,7 +2151,7 @@ $(() => {
             runId: 'fix-interruption',
             hypothesisId: 'C',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
         // #endregion
 
         // 高优先级事件（LEGAL、PROCEDURAL、CONDITION）需要打断
@@ -2476,8 +2442,7 @@ $(() => {
       const state = this.getProtagonistState();
 
       // #region agent log
-      // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -2496,7 +2461,7 @@ $(() => {
           runId: 'check-status-dependency',
           hypothesisId: 'E',
         }),
-      }).catch(() => {}); */
+      }).catch(() => {});
       // #endregion
 
       for (const event of this.conditionEvents) {
@@ -2507,8 +2472,7 @@ $(() => {
         if (event.checkAlways || !event.stageChangeOnly) {
           const conditionResult = event.condition(state, this);
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -2530,14 +2494,13 @@ $(() => {
               runId: 'check-status-dependency',
               hypothesisId: 'F',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
 
           if (conditionResult) {
             const randomCheck = Math.random() * 100 < event.weight;
             // #region agent log
-            // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+            fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -2557,13 +2520,12 @@ $(() => {
                 runId: 'check-status-dependency',
                 hypothesisId: 'G',
               }),
-            }).catch(() => {}); */
+            }).catch(() => {});
             // #endregion
 
             if (randomCheck) {
               // #region agent log
-              // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+              fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -2581,7 +2543,7 @@ $(() => {
                   runId: 'check-status-dependency',
                   hypothesisId: 'H',
                 }),
-              }).catch(() => {}); */
+              }).catch(() => {});
               // #endregion
 
               return {
@@ -2654,8 +2616,7 @@ $(() => {
       console.log('[事件系统] getProtagonistState: 新版本代码已加载，支持记忆强化插件');
 
       // #region agent log
-      // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -2671,7 +2632,7 @@ $(() => {
           runId: 'memory-enhancement-integration',
           hypothesisId: 'A',
         }),
-      }).catch(() => {}); */
+      }).catch(() => {});
       // #endregion
 
       // 优先使用状态栏模块的 getState()，它已经集成了记忆增强插件支持
@@ -2679,8 +2640,7 @@ $(() => {
       const statusPanel = DS.getModule<{ getState?: () => ProtagonistState }>('statusPanel');
 
       // #region agent log
-      // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -2697,14 +2657,13 @@ $(() => {
           runId: 'memory-enhancement-integration',
           hypothesisId: 'B',
         }),
-      }).catch(() => {}); */
+      }).catch(() => {});
       // #endregion
 
       if (statusPanel && statusPanel.getState) {
         const state = statusPanel.getState();
         // #region agent log
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -2722,7 +2681,7 @@ $(() => {
             runId: 'memory-enhancement-integration',
             hypothesisId: 'C',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
         // #endregion
         // 返回完整的状态对象（状态栏模块已经处理了记忆增强插件的优先级）
         return state;
@@ -2738,8 +2697,7 @@ $(() => {
       };
 
       // #region agent log
-      // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -2755,7 +2713,7 @@ $(() => {
           runId: 'memory-enhancement-integration',
           hypothesisId: 'D',
         }),
-      }).catch(() => {}); */
+      }).catch(() => {});
       // #endregion
 
       console.warn('[事件系统] 状态栏模块不可用，使用默认状态值');
@@ -2893,8 +2851,7 @@ $(() => {
         if (!currentChatId) {
           console.debug('[事件系统] 没有打开的聊天文件，跳过保存事件打断快照');
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -2909,7 +2866,7 @@ $(() => {
               runId: 'fix-save-chat-error',
               hypothesisId: 'NO_CHAT_SKIP',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
           return;
         }
@@ -2920,8 +2877,7 @@ $(() => {
           if (!testChatVars || typeof testChatVars !== 'object') {
             console.debug('[事件系统] 无法获取聊天变量，聊天文件可能未创建，跳过保存事件打断快照');
             // #region agent log
-            // 调试日志已禁用以避免 CORS 错误
-            /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+            fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -2937,15 +2893,14 @@ $(() => {
                 runId: 'fix-save-chat-error',
                 hypothesisId: 'NO_CHAT_VARS',
               }),
-            }).catch(() => {}); */
+            }).catch(() => {});
             // #endregion
             return;
           }
         } catch (testError) {
           console.debug('[事件系统] 测试获取聊天变量失败，聊天文件可能未创建，跳过保存事件打断快照:', testError);
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -2960,7 +2915,7 @@ $(() => {
               runId: 'fix-save-chat-error',
               hypothesisId: 'TEST_CHAT_VARS_ERROR',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
           return;
         }
@@ -2983,8 +2938,7 @@ $(() => {
         // 使用 updateVariablesWith 而不是 replaceVariables，更安全
         try {
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -3001,7 +2955,7 @@ $(() => {
               runId: 'fix-save-conflict',
               hypothesisId: 'SAVE_SNAPSHOT_START',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
 
           updateVariablesWith(
@@ -3012,8 +2966,7 @@ $(() => {
           );
 
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -3027,12 +2980,11 @@ $(() => {
               runId: 'fix-save-conflict',
               hypothesisId: 'SAVE_SNAPSHOT_SUCCESS',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
         } catch (updateError) {
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -3047,7 +2999,7 @@ $(() => {
               runId: 'fix-save-conflict',
               hypothesisId: 'SAVE_SNAPSHOT_ERROR',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
           // 如果 updateVariablesWith 失败，不再尝试 replaceVariables，避免进一步冲突
           console.warn('[事件系统] 保存事件打断快照失败 (updateVariablesWith):', updateError);
@@ -3056,8 +3008,7 @@ $(() => {
         console.debug('[事件系统] 事件打断快照已保存');
 
         // #region agent log
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -3072,7 +3023,7 @@ $(() => {
             runId: 'add-rollback',
             hypothesisId: 'SAVE_SNAPSHOT',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
         // #endregion
       } catch (error) {
         console.warn('[事件系统] 保存事件打断快照失败:', error);
@@ -3115,8 +3066,7 @@ $(() => {
         this.saveStateToChatVars();
 
         // #region agent log
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -3133,7 +3083,7 @@ $(() => {
             runId: 'fix-day-calculation',
             hypothesisId: 'CONFIRM_DAY',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
         // #endregion
       }
     },
@@ -3186,8 +3136,7 @@ $(() => {
         this.saveStateToChatVars();
 
         // #region agent log
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -3201,7 +3150,7 @@ $(() => {
             runId: 'add-rollback',
             hypothesisId: 'ROLLBACK_SUCCESS',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
         // #endregion
 
         return true;
@@ -3216,8 +3165,7 @@ $(() => {
   DS.generateRandomEvent = (_context?: unknown) => EventSystem.generateRandomEvent();
   DS.advanceDay = (days?: number) => {
     // #region agent log
-    // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+    fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -3234,12 +3182,11 @@ $(() => {
         runId: 'fix-undefined-return',
         hypothesisId: 'A',
       }),
-    }).catch(() => {}); */
+    }).catch(() => {});
     // #endregion
     const result = EventSystem.advanceDay(days);
     // #region agent log
-    // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+    fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -3257,7 +3204,7 @@ $(() => {
         runId: 'fix-undefined-return',
         hypothesisId: 'B',
       }),
-    }).catch(() => {}); */
+    }).catch(() => {});
     // #endregion
     return result;
   };

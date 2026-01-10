@@ -178,8 +178,7 @@ declare global {
 
 // #region agent log - HYP-A: 检查核心系统是否已创建
 try {
-  // 调试日志已禁用以避免 CORS 错误
-  /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+  fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -203,7 +202,7 @@ try {
       runId: 'npc-load-debug',
       hypothesisId: 'A',
     }),
-  }).catch(() => {}); */
+  }).catch(() => {});
 } catch (e) {
   console.error('[NPC系统] 调试日志发送失败:', e);
 }
@@ -642,8 +641,7 @@ $(() => {
     );
     // #region agent log - HYP-B: 核心系统未找到
     try {
-      // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -662,7 +660,7 @@ $(() => {
           runId: 'npc-load-debug',
           hypothesisId: 'B',
         }),
-      }).catch(() => {}); */
+      }).catch(() => {});
     } catch (e) {
       console.error('[NPC系统] 调试日志发送失败:', e);
     }
@@ -678,8 +676,7 @@ $(() => {
   (window as any).__NPC_SYSTEM_LOADING__ = true;
   // #region agent log - HYP-C: 核心系统已找到，开始初始化
   try {
-    // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+    fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -698,7 +695,7 @@ $(() => {
         runId: 'npc-load-debug',
         hypothesisId: 'C',
       }),
-    }).catch(() => {}); */
+    }).catch(() => {});
   } catch (e) {
     console.error('[NPC系统] 调试日志发送失败:', e);
   }
@@ -1316,8 +1313,7 @@ $(() => {
 
       // #region agent log - HYP-PROTAGONIST: 主角生成完成
       try {
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1337,7 +1333,7 @@ $(() => {
             runId: 'protagonist-generation',
             hypothesisId: 'PROTAGONIST_COMPLETE',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
       } catch (e) {}
       // #endregion
 
@@ -1451,8 +1447,7 @@ $(() => {
 
   // #region agent log - HYP-D: 模块注册完成
   try {
-    // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+    fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -1471,7 +1466,7 @@ $(() => {
         runId: 'npc-load-debug',
         hypothesisId: 'D',
       }),
-    }).catch(() => {}); */
+    }).catch(() => {});
   } catch (e) {
     console.error('[NPC系统] 调试日志发送失败:', e);
   }
@@ -1482,8 +1477,7 @@ $(() => {
     if (window.parent && window.parent !== window) {
       // #region agent log - HYP-E: 同步到主窗口前
       try {
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1499,7 +1493,7 @@ $(() => {
             runId: 'npc-load-debug',
             hypothesisId: 'E',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
       } catch (e) {
         console.error('[NPC系统] 调试日志发送失败:', e);
       }
@@ -1553,8 +1547,7 @@ $(() => {
 
       // #region agent log - HYP-F: 同步到主窗口后
       try {
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -1577,7 +1570,7 @@ $(() => {
             runId: 'npc-load-debug',
             hypothesisId: 'F',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
       } catch (e) {
         console.error('[NPC系统] 调试日志发送失败:', e);
       }
@@ -1586,8 +1579,7 @@ $(() => {
   } catch (e) {
     // #region agent log - HYP-G: 同步失败
     try {
-      // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -1602,7 +1594,7 @@ $(() => {
           runId: 'npc-load-debug',
           hypothesisId: 'G',
         }),
-      }).catch(() => {}); */
+      }).catch(() => {});
     } catch (logError) {
       console.error('[NPC系统] 调试日志发送失败:', logError);
     }

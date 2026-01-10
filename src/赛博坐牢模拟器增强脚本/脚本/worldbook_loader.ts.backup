@@ -333,8 +333,7 @@ function safeGetWorldbookNames(): string[] {
   // 假设A: 尝试直接调用全局函数
   if (typeof (window as any).getWorldbookNames !== 'undefined') {
     // #region agent log
-    // 调试日志已禁用以避免 CORS 错误
-    /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+    fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -346,7 +345,7 @@ function safeGetWorldbookNames(): string[] {
         runId: 'initial',
         hypothesisId: 'A',
       }),
-    }).catch(() => {}); */
+    }).catch(() => {});
     // #endregion
     return (window as any).getWorldbookNames();
   }
@@ -356,8 +355,7 @@ function safeGetWorldbookNames(): string[] {
     const helper = (window as any).TavernHelper;
     if (typeof helper.getWorldbookNames === 'function') {
       // #region agent log
-      // 调试日志已禁用以避免 CORS 错误
-      /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+      fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -369,15 +367,14 @@ function safeGetWorldbookNames(): string[] {
           runId: 'initial',
           hypothesisId: 'B',
         }),
-      }).catch(() => {}); */
+      }).catch(() => {});
       // #endregion
       return helper.getWorldbookNames();
     }
   }
 
   // #region agent log
-  // 调试日志已禁用以避免 CORS 错误
-  /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+  fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -392,7 +389,7 @@ function safeGetWorldbookNames(): string[] {
       runId: 'initial',
       hypothesisId: 'C',
     }),
-  }).catch(() => {}); */
+  }).catch(() => {});
   // #endregion
 
   throw new Error(
@@ -513,8 +510,7 @@ $(() => {
       try {
         // 获取所有世界书名称
         // #region agent log
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -526,12 +522,11 @@ $(() => {
             runId: 'initial',
             hypothesisId: 'A',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
         // #endregion
         const allWorldbookNames = safeGetWorldbookNames();
         // #region agent log
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -543,7 +538,7 @@ $(() => {
             runId: 'initial',
             hypothesisId: 'A',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
         // #endregion
 
         // 优化匹配策略：优先匹配中文名称（displayName），因为实际知识库使用中文名称
@@ -576,8 +571,7 @@ $(() => {
         if (!targetWorldbookName) {
           const availableBooks = allWorldbookNames.join(', ');
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -594,7 +588,7 @@ $(() => {
               runId: 'fix-getworldbook',
               hypothesisId: 'E',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
           throw new Error(
             `未找到世界书: ${config.displayName} (${bookName})\n` +
@@ -605,8 +599,7 @@ $(() => {
 
         // 获取世界书内容
         // #region agent log
-        // 调试日志已禁用以避免 CORS 错误
-        /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+        fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -623,7 +616,7 @@ $(() => {
             runId: 'fix-getworldbook',
             hypothesisId: 'A',
           }),
-        }).catch(() => {}); */
+        }).catch(() => {});
         // #endregion
 
         let entries;
@@ -631,8 +624,7 @@ $(() => {
         try {
           worldbookData = await getWorldbook(targetWorldbookName);
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -671,7 +663,7 @@ $(() => {
               runId: 'fix-entries-undefined',
               hypothesisId: 'A',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
 
           // 处理返回值：getWorldbook 返回数组或包含 entries 的对象
@@ -694,8 +686,7 @@ $(() => {
           }
 
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -719,12 +710,11 @@ $(() => {
               runId: 'fix-entries-undefined',
               hypothesisId: 'B',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
         } catch (getWorldbookError) {
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -744,7 +734,7 @@ $(() => {
               runId: 'fix-getworldbook',
               hypothesisId: 'B',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
 
           // 检查是否是特定世界书的数据问题，尝试备用名称
@@ -775,8 +765,7 @@ $(() => {
               this.failedBooks.add(bookName);
               console.warn(`[知识库加载器] ⚠ 已将 "${bookName}" 标记为失败，后续将跳过此世界书`);
               // #region agent log
-              // 调试日志已禁用以避免 CORS 错误
-              /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+              fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -796,7 +785,7 @@ $(() => {
                   runId: 'fix-getworldbook',
                   hypothesisId: 'E',
                 }),
-              }).catch(() => {}); */
+              }).catch(() => {});
               // #endregion
             }
           }
@@ -815,8 +804,7 @@ $(() => {
         // 检查返回值类型
         if (entries === undefined || entries === null) {
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -835,7 +823,7 @@ $(() => {
               runId: 'fix-entries-undefined',
               hypothesisId: 'C',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
           throw new Error(
             `世界书 "${targetWorldbookName}" 返回值为空 (undefined/null)\n` +
@@ -846,8 +834,7 @@ $(() => {
 
         if (!Array.isArray(entries)) {
           // #region agent log
-          // 调试日志已禁用以避免 CORS 错误
-          /* fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
+          fetch('http://127.0.0.1:7242/ingest/55a7313b-5b61-43ef-bdc3-1a322b93db66', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -871,7 +858,7 @@ $(() => {
               runId: 'fix-entries-undefined',
               hypothesisId: 'D',
             }),
-          }).catch(() => {}); */
+          }).catch(() => {});
           // #endregion
           throw new Error(
             `世界书 "${targetWorldbookName}" 返回值不是数组 (类型: ${typeof entries})\n` +
