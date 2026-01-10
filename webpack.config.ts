@@ -55,29 +55,203 @@ function glob_script_files() {
       file => process.env.CI !== 'true' || !fs.readFileSync(path.join(import.meta.dirname, file)).includes('@no-ci'),
     );
 
+  // #region agent log
+  try {
+    const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
+    const logEntry = JSON.stringify({
+      sessionId: 'debug-session',
+      runId: 'webpack-glob',
+      hypothesisId: 'A',
+      location: 'webpack.config.ts:glob_script_files',
+      message: 'All found index files',
+      data: { files, count: files.length },
+      timestamp: Date.now(),
+    }) + '\n';
+    fs.appendFileSync(logPath, logEntry, 'utf8');
+  } catch {}
+  // #endregion
+
   const results: string[] = [];
   const handle = (file: string) => {
     const file_dirname = path.dirname(file);
+    // #region agent log
+    try {
+      const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
+      const logEntry = JSON.stringify({
+        sessionId: 'debug-session',
+        runId: 'webpack-glob',
+        hypothesisId: 'A',
+        location: 'webpack.config.ts:handle',
+        message: 'Processing file',
+        data: { file, file_dirname, resultsCount: results.length },
+        timestamp: Date.now(),
+      }) + '\n';
+      fs.appendFileSync(logPath, logEntry, 'utf8');
+    } catch {}
+    // #endregion
+
     for (const [index, result] of results.entries()) {
       const result_dirname = path.dirname(result);
       const common = common_path(result_dirname, file_dirname);
+      // #region agent log
+      try {
+        const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
+        const logEntry = JSON.stringify({
+          sessionId: 'debug-session',
+          runId: 'webpack-glob',
+          hypothesisId: 'A',
+          location: 'webpack.config.ts:handle:loop',
+          message: 'Comparing paths',
+          data: { file, result, common, result_dirname, file_dirname },
+          timestamp: Date.now(),
+        }) + '\n';
+        fs.appendFileSync(logPath, logEntry, 'utf8');
+      } catch {}
+      // #endregion
+
       if (common === result_dirname) {
+        // #region agent log
+        try {
+          const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
+          const logEntry = JSON.stringify({
+            sessionId: 'debug-session',
+            runId: 'webpack-glob',
+            hypothesisId: 'A',
+            location: 'webpack.config.ts:handle:skip',
+            message: 'Skipping file (parent exists)',
+            data: { file, result, common },
+            timestamp: Date.now(),
+          }) + '\n';
+          fs.appendFileSync(logPath, logEntry, 'utf8');
+        } catch {}
+        // #endregion
+
+        // Check if the new file has index.html (frontend UI)
+        const newFileHasHtml = fs.existsSync(path.join(import.meta.dirname, file_dirname, 'index.html'));
+        const oldFileHasHtml = fs.existsSync(path.join(import.meta.dirname, result_dirname, 'index.html'));
+        
+        // Check if the new file is in a 脚本/ subdirectory (should be kept as separate entry)
+        const newFileIsScript = file_dirname.includes(path.sep + '脚本' + path.sep);
+        
+        // #region agent log
+        try {
+          const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
+          const logEntry = JSON.stringify({
+            sessionId: 'debug-session',
+            runId: 'webpack-glob',
+            hypothesisId: 'B',
+            location: 'webpack.config.ts:handle:html-check',
+            message: 'Checking HTML files and script directory',
+            data: { file, result, newFileHasHtml, oldFileHasHtml, newFileIsScript },
+            timestamp: Date.now(),
+          }) + '\n';
+          fs.appendFileSync(logPath, logEntry, 'utf8');
+        } catch {}
+        // #endregion
+
+        // If new file is a frontend UI (has HTML) or is a script in 脚本/ subdirectory, keep it
+        if ((newFileHasHtml && !oldFileHasHtml) || newFileIsScript) {
+          // #region agent log
+          try {
+            const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
+            const logEntry = JSON.stringify({
+              sessionId: 'debug-session',
+              runId: 'webpack-glob',
+              hypothesisId: 'B',
+              location: 'webpack.config.ts:handle:keep-file',
+              message: 'Keeping file (frontend UI or script)',
+              data: { file, result, reason: newFileHasHtml && !oldFileHasHtml ? 'frontend' : 'script' },
+              timestamp: Date.now(),
+            }) + '\n';
+            fs.appendFileSync(logPath, logEntry, 'utf8');
+          } catch {}
+          // #endregion
+          // Keep the file (frontend UI or script), but also keep the parent script
+          results.push(file);
+          return;
+        }
         return;
       }
       if (common === file_dirname) {
+        // #region agent log
+        try {
+          const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
+          const logEntry = JSON.stringify({
+            sessionId: 'debug-session',
+            runId: 'webpack-glob',
+            hypothesisId: 'A',
+            location: 'webpack.config.ts:handle:replace',
+            message: 'Replacing with more specific file',
+            data: { file, result },
+            timestamp: Date.now(),
+          }) + '\n';
+          fs.appendFileSync(logPath, logEntry, 'utf8');
+        } catch {}
+        // #endregion
         results.splice(index, 1, file);
         return;
       }
     }
+    // #region agent log
+    try {
+      const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
+      const logEntry = JSON.stringify({
+        sessionId: 'debug-session',
+        runId: 'webpack-glob',
+        hypothesisId: 'A',
+        location: 'webpack.config.ts:handle:add',
+        message: 'Adding file to results',
+        data: { file, resultsCount: results.length },
+        timestamp: Date.now(),
+      }) + '\n';
+      fs.appendFileSync(logPath, logEntry, 'utf8');
+    } catch {}
+    // #endregion
     results.push(file);
   };
   files.forEach(handle);
+
+  // #region agent log
+  try {
+    const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
+    const logEntry = JSON.stringify({
+      sessionId: 'debug-session',
+      runId: 'webpack-glob',
+      hypothesisId: 'A',
+      location: 'webpack.config.ts:glob_script_files:final',
+      message: 'Final results',
+      data: { results, count: results.length },
+      timestamp: Date.now(),
+    }) + '\n';
+    fs.appendFileSync(logPath, logEntry, 'utf8');
+  } catch {}
+  // #endregion
+
   return results;
 }
 
 const config: Config = {
   port: 6621,
-  entries: glob_script_files().map(parse_entry),
+  entries: (() => {
+    const files = glob_script_files();
+    const entries = files.map(parse_entry);
+    // #region agent log
+    try {
+      const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
+      const logEntry = JSON.stringify({
+        sessionId: 'debug-session',
+        runId: 'webpack-glob',
+        hypothesisId: 'C',
+        location: 'webpack.config.ts:config:entries',
+        message: 'Final entries',
+        data: { entries, count: entries.length },
+        timestamp: Date.now(),
+      }) + '\n';
+      fs.appendFileSync(logPath, logEntry, 'utf8');
+    } catch {}
+    // #endregion
+    return entries;
+  })(),
 };
 
 let io: Server;
@@ -203,11 +377,16 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
 
         return `${is_direct === true ? 'src' : 'webpack'}://${info.namespace}/${resource_path}${is_direct || is_vue_script ? '' : '?' + info.hash}`;
       },
-      filename: script_filepath.dir.includes('赛博坐牢模拟器增强脚本')
-        ? script_filepath.dir.includes('变量结构')
-          ? 'index.js'
-          : 'detention-system.js'
-        : `${script_filepath.name}.js`,
+      filename: (() => {
+        if (script_filepath.dir.includes('赛博坐牢模拟器增强脚本')) {
+          // 如果是脚本子目录，使用 index.js；否则使用 detention-system.js
+          if (script_filepath.dir.includes(path.sep + '脚本' + path.sep)) {
+            return 'index.js';
+          }
+          return 'detention-system.js';
+        }
+        return `${script_filepath.name}.js`;
+      })(),
       path: path.join(
         import.meta.dirname,
         'dist',

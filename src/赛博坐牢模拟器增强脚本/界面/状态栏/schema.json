@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "状态": {
+      "type": "object",
+      "properties": {
+        "姓名": {
+          "default": "未设定",
+          "type": "string"
+        },
+        "年龄": {
+          "default": 0,
+          "type": "number"
+        },
+        "罪名": {
+          "default": "未设定",
+          "type": "string"
+        },
+        "健康": {
+          "type": "number"
+        },
+        "精神": {
+          "type": "number"
+        },
+        "力量": {
+          "type": "number"
+        },
+        "智力": {
+          "type": "number"
+        },
+        "在押天数": {
+          "default": 0,
+          "type": "number"
+        },
+        "当前阶段": {
+          "default": "刑事拘留",
+          "type": "string"
+        },
+        "监室类型": {
+          "default": "过渡监室",
+          "type": "string"
+        }
+      }
+    },
+    "外貌": {
+      "type": "object",
+      "properties": {
+        "身高": {
+          "default": 0,
+          "type": "number"
+        },
+        "体重": {
+          "default": 0,
+          "type": "number"
+        },
+        "发型": {
+          "default": "未设定",
+          "type": "string"
+        },
+        "身体状况": {
+          "default": "未设定",
+          "type": "string"
+        }
+      }
+    },
+    "穿着": {
+      "type": "object",
+      "properties": {
+        "上衣": {
+          "default": "未设定",
+          "type": "string"
+        },
+        "裤子": {
+          "default": "未设定",
+          "type": "string"
+        },
+        "内衣": {
+          "default": "未设定",
+          "type": "string"
+        },
+        "内裤": {
+          "default": "未设定",
+          "type": "string"
+        },
+        "袜子": {
+          "default": "未设定",
+          "type": "string"
+        },
+        "鞋子": {
+          "default": "未设定",
+          "type": "string"
+        },
+        "戒具": {
+          "default": "无",
+          "type": "string"
+        },
+        "洁净度": {
+          "default": "整洁",
+          "type": "string"
+        }
+      }
+    },
+    "心理": {
+      "type": "object",
+      "properties": {
+        "当前任务": {
+          "default": "无",
+          "type": "string"
+        },
+        "内心想法": {
+          "default": "无",
+          "type": "string"
+        },
+        "最大担忧": {
+          "default": "无",
+          "type": "string"
+        }
+      }
+    },
+    "回合": {
+      "type": "object",
+      "properties": {
+        "当前回合": {
+          "default": 0,
+          "type": "number"
+        },
+        "叙事节奏": {
+          "default": "正常",
+          "type": "string",
+          "enum": [
+            "慢速",
+            "正常",
+            "快速"
+          ]
+        },
+        "节奏倍数": {
+          "default": 0.5,
+          "type": "number"
+        }
+      }
+    }
+  },
+  "required": [
+    "状态",
+    "外貌",
+    "穿着",
+    "心理",
+    "回合"
+  ]
+}
