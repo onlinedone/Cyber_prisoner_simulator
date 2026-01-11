@@ -43,7 +43,10 @@ export default [
         parser: tsParser,
         ecmaVersion: 'latest',
         sourceType: 'module',
+<<<<<<< HEAD
         tsconfigRootDir: import.meta.dirname,
+=======
+>>>>>>> 4e2a9fc6b9f5ae825823eb357fffa0d0ea284155
       },
       ecmaVersion: 'latest',
       sourceType: 'module',
