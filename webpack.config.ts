@@ -49,6 +49,7 @@ function common_path(lhs: string, rhs: string) {
 }
 
 function glob_script_files() {
+<<<<<<< HEAD
   const files: string[] = fs
     .globSync(`src/**/index.{ts,tsx,js,jsx}`)
     .filter(
@@ -188,10 +189,28 @@ function glob_script_files() {
           fs.appendFileSync(logPath, logEntry, 'utf8');
         } catch {}
         // #endregion
+=======
+  const results: string[] = [];
+
+  fs.globSync(`{示例,src}/**/index.{ts,tsx,js,jsx}`)
+    .filter(
+      file => process.env.CI !== 'true' || !fs.readFileSync(path.join(import.meta.dirname, file)).includes('@no-ci'),
+    )
+    .forEach(file => {
+      const file_dirname = path.dirname(file);
+      for (const [index, result] of results.entries()) {
+        const result_dirname = path.dirname(result);
+        const common = common_path(result_dirname, file_dirname);
+        if (common === result_dirname) {
+          return;
+        }
+        if (common === file_dirname) {
+>>>>>>> d1ab9562bec19f593c4f8c6eab9057a58f1ef66f
         results.splice(index, 1, file);
         return;
       }
     }
+<<<<<<< HEAD
     // #region agent log
     try {
       const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
@@ -226,12 +245,17 @@ function glob_script_files() {
     fs.appendFileSync(logPath, logEntry, 'utf8');
   } catch {}
   // #endregion
+=======
+      results.push(file);
+    });
+>>>>>>> d1ab9562bec19f593c4f8c6eab9057a58f1ef66f
 
   return results;
 }
 
 const config: Config = {
   port: 6621,
+<<<<<<< HEAD
   entries: (() => {
     const files = glob_script_files();
     const entries = files.map(parse_entry);
@@ -252,6 +276,9 @@ const config: Config = {
     // #endregion
     return entries;
   })(),
+=======
+  entries: glob_script_files().map(parse_entry),
+>>>>>>> d1ab9562bec19f593c4f8c6eab9057a58f1ef66f
 };
 
 let io: Server;
@@ -272,7 +299,10 @@ function watch_tavern_helper(compiler: webpack.Compiler) {
 
     compiler.hooks.done.tap('watch_tavern_helper', () => {
       console.info('\n\x1b[36m[tavern_helper]\x1b[0m 检测到完成编译, 推送更新事件...');
+<<<<<<< HEAD
       io.emit('iframe_updated');
+=======
+>>>>>>> d1ab9562bec19f593c4f8c6eab9057a58f1ef66f
       if (compiler.options.plugins.find(plugin => plugin instanceof HtmlWebpackPlugin)) {
         io.emit('message_iframe_updated');
       } else {
@@ -310,6 +340,10 @@ function watch_tavern_sync(compiler: webpack.Compiler) {
   compiler.hooks.watchRun.tap('watch_tavern_sync', () => {
     if (!child_process) {
       child_process = spawn('pnpm', ['sync', 'watch', 'all', '-f'], {
+<<<<<<< HEAD
+=======
+        shell: true,
+>>>>>>> d1ab9562bec19f593c4f8c6eab9057a58f1ef66f
         stdio: ['ignore', 'pipe', 'pipe'],
         cwd: import.meta.dirname,
         env: { ...process.env, FORCE_COLOR: '1' },
@@ -377,6 +411,7 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
 
         return `${is_direct === true ? 'src' : 'webpack'}://${info.namespace}/${resource_path}${is_direct || is_vue_script ? '' : '?' + info.hash}`;
       },
+<<<<<<< HEAD
       filename: (() => {
         if (script_filepath.dir.includes('赛博坐牢模拟器增强脚本')) {
           // 如果是脚本子目录，使用 index.js；否则使用 detention-system.js
@@ -391,6 +426,13 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         import.meta.dirname,
         'dist',
         path.relative(path.join(import.meta.dirname, 'src'), script_filepath.dir),
+=======
+      filename: `${script_filepath.name}.js`,
+      path: path.join(
+        import.meta.dirname,
+        'dist',
+        path.relative(import.meta.dirname, script_filepath.dir).replace(/^[^\\/]+[\\/]/, ''),
+>>>>>>> d1ab9562bec19f593c4f8c6eab9057a58f1ef66f
       ),
       chunkFilename: `${script_filepath.name}.[contenthash].chunk.js`,
       asyncChunks: true,
@@ -511,6 +553,19 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
                 },
               ],
             },
+<<<<<<< HEAD
+=======
+            {
+              test: /\.ya?ml$/,
+              loader: 'yaml-loader',
+              options: { asStream: true },
+              resourceQuery: /stream/,
+            },
+            {
+              test: /\.ya?ml$/,
+              loader: 'yaml-loader',
+            },
+>>>>>>> d1ab9562bec19f593c4f8c6eab9057a58f1ef66f
           ].concat(
             entry.html === undefined
               ? ([
@@ -696,6 +751,10 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         request.startsWith('!') ||
         request.startsWith('http') ||
         request.startsWith('@/') ||
+<<<<<<< HEAD
+=======
+        request.startsWith('@util/') ||
+>>>>>>> d1ab9562bec19f593c4f8c6eab9057a58f1ef66f
         path.isAbsolute(request) ||
         fs.existsSync(path.join(context, request)) ||
         fs.existsSync(request)
