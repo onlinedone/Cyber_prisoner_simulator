@@ -26,12 +26,20 @@ export default [
     rules: {
       ...eslintPluginBetterTailwindcss.configs['recommended-warn'].rules,
       ...eslintPluginBetterTailwindcss.configs['recommended-error'].rules,
+<<<<<<< HEAD
       'better-tailwindcss/enforce-consistent-line-wrapping': ['off', { printWidth: 120 }],
+=======
+      'better-tailwindcss/enforce-consistent-line-wrapping': ['off', { preferSingleLine: true, printWidth: 120 }],
+>>>>>>> b80a86e4d72312ede7f291df2c1c65bd1f7e93eb
       'better-tailwindcss/no-unregistered-classes': ['off', { ignore: ['fa-*'] }],
     },
     settings: {
       'better-tailwindcss': {
+<<<<<<< HEAD
         entryPoint: 'src/global.css',
+=======
+        entryPoint: 'tailwind.css',
+>>>>>>> b80a86e4d72312ede7f291df2c1c65bd1f7e93eb
         tailwindConfig: 'tailwind.config.js',
       },
     },
@@ -43,7 +51,10 @@ export default [
         parser: tsParser,
         ecmaVersion: 'latest',
         sourceType: 'module',
+<<<<<<< HEAD
         tsconfigRootDir: import.meta.dirname,
+=======
+>>>>>>> b80a86e4d72312ede7f291df2c1c65bd1f7e93eb
       },
       ecmaVersion: 'latest',
       sourceType: 'module',
