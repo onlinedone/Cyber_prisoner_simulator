@@ -49,6 +49,7 @@ function common_path(lhs: string, rhs: string) {
 }
 
 function glob_script_files() {
+<<<<<<< HEAD
   const files: string[] = fs
     .globSync(`src/**/index.{ts,tsx,js,jsx}`)
     .filter(
@@ -188,10 +189,28 @@ function glob_script_files() {
           fs.appendFileSync(logPath, logEntry, 'utf8');
         } catch {}
         // #endregion
+=======
+  const results: string[] = [];
+
+  fs.globSync(`{示例,src}/**/index.{ts,tsx,js,jsx}`)
+    .filter(
+      file => process.env.CI !== 'true' || !fs.readFileSync(path.join(import.meta.dirname, file)).includes('@no-ci'),
+    )
+    .forEach(file => {
+      const file_dirname = path.dirname(file);
+      for (const [index, result] of results.entries()) {
+        const result_dirname = path.dirname(result);
+        const common = common_path(result_dirname, file_dirname);
+        if (common === result_dirname) {
+          return;
+        }
+        if (common === file_dirname) {
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
         results.splice(index, 1, file);
         return;
       }
     }
+<<<<<<< HEAD
     // #region agent log
     try {
       const logPath = path.join(import.meta.dirname, '.cursor', 'debug.log');
@@ -226,12 +245,17 @@ function glob_script_files() {
     fs.appendFileSync(logPath, logEntry, 'utf8');
   } catch {}
   // #endregion
+=======
+      results.push(file);
+    });
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
 
   return results;
 }
 
 const config: Config = {
   port: 6621,
+<<<<<<< HEAD
   entries: (() => {
     const files = glob_script_files();
     const entries = files.map(parse_entry);
@@ -252,6 +276,9 @@ const config: Config = {
     // #endregion
     return entries;
   })(),
+=======
+  entries: glob_script_files().map(parse_entry),
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
 };
 
 let io: Server;
@@ -272,8 +299,12 @@ function watch_tavern_helper(compiler: webpack.Compiler) {
 
     compiler.hooks.done.tap('watch_tavern_helper', () => {
       console.info('\n\x1b[36m[tavern_helper]\x1b[0m 检测到完成编译, 推送更新事件...');
+<<<<<<< HEAD
       io.emit('iframe_updated');
       if (compiler.options.plugins.find(plugin => plugin instanceof HtmlWebpackPlugin)) {
+=======
+      if (compiler.options.plugins.some(plugin => plugin instanceof HtmlWebpackPlugin)) {
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
         io.emit('message_iframe_updated');
       } else {
         io.emit('script_iframe_updated');
@@ -283,6 +314,7 @@ function watch_tavern_helper(compiler: webpack.Compiler) {
 }
 
 let watcher: FSWatcher;
+<<<<<<< HEAD
 const execute = () => {
   exec('pnpm dump', { cwd: import.meta.dirname });
   console.info('\x1b[36m[schema_dump]\x1b[0m 已将所有 schema.ts 转换为 schema.json');
@@ -292,24 +324,56 @@ function dump_schema(compiler: webpack.Compiler) {
   if (!compiler.options.watch) {
     execute_debounced();
   } else if (!watcher) {
+=======
+const dump = () => {
+  exec('pnpm dump', { cwd: import.meta.dirname });
+  console.info('\x1b[36m[schema_dump]\x1b[0m 已将所有 schema.ts 转换为 schema.json');
+};
+const dump_debounced = _.debounce(dump, 500, { leading: true, trailing: false });
+function schema_dump(compiler: webpack.Compiler) {
+  if (!compiler.options.watch) {
+    dump_debounced();
+    return;
+  }
+  if (!watcher) {
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
     watcher = watch('src', {
       awaitWriteFinish: true,
     }).on('all', (_event, path) => {
       if (path.endsWith('schema.ts')) {
+<<<<<<< HEAD
         execute_debounced();
+=======
+        dump_debounced();
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
       }
     });
   }
 }
 
 let child_process: ChildProcess;
+<<<<<<< HEAD
 function watch_tavern_sync(compiler: webpack.Compiler) {
   if (!compiler.options.watch) {
+=======
+const bundle = () => {
+  exec('pnpm sync bundle all', { cwd: import.meta.dirname });
+  console.info('\x1b[36m[tavern_sync]\x1b[0m 已打包所有配置了的角色卡/世界书/预设');
+};
+const bundle_debounced = _.debounce(bundle, 500, { leading: true, trailing: false });
+function tavern_sync(compiler: webpack.Compiler) {
+  if (!compiler.options.watch) {
+    bundle_debounced();
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
     return;
   }
   compiler.hooks.watchRun.tap('watch_tavern_sync', () => {
     if (!child_process) {
       child_process = spawn('pnpm', ['sync', 'watch', 'all', '-f'], {
+<<<<<<< HEAD
+=======
+        shell: true,
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
         stdio: ['ignore', 'pipe', 'pipe'],
         cwd: import.meta.dirname,
         env: { ...process.env, FORCE_COLOR: '1' },
@@ -377,6 +441,7 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
 
         return `${is_direct === true ? 'src' : 'webpack'}://${info.namespace}/${resource_path}${is_direct || is_vue_script ? '' : '?' + info.hash}`;
       },
+<<<<<<< HEAD
       filename: (() => {
         if (script_filepath.dir.includes('赛博坐牢模拟器增强脚本')) {
           // 如果是脚本子目录，使用 index.js；否则使用 detention-system.js
@@ -391,6 +456,13 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         import.meta.dirname,
         'dist',
         path.relative(path.join(import.meta.dirname, 'src'), script_filepath.dir),
+=======
+      filename: `${script_filepath.name}.js`,
+      path: path.join(
+        import.meta.dirname,
+        'dist',
+        path.relative(import.meta.dirname, script_filepath.dir).replace(/^[^\\/]+[\\/]/, ''),
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
       ),
       chunkFilename: `${script_filepath.name}.[contenthash].chunk.js`,
       asyncChunks: true,
@@ -511,6 +583,19 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
                 },
               ],
             },
+<<<<<<< HEAD
+=======
+            {
+              test: /\.ya?ml$/,
+              loader: 'yaml-loader',
+              options: { asStream: true },
+              resourceQuery: /stream/,
+            },
+            {
+              test: /\.ya?ml$/,
+              loader: 'yaml-loader',
+            },
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
           ].concat(
             entry.html === undefined
               ? ([
@@ -604,8 +689,13 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
     )
       .concat(
         { apply: watch_tavern_helper },
+<<<<<<< HEAD
         { apply: dump_schema },
         { apply: watch_tavern_sync },
+=======
+        { apply: schema_dump },
+        { apply: tavern_sync },
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
         new VueLoaderPlugin(),
         unpluginAutoImport({
           dts: true,
@@ -618,6 +708,10 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
             { from: 'klona', imports: ['klona'] },
             { from: 'vue-final-modal', imports: ['useModal'] },
             { from: 'zod', imports: ['z'] },
+<<<<<<< HEAD
+=======
+            { from: 'type-fest', imports: [['*', 'TypeFest']], type: true },
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
           ],
         }),
         unpluginVueComponents({
@@ -696,6 +790,10 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         request.startsWith('!') ||
         request.startsWith('http') ||
         request.startsWith('@/') ||
+<<<<<<< HEAD
+=======
+        request.startsWith('@util/') ||
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
         path.isAbsolute(request) ||
         fs.existsSync(path.join(context, request)) ||
         fs.existsSync(request)
@@ -704,7 +802,11 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
       }
 
       if (
+<<<<<<< HEAD
         ['vue', 'vue-router', 'pixi.js'].every(key => request !== key) &&
+=======
+        ['vue', 'vue-router'].every(key => request !== key) &&
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
         ['pixi', 'react', 'vue'].some(key => request.includes(key))
       ) {
         return callback();
@@ -718,7 +820,10 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
         'vue-router': 'VueRouter',
         yaml: 'YAML',
         zod: 'z',
+<<<<<<< HEAD
         'pixi.js': 'PIXI',
+=======
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
       };
       if (request in global) {
         return callback(null, 'var ' + global[request as keyof typeof global]);
@@ -726,9 +831,23 @@ function parse_configuration(entry: Entry): (_env: any, argv: any) => webpack.Co
       const cdn = {
         sass: 'https://jspm.dev/sass',
       };
+<<<<<<< HEAD
       return callback(
         null,
         'module-import ' + (cdn[request as keyof typeof cdn] ?? `https://testingcf.jsdelivr.net/npm/${request}/+esm`),
+=======
+      const package_json = JSON.parse(fs.readFileSync(path.join(import.meta.dirname, 'package.json'), 'utf-8')) as {
+        dependencies?: Record<string, string>;
+        devDependencies?: Record<string, string>;
+      };
+      const package_versions = { ...package_json.devDependencies, ...package_json.dependencies };
+      const version = package_versions[request]?.replace(/^[~^]/, '');
+      const versioned_request = /^[.\d]+$/.test(version) ? `${request}@${version}` : request;
+      return callback(
+        null,
+        'module-import ' +
+          (cdn[request as keyof typeof cdn] ?? `https://testingcf.jsdelivr.net/npm/${versioned_request}/+esm`),
+>>>>>>> 874db47f3fb8ed8544a74e33a59f780f2c95aa38
       );
     },
   });
